@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background-color: #080808;
+    color: #ADD8E6; /* Pastel Blue from first CSS */
+    max-width: 100%;
+    overflow-x: hidden; /* Prevents horizontal overflow */
+}
+
+/* About Section Styling */
+.about-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows content to wrap on smaller screens */
+    gap: 20px; /* Space between sections */
+    justify-content: space-between;
+    align-items: flex-start; /* Aligns items vertically to the top */
+}
+
+.about-text {
+    flex: 1.2;
+    max-width: 60%; /* Adjust as needed */
+}
+
+.about-photos {
+    flex: 1; /* Adjusts space allocated to photos */
+    display: flex;
+    flex-direction: column; /* Stacks photos vertically */
+    gap: 10px; /* Adds spacing between photos */
+    align-items: flex-end; /* Centers photos horizontally */
+}
+
+.about-photos img {
+    width: 500px; /* Keeps the width fixed as per your requirement */
+    height: auto; /* Maintains the aspect ratio */
+    margin: 0; /* Removes extra margin */
+    border: 0.1rem solid #ADD8E6; /* Pastel Blue from first CSS */
+    border-radius: 5px;
+}
+
+/* Adjust the h1 element to ensure it's aligned properly */
+#about h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #5F9DE7;
+    margin-top: 0; /* Ensure no extra margin at the top */
+}
+
+#about h2{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #5F9DE7;
+}
+
+/* Global Styles for Header */
+header {
+    background: #080808;
+    color: #ADD8E6; /* Pastel Blue from first CSS */
+    padding: 1rem 0;
+    box-sizing: border-box;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.name-container {
+    text-align: left;
+}
+
+.name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #F78C8C; /* Pastel Red from first CSS */
+}
+
+.sub-text {
+    font-size: 1.1rem;
+    color: #ADD8E6; /* Pastel Blue from first CSS */
+    font-weight: normal;
+}
+
+header nav {
+    text-align: right;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #F78C8C; /* Pastel Yellow from first CSS */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav ul li a:hover {
+    color: #5F9DE7; /* Nice blue from first CSS */
+}
+
+/* Main Section Styling */
+section {
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding-top: 5rem;
+}
+
+/* About Section Styling */
+.about-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows content to wrap on smaller screens */
+    gap: 20px; /* Space between sections */
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.about-text {
+    flex: 1.2;
+    max-width: 60%; /* Adjust as needed */
+}
+
+.about-photos {
+    flex: 1; /* Adjusts space allocated to photos */
+    display: flex;
+    flex-direction: column; /* Stacks photos vertically */
+    gap: 10px; /* Adds spacing between photos */
+    align-items: flex-end; /* Centers photos horizontally */
+}
+
+.about-photos img {
+    width: 500px; /* Keeps the width fixed as per your requirement */
+    height: auto; /* Maintains the aspect ratio */
+    margin: 0; /* Removes extra margin */
+    border: 0.1rem solid #ADD8E6; /* Pastel Blue from first CSS */
+    border-radius: 5px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background: #080808;
+    color: #F2D5EF;
+    font-size: 1rem;
+}
+
+footer p {
+    font-size: 1rem;
+    color: #F78C8C; /* Pastel Red from first CSS */
+    font-weight: bold;
+}

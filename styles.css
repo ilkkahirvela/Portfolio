@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.4rem;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background-color: #080808;
+    color: #ADD8E6; /* Nice blue */
+    max-width: 100%;
+    overflow-x: hidden; /* Prevents horizontal overflow */
+}
+
+#about h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #5F9DE7; /* Complementary blue */
+}
+
+/* Global Styles for Header */
+header {
+    background: #080808;
+    color: #ADD8E6; /* Pastel Blue */
+    padding: 1rem 0;
+    box-sizing: border-box;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.name-container {
+    text-align: left;
+}
+
+.name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #F78C8C; /* Pastel red */
+}
+
+.sub-text {
+    font-size: 1.1rem;
+    color: #ADD8E6; /* Pastel Blue */
+    font-weight: normal;
+}
+
+header nav {
+    text-align: right;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #F78C8C; /* Pastel Yellow */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav ul li a:hover {
+    color: #5F9DE7; /* Nice blue */
+}
+
+/* Main Section Styling */
+section {
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding-top: 5rem;
+}
+
+/* Projects Section */
+#projects h2 {
+    color: #5F9DE7; /* Nice blue */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#projects .project {
+    border: 1px solid #ADD8E6;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #262626;
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left; /* Aligns text to the left */
+    position: relative;
+}
+
+/* Anchor tag for full clickable project area */
+#projects .project-link {
+    display: block; /* Ensures the anchor tag covers the whole project area */
+    color: inherit; /* Makes sure the text color is inherited from the parent */
+    text-decoration: none; /* Removes the default underline from links */
+}
+
+/* Hover effect */
+#projects .project:hover {
+    transform: scale(1.03);
+    border-color: #F78C8C;
+    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+/* Project Image */
+#projects .project img {
+    width: 100%; /* Makes the image scale to the full width of its container */
+    height: auto; /* Maintains aspect ratio */
+    max-width: 600px;
+    border: 0.1rem solid #ADD8E6;
+}
+
+/* Project Title */
+#projects .project h3 {
+    font-size: 1.5rem;
+    color: #F78C8C; /* Pastel Yellow */
+    margin-bottom: 0.5rem; /* Adds space below the title */
+}
+
+/* Project Description */
+#projects .project .project-description {
+    font-size: 1.2rem;
+    color: #ADD8E6; /* Pastel Blue */
+    margin-bottom: 0rem; /* Adds space below the description */
+}
+
+/* Tech Experience Section */
+#tech-exp h2 {
+    color: #5F9DE7; /* Complementary blue */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.tech-tag {
+    background-color: #2f2f2f;
+    border: 2px solid #F78C8C; /* Pastel Pink */
+    border-radius: 5px;
+    padding: 10px 15px;
+    color: #F78C8C; /* Pastel Pink */
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tech-tag:hover {
+    background-color: #F78C8C;
+    color: #2f2f2f; /* Dark background color for hover effect */
+}
+
+/* Contact Section */
+#contact h2 {
+    color: #5F9DE7; /* Complementary blue */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#contact strong {
+    color: #F78C8C;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background: #080808;
+    color: #F2D5EF;
+    font-size: 1rem;
+}
+
+footer p {
+    font-size: 1rem;
+    color: #F78C8C; /* Pastel red for emphasis */
+    font-weight: bold;
+}
