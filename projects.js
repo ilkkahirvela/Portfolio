@@ -12,7 +12,7 @@ const PROJECTS = [
   {
     title: "Placeholder Project",
     year: 1234,
-    image: "",
+    image: "Photos/Viridianland2.png",
     description:
       "Placeholder description for a future project.",
     tags: ["JavaScript", "HTML", "CSS"],
@@ -21,7 +21,7 @@ const PROJECTS = [
     {
     title: "Placeholder Project",
     year: 1234,
-    image: "",
+    image: "Photos/Viridianland3.png",
     description:
       "Placeholder description for a future project.",
     tags: ["JavaScript", "HTML", "CSS"],
