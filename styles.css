@@ -1,40 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
+:root{
+    --bg: #080808;
+    --panel: #141414;
+    --panel2: #1b1b1b;
+
+    --text: #cfe9f6;
+    --muted: rgba(207,233,246,0.7);
+
+    --accent: #F78C8C;
+    --accent2: #5F9DE7;
+
+    --border: rgba(173,216,230,0.25);
+}
+
+* { box-sizing: border-box; }
+
 body {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1rem;             /* was 1.4rem */
     margin: 0;
     padding: 0;
     padding-top: 80px;
     line-height: 1.6;
-    background-color: #080808;
-    color: #ADD8E6; /* Nice blue */
+    background-color: var(--bg);
+    color: var(--text);
     max-width: 100%;
-    overflow-x: hidden; /* Prevents horizontal overflow */
+    overflow-x: hidden;
 }
 
-#about h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #5F9DE7; /* Complementary blue */
-}
+a { color: inherit; }
 
-/* Global Styles for Header */
+/* ----------------------------
+   Header
+---------------------------- */
 header {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%; /* Ensure it covers the entire width */
-    background: #080808;
-    color: #ADD8E6; /* Pastel Blue */
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
     padding: 1rem 0;
-    box-sizing: border-box;
-    z-index: 1000; /* Ensure it stays on top of other elements */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Adds shadow for visibility */
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 
 .header-container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -42,24 +56,20 @@ header {
     padding: 0 20px;
 }
 
-.name-container {
-    text-align: left;
-}
+.name-container { text-align: left; }
 
 .name {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #F78C8C; /* Pastel red */
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
 }
 
 .sub-text {
-    font-size: 1.1rem;
-    color: #ADD8E6; /* Pastel Blue */
-    font-weight: normal;
-}
-
-header nav {
-    text-align: right;
+    font-size: 0.95rem;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 2px;
 }
 
 header nav ul {
@@ -70,100 +80,169 @@ header nav ul {
 
 header nav ul li {
     display: inline;
-    margin: 0 15px;
+    margin: 0 12px;
 }
 
 header nav ul li a {
-    color: #F78C8C; /* Pastel Yellow */
+    color: var(--accent);
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 header nav ul li a:hover {
-    color: #5F9DE7; /* Nice blue */
+    color: var(--accent2);
 }
 
-/* Main Section Styling */
+/* ----------------------------
+   Sections / Layout
+---------------------------- */
 section {
-    padding: 1rem 0;
-    margin: 1rem auto;
-    max-width: 1200px;
-    padding-top: 5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3.5rem 20px;
 }
 
-/* Projects Section */
+.section-head {
+    margin-bottom: 1.25rem;
+}
+
+.muted {
+    color: var(--muted);
+    margin: 0.25rem 0 0 0;
+}
+
+/* ----------------------------
+   About
+---------------------------- */
+#about h1 {
+    font-size: clamp(2rem, 3.2vw, 3rem);
+    font-weight: 700;
+    color: var(--accent2);
+    line-height: 1.1;
+    margin: 0 0 1rem 0;
+}
+
+#about p {
+    max-width: 70ch;
+    margin: 0 0 0.75rem 0;
+    color: var(--text);
+    opacity: 0.95;
+}
+
+/* ----------------------------
+   Projects (Grid Cards)
+---------------------------- */
 #projects h2 {
-    color: #5F9DE7; /* Nice blue */
+    color: var(--accent2);
     font-size: 2rem;
-    font-weight: bold;
+    font-weight: 700;
+    margin: 0;
 }
 
-#projects .project {
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    margin-top: 1.25rem;
+}
+
+.project-card {
+    grid-column: span 6; /* 2 columns on desktop */
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--panel), var(--panel2));
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    min-height: 340px;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(247, 140, 140, 0.6);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.project-card .thumb {
+    height: 190px;
+    background-size: cover;
+    background-position: center;
     position: relative;
-    border: 1px solid #ADD8E6;
-    border-radius: 5px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    background: #262626;
-    color: #fff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: left; /* Aligns text to the left */
 }
 
-/* Anchor tag for full clickable project area */
-#projects .project-link {
-    display: block; /* Ensures the anchor tag covers the whole project area */
-    color: inherit; /* Makes sure the text color is inherited from the parent */
-    text-decoration: none; /* Removes the default underline from links */
+.project-card .thumb::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.0), rgba(0,0,0,0.55));
 }
 
-/* Hover effect (already added, just refining) */
-#projects .project:hover {
-    transform: scale(1.03);
-    border-color: #F78C8C;
-    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2); /* Adds a subtle shadow to indicate interactivity */
-    transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+.card-body {
+    padding: 14px 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-/* Project Background Image */
-#projects .project {
-    background: url('Photos/Viridianland1.png') no-repeat center center/cover;
-    background-size: cover; /* Ensures the image covers the container */
-    height: 400px; /* Adjust height as needed */
+.title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-/* Overlay for text at the bottom */
-#projects .project .project-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%; /* Ensure it spans the full width of the parent */
-    background: rgba(0, 0, 0, 0.6); /* Dark grayish background with opacity */
-    color: #fff;
-    padding: 10px 20px; /* Adjust padding for better fit */
-    box-sizing: border-box; /* Ensures padding does not cause overflow */
-    height: auto; /* Make the height auto to fit the text */
-}
-
-/* Project Title */
-#projects .project .project-content h3 {
-    font-size: 1.5rem;
-    color: #F78C8C; /* Pastel Yellow */
-    margin-bottom: 0.5rem; /* Adds space below the title */
-}
-
-/* Project Description */
-#projects .project .project-content .project-description {
+.title-row h3 {
+    margin: 0;
     font-size: 1.2rem;
-    color: #ADD8E6; /* Pastel Blue */
-    margin-bottom: 0;
+    color: var(--accent);
+    font-weight: 700;
 }
 
-/* Tech Experience Section */
+.year {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.desc {
+    margin: 0;
+    color: var(--text);
+    opacity: 0.95;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    max-width: 75ch;
+}
+
+.tags {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(247, 140, 140, 0.5);
+    color: var(--accent);
+    background: rgba(247, 140, 140, 0.08);
+}
+
+/* Featured Project */
+.project-card.featured { grid-column: span 12; }
+.project-card.featured .thumb { height: 260px; }
+
+/* ----------------------------
+   Technical Experience
+---------------------------- */
 #tech-exp h2 {
-    color: #5F9DE7; /* Complementary blue */
+    color: var(--accent2);
     font-size: 2rem;
-    font-weight: bold;
+    font-weight: 700;
+    margin: 0;
 }
 
 .tech-tags {
@@ -174,43 +253,59 @@ section {
 }
 
 .tech-tag {
-    background-color: #2f2f2f;
-    border: 2px solid #F78C8C; /* Pastel Pink */
-    border-radius: 5px;
-    padding: 10px 15px;
-    color: #F78C8C; /* Pastel Pink */
-    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(247, 140, 140, 0.55);
+    border-radius: 999px;
+    padding: 8px 12px;
+    color: var(--accent);
+    font-size: 0.95rem;
     font-weight: 500;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease;
 }
 
 .tech-tag:hover {
-    background-color: #F78C8C;
-    color: #2f2f2f; /* Dark background color for hover effect */
+    transform: translateY(-2px);
+    background-color: rgba(247, 140, 140, 0.14);
+    color: var(--accent);
 }
 
-/* Contact Section */
+/* ----------------------------
+   Contact
+---------------------------- */
 #contact h2 {
-    color: #5F9DE7; /* Complementary blue */
+    color: var(--accent2);
     font-size: 2rem;
-    font-weight: bold;
+    font-weight: 700;
+    margin: 0;
+}
+
+#contact p {
+    max-width: 70ch;
+    color: var(--text);
+    opacity: 0.95;
 }
 
 #contact strong {
-    color: #F78C8C;
+    color: var(--accent);
 }
 
-/* Footer */
+/* ----------------------------
+   Footer
+---------------------------- */
 footer {
     text-align: center;
-    padding: 1rem 0;
-    background: #080808;
-    color: #F2D5EF;
-    font-size: 1rem;
+    padding: 1.5rem 0;
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
 }
 
-footer p {
-    font-size: 1rem;
-    color: #F78C8C; /* Pastel red for emphasis */
-    font-weight: bold;
+/* ----------------------------
+   Responsive
+---------------------------- */
+@media (max-width: 900px) {
+    body { padding-top: 76px; }
+    .project-card { grid-column: span 12; } /* single column on mobile */
+    #projects h2, #tech-exp h2, #contact h2 { font-size: 1.7rem; }
 }
