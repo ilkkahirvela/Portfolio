@@ -130,6 +130,70 @@ section {
 }
 
 /* ----------------------------
+   Projects (Toolbar)
+---------------------------- */
+
+.projects-toolbar{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-search{
+  flex: 1 1 240px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.project-search:focus{
+  border-color: rgba(95,157,231,0.65);
+  box-shadow: 0 0 0 3px rgba(95,157,231,0.15);
+}
+
+.tag-filters{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-chip{
+  cursor:pointer;
+  user-select:none;
+  font-size: 0.9rem;
+  padding: 7px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(173,216,230,0.25);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  transition: transform 0.12s ease, border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+}
+
+.filter-chip:hover{
+  transform: translateY(-1px);
+  border-color: rgba(247,140,140,0.55);
+  color: var(--text);
+}
+
+.filter-chip.active{
+  border-color: rgba(247,140,140,0.65);
+  background: rgba(247,140,140,0.12);
+  color: var(--accent);
+}
+
+.results{
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ----------------------------
    Projects (Grid Cards)
 ---------------------------- */
 #projects h2 {
