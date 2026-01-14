@@ -1,5 +1,7 @@
-// scripts.js
-(function () {
+// ============================
+// Projects grid
+// ============================
+(() => {
   const grid = document.getElementById("projectsGrid");
   if (!grid) return;
 
@@ -12,7 +14,7 @@
   const tagFiltersEl = document.getElementById("tagFilters");
   const resultsCountEl = document.getElementById("resultsCount");
 
-  // Sort: featured first, then newest
+  // featured first, then newest
   const allProjects = [...PROJECTS].sort((a, b) => {
     const af = a.featured ? 1 : 0;
     const bf = b.featured ? 1 : 0;
@@ -20,7 +22,7 @@
     return (Number(b.year) || 0) - (Number(a.year) || 0);
   });
 
-  // Build filter tags from data
+  // tags from data
   const tagSet = new Set();
   allProjects.forEach(p => (p.tags || []).forEach(t => tagSet.add(String(t))));
   const tags = ["All", ...Array.from(tagSet).sort((a, b) => a.localeCompare(b))];
@@ -64,9 +66,10 @@
         activeTag === "All" ||
         (Array.isArray(p.tags) && p.tags.map(String).includes(activeTag));
 
-      const haystack = `${p.title ?? ""} ${p.description ?? ""} ${(p.tags || []).join(" ")}`.toLowerCase();
-      const matchesSearch = !searchTerm || haystack.includes(searchTerm);
+      const haystack =
+        `${p.title ?? ""} ${p.description ?? ""} ${(p.tags || []).join(" ")}`.toLowerCase();
 
+      const matchesSearch = !searchTerm || haystack.includes(searchTerm);
       return matchesTag && matchesSearch;
     });
 
@@ -112,4 +115,88 @@
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
   }
+})();
+
+// Lightbox
+(() => {
+  const lightbox = document.getElementById("lightbox");
+  const imgEl = document.getElementById("lightboxImg");
+  const btnClose = lightbox?.querySelector(".lightbox__close");
+  const btnPrev = lightbox?.querySelector(".lightbox__nav--prev");
+  const btnNext = lightbox?.querySelector(".lightbox__nav--next");
+
+  if (!lightbox || !imgEl || !btnClose || !btnPrev || !btnNext) return;
+
+  const galleryLinks = Array.from(document.querySelectorAll("#project-details .gallery-item"))
+    .filter(a => a.getAttribute("href") && /\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i.test(a.getAttribute("href")));
+
+  const sources = galleryLinks.map(a => a.getAttribute("href"));
+  let index = -1;
+
+  function setNavVisibility() {
+    const hasMany = sources.length > 1;
+    btnPrev.classList.toggle("is-hidden", !hasMany);
+    btnNext.classList.toggle("is-hidden", !hasMany);
+  }
+
+  function openAt(i) {
+    if (!sources.length) return;
+    index = (i + sources.length) % sources.length;
+
+    imgEl.src = sources[index];
+    imgEl.alt = galleryLinks[index]?.querySelector("img")?.alt || "Gallery image";
+
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("lb-lock");
+
+    setNavVisibility();
+  }
+
+  function close() {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("lb-lock");
+
+    imgEl.src = "";
+    imgEl.alt = "";
+    index = -1;
+  }
+
+  function next() {
+    if (index === -1) return;
+    openAt(index + 1);
+  }
+
+  function prev() {
+    if (index === -1) return;
+    openAt(index - 1);
+  }
+
+  // open gallery
+  galleryLinks.forEach((a, i) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      openAt(i);
+    });
+  });
+
+  // backdrop close
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  // buttons
+  btnClose.addEventListener("click", (e) => { e.stopPropagation(); close(); });
+  btnNext.addEventListener("click", (e) => { e.stopPropagation(); next(); });
+  btnPrev.addEventListener("click", (e) => { e.stopPropagation(); prev(); });
+
+  // keyboard
+  document.addEventListener("keydown", (e) => {
+    if (!lightbox.classList.contains("is-open")) return;
+
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowRight") next();
+    if (e.key === "ArrowLeft") prev();
+  });
 })();
