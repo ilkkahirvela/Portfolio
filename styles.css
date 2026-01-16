@@ -601,6 +601,12 @@ footer{
   background: rgba(247,140,140,0.12);
 }
 
+#project-details .btn:not(.btn-primary){
+  color: var(--accent2);
+  border-color: rgba(95,157,231,0.45);
+  background: rgba(95,157,231,0.08);
+}
+
 /* Right rail */
 #project-details .project-rail{
   position: sticky;
@@ -833,4 +839,23 @@ body.lb-lock{
     width: 40px;
     height: 56px;
   }
+}
+
+/* ============================
+   Dynamic project page helpers
+============================ */
+
+/* When rail is hidden, remove it from layout */
+#project-details .project-rail[style*="display: none"]{
+  display: none !important;
+}
+
+/* When lead paragraph is empty/hidden, remove extra spacing */
+#project-details .project-lead:empty{
+  display: none;
+}
+
+/* When no links are present, hide the links container */
+#project-details .project-links:empty{
+  display: none;
 }

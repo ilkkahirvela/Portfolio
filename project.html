@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ilkka Hirvelä | Project</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header>
+    <div class="header-container">
+      <div class="name-container">
+        <div class="name">Ilkka Hirvelä</div>
+        <div class="sub-text">Game Development Student</div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="project-details">
+    <a class="back-link" href="index.html#projects">← Back to Projects</a>
+
+    <div class="project-layout">
+      <div class="project-main">
+        <div class="project-header">
+          <div class="title-row">
+            <h1 class="project-title" id="pTitle">Project</h1>
+            <span class="year" id="pYear"></span>
+          </div>
+
+          <p class="project-lead" id="pLead"></p>
+          <div class="detail-tags" id="pTags"></div>
+          <div class="project-links" id="pLinks"></div>
+        </div>
+
+        <div id="pBody"></div>
+      </div>
+
+      <aside class="project-rail" id="pRail">
+        <div class="rail-section">
+          <div class="gallery-grid" id="pGallery"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox__close" type="button" aria-label="Close (Esc)">×</button>
+    <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous image"></button>
+
+    <figure class="lightbox__frame" role="dialog" aria-modal="true" aria-label="Image preview">
+      <img class="lightbox__img" id="lightboxImg" alt="" />
+    </figure>
+
+    <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next image"></button>
+  </div>
+
+  <footer></footer>
+
+  <script src="projects.js" defer></script>
+  <script src="projectPage.js" defer></script>
+  <script src="scripts.js" defer></script>
+</body>
+
+</html>

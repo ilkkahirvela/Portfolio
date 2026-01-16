@@ -81,11 +81,23 @@
     }
   }
 
+  function getProjectHref(p) {
+    const href = (p.detailsUrl || p.link || "").trim();
+    return href || "#";
+  }
+
   function makeCard(p) {
     const card = document.createElement("a");
     card.className = "project-card";
     if (p.featured) card.classList.add("featured");
-    card.href = p.link || "#";
+
+    const href = getProjectHref(p);
+    card.href = href;
+
+    if (href === "#") {
+      card.addEventListener("click", (e) => e.preventDefault());
+      card.setAttribute("aria-disabled", "true");
+    }
 
     const img = p.image ? `background-image:url('${p.image}')` : "";
     const tagsHtml = Array.isArray(p.tags)
