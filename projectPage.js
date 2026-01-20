@@ -77,21 +77,28 @@
   }
 
   // Links
-  if (elLinks) {
-    const linksObj = project.content?.links || project.links || {};
-    const linksHtml = [];
+if (elLinks) {
+  const linksObj = project.content?.links || project.links || {};
+  const linksHtml = [];
 
-    // Primary: itch, demo
-    if (linksObj.itch) linksHtml.push(btnHtml(linksObj.itch, "Play on Itch.io →", "primary", true));
-    if (linksObj.demo) linksHtml.push(btnHtml(linksObj.demo, "Live Demo →", "primary", true));
+  // Primary: itch, demo, trailer
+  if (linksObj.itch)
+    linksHtml.push(btnHtml(linksObj.itch, "Play on Itch.io →", "primary", true));
 
-    // Secondary: github
-    if (linksObj.github) linksHtml.push(btnHtml(linksObj.github, "View on GitHub →", "secondary", true));
+  if (linksObj.demo)
+    linksHtml.push(btnHtml(linksObj.demo, "Live Demo →", "primary", true));
 
-    elLinks.innerHTML = linksHtml.join(" ");
-    if (!linksHtml.length) elLinks.style.display = "none";
-    else elLinks.style.display = "";
-  }
+  if (linksObj.trailer)
+    linksHtml.push(btnHtml(linksObj.trailer, "Watch Trailer →", "primary", true));
+
+  // Secondary: github
+  if (linksObj.github)
+    linksHtml.push(btnHtml(linksObj.github, "View on GitHub →", "secondary", true));
+
+  elLinks.innerHTML = linksHtml.join(" ");
+  elLinks.style.display = linksHtml.length ? "" : "none";
+}
+
 
   // Body sections (skip empty/TODO)
   if (elBody) {

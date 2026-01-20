@@ -1,13 +1,81 @@
 const PROJECTS = [
   {
+    id: "kindling",
+    title: "Kindling",
+    year: 2026,
+    image: "images/kindling/.png",
+    description:
+      "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
+    tags: ["Unity", "C#", "2D", "Pixel Art"],
+    featured: true,
+
+    detailsUrl: "project.html?id=kindling",
+
+    content: {
+      summary:
+        "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
+      sections: [
+        {
+          h2: "Overview",
+          p:
+            "Kindling is a top-down adventure game built around a multi-mode lantern mechanic that interacts with enemies, the environment, and the player. The lantern enables exploration, combat, and puzzle-solving through consistent light-based interactions."
+        },
+        {
+          h2: "Team",
+          p: [
+            "Team size: 6",
+            "Programmers: 4",
+            "2D Artist: 1",
+            "Audio / Music: 1"
+          ]
+        },
+        {
+          h2: "My Role & Contributions",
+          p: [
+            "Implementation of key gameplay systems.",
+            "Built the lantern system with multiple light modes and behaviors.",
+            "Implemented light-driven interactions affecting enemies, the environment, and the player.",
+            "Created a data-driven setup using ScriptableObjects to make balancing and content changes fast.",
+            "Developed camera and cutscene systems to support gameplay states and transitions.",
+            "Added gameplay tooling and debugging helpers to improve testing and iteration speed."
+          ]
+        },
+        {
+          h2: "Technical Focus",
+          p: [
+            "Modular and maintainable code structure.",
+            "Scalable system design suitable for long-term development.",
+            "Clear separation of data and logic for rapid tuning and content iteration."
+          ]
+        },
+        {
+          h2: "Closing",
+          p:
+            "Kindling showcases my approach to building reusable gameplay systems in Unity and collaborating within a multi-disciplinary team. It reflects my focus on technical problem-solving, maintainable architecture, and delivering features that support long-term development."
+        }
+      ]
+      ,
+      gallery: [
+        "images/kindling/.png",
+        "images/kindling/.png",
+        "images/kindling/.png"
+      ],
+      links: {
+        itch: "https://ilkkahi.itch.io/kindling",
+        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      }
+    }
+  },
+
+  {
     id: "viridianland",
     title: "Viridianland",
     year: 2024,
-    image: "Photos/Viridianland1.png",
+    image: "images/viridianland/viridianland1.png",
     description:
       "Fast-paced top-down shooter built as a school project. Designed and implemented gameplay + visuals (sound externally sourced).",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
-    featured: true,
+    featured: false,
 
     detailsUrl: "project.html?id=viridianland",
 
@@ -25,9 +93,9 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        "Photos/Viridianland2.png",
-        "Photos/Viridianland3.png",
-        "Photos/Viridianland4.png"
+        "images/viridianland/viridianland2.png",
+        "images/viridianland/viridianland3.png",
+        "images/viridianland/viridianland4.png"
       ],
       links: {
         itch: "https://ilkkahi.itch.io/viridianland"
@@ -41,7 +109,7 @@ const PROJECTS = [
     id: "placeholder-1",
     title: "Placeholder Project",
     year: 1234,
-    image: "Photos/Viridianland2.png",
+    image: "images/viridianland/viridianland2.png",
     description: "Placeholder description for a future project.",
     tags: ["JavaScript", "HTML", "CSS"],
 
@@ -60,7 +128,7 @@ const PROJECTS = [
     id: "placeholder-2",
     title: "Placeholder Project",
     year: 1234,
-    image: "Photos/Viridianland3.png",
+    image: "images/viridianland/viridianland3.png",
     description: "Placeholder description for a future project.",
     tags: ["JavaScript", "HTML", "CSS"],
 
