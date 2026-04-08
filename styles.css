@@ -24,6 +24,10 @@
 /* ============================
    Base
 ============================ */
+html{
+  scroll-padding-top: 80px;
+}
+
 * { box-sizing: border-box; }
 
 body{
@@ -36,7 +40,38 @@ body{
   color: var(--text);
   max-width: 100%;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  transition: opacity 0.12s ease;
 }
+
+body.page-exit{
+  opacity: 0;
+}
+
+::selection{
+  background: rgba(95,157,231,0.30);
+  color: var(--text);
+}
+
+::-webkit-scrollbar{
+  width: 5px;
+}
+
+::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+  background: rgba(207,233,246,0.18);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background: rgba(207,233,246,0.32);
+}
+
 
 a{ color: inherit; }
 
@@ -142,7 +177,6 @@ section{
   max-width: 1100px;
   margin: 0 auto;
   padding: 3.5rem 20px;
-  scroll-margin-top: 96px;
 }
 
 .section-head{ margin-bottom: 1.25rem; }
@@ -168,6 +202,30 @@ section{
 /* ============================
    About
 ============================ */
+@keyframes aboutGlow{
+  to{ opacity: 0.45; }
+}
+
+#about{
+  position: relative;
+}
+
+#about::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 80% at 0% 50%, rgba(95,157,231,0.09) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 100% 30%, rgba(247,140,140,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  animation: aboutGlow 6s ease-in-out infinite alternate;
+}
+
+#about h1,
+#about p{
+  position: relative;
+}
+
 #about h1{
   font-size: clamp(2rem, 3.2vw, 3rem);
   font-weight: 700;
@@ -239,6 +297,13 @@ section{
 /* ============================
    Projects (Toolbar)
 ============================ */
+#projects h2,
+#tech-exp h2,
+#contact h2{
+  border-left: 3px solid var(--accent2);
+  padding-left: 12px;
+}
+
 #projects h2{
   color: var(--accent2);
   font-size: 2rem;
@@ -365,6 +430,48 @@ section{
 
 .project-card:hover .thumb{
   transform: scale(1.04);
+}
+
+/* No-image animated gradient */
+@keyframes gradientDrift{
+  0%  { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100%{ background-position: 0% 50%; }
+}
+
+.project-card.no-image .thumb{
+  background-image: linear-gradient(
+    135deg,
+    #0d1524 0%,
+    #111d2e 25%,
+    #162538 50%,
+    #0a1628 75%,
+    #0d1524 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientDrift 10s ease infinite;
+}
+
+/* Featured badge */
+.card-badge{
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: var(--accent);
+  background: rgba(247,140,140,0.12);
+  border: 1px solid rgba(247,140,140,0.35);
+  padding: 4px 10px;
+  border-radius: 999px;
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .project-card .thumb::after{
@@ -591,6 +698,17 @@ section{
 .contact-btn--secondary:hover{
   border-color: rgba(95,157,231,0.8);
   background: rgba(95,157,231,0.14);
+}
+
+.contact-btn--itch{
+  border-color: rgba(250,92,92,0.50);
+  background: rgba(250,92,92,0.08);
+  color: #fa7070;
+}
+
+.contact-btn--itch:hover{
+  border-color: rgba(250,92,92,0.8);
+  background: rgba(250,92,92,0.14);
 }
 
 /* ============================

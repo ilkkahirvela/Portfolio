@@ -111,6 +111,7 @@
     card.classList.add("card-animate");
     card.style.setProperty("--card-index", index);
     if (p.featured) card.classList.add("featured");
+    if (!p.image) card.classList.add("no-image");
 
     const href = getProjectHref(p);
     card.href = href;
@@ -129,6 +130,7 @@
 
     card.innerHTML = `
       <div class="thumb" style="${img}"></div>
+      ${p.featured ? `<span class="card-badge">Featured</span>` : ""}
       <div class="card-body">
         <div class="title-row">
           <h3>${escapeHtml(p.title ?? "Untitled")}</h3>
@@ -156,7 +158,7 @@
 })();
 
 // Shared scroll animation
-function animateScrollTo(targetY, duration = 750) {
+function animateScrollTo(targetY, duration = 480) {
   const start = window.scrollY;
   const distance = targetY - start;
   const startTime = performance.now();
@@ -175,9 +177,8 @@ function animateScrollTo(targetY, duration = 750) {
   requestAnimationFrame(step);
 }
 
-function smoothScrollTo(target, duration = 750) {
-  const headerHeight = document.querySelector("header")?.offsetHeight ?? 80;
-  const targetY = target.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+function smoothScrollTo(target, duration = 480) {
+  const targetY = target.getBoundingClientRect().top + window.scrollY - 80;
   animateScrollTo(targetY, duration);
 }
 
@@ -189,6 +190,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       smoothScrollTo(target);
     }
   });
+});
+
+// Page exit transition for internal navigation
+document.addEventListener("click", e => {
+  const link = e.target.closest("a[href]");
+  if (!link) return;
+  const href = link.getAttribute("href");
+  if (
+    !href ||
+    href.startsWith("#") ||
+    href.startsWith("http") ||
+    href.startsWith("mailto") ||
+    link.getAttribute("target") === "_blank" ||
+    link.getAttribute("aria-disabled") === "true"
+  ) return;
+  e.preventDefault();
+  document.body.classList.add("page-exit");
+  setTimeout(() => { window.location.href = href; }, 130);
 });
 
 // Active nav section highlighting

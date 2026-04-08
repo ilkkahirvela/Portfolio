@@ -120,7 +120,7 @@ if (elLinks) {
         const alt = `${project.title || "Project"} Screenshot ${i + 1}`;
         return `
           <a class="gallery-item" href="${escapeAttr(src)}" target="_blank" rel="noopener">
-            <img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}" />
+            <img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}" loading="lazy" />
           </a>
         `;
       }).join("");
