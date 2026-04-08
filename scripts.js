@@ -74,11 +74,30 @@
     });
 
     grid.innerHTML = "";
-    filtered.forEach(p => grid.appendChild(makeCard(p)));
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="empty-state">No projects match your search.</div>`;
+    } else {
+      filtered.forEach((p, i) => grid.appendChild(makeCard(p, i)));
+      observeCards();
+    }
 
     if (resultsCountEl) {
       resultsCountEl.textContent = `${filtered.length} project${filtered.length === 1 ? "" : "s"}`;
     }
+  }
+
+  function observeCards() {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    grid.querySelectorAll(".card-animate").forEach(card => obs.observe(card));
   }
 
   function getProjectHref(p) {
@@ -86,9 +105,11 @@
     return href || "#";
   }
 
-  function makeCard(p) {
+  function makeCard(p, index = 0) {
     const card = document.createElement("a");
     card.className = "project-card";
+    card.classList.add("card-animate");
+    card.style.setProperty("--card-index", index);
     if (p.featured) card.classList.add("featured");
 
     const href = getProjectHref(p);
@@ -104,6 +125,8 @@
       ? p.tags.map(t => `<span class="tag">${escapeHtml(String(t))}</span>`).join("")
       : "";
 
+    const showCta = href !== "#";
+
     card.innerHTML = `
       <div class="thumb" style="${img}"></div>
       <div class="card-body">
@@ -112,7 +135,10 @@
           <span class="year">${escapeHtml(String(p.year ?? ""))}</span>
         </div>
         <p class="desc">${escapeHtml(p.description ?? "")}</p>
-        <div class="tags">${tagsHtml}</div>
+        <div class="card-footer">
+          <div class="tags">${tagsHtml}</div>
+          ${showCta ? `<span class="card-cta">View Details →</span>` : ""}
+        </div>
       </div>
     `;
 
@@ -129,21 +155,120 @@
   }
 })();
 
+// Shared scroll animation
+function animateScrollTo(targetY, duration = 750) {
+  const start = window.scrollY;
+  const distance = targetY - start;
+  const startTime = performance.now();
+
+  function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  }
+
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    window.scrollTo(0, start + distance * easeInOutCubic(progress));
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
+
+function smoothScrollTo(target, duration = 750) {
+  const headerHeight = document.querySelector("header")?.offsetHeight ?? 80;
+  const targetY = target.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+  animateScrollTo(targetY, duration);
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function(e) {
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      e.preventDefault();
+      smoothScrollTo(target);
+    }
+  });
+});
+
+// Active nav section highlighting
+(() => {
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll("header nav a");
+  if (!sections.length || !navLinks.length) return;
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const link = document.querySelector(`header nav a[href="#${entry.target.id}"]`);
+      if (!link) return;
+      link.classList.toggle("active", entry.isIntersecting);
+    });
+  }, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
+
+  sections.forEach(s => obs.observe(s));
+})();
+
+// Header scroll effect
+(() => {
+  const header = document.querySelector("header");
+  if (!header) return;
+  window.addEventListener("scroll", () => {
+    header.classList.toggle("scrolled", window.scrollY > 10);
+  }, { passive: true });
+})();
+
+// Back to top
+(() => {
+  const btn = document.getElementById("backToTop");
+  if (!btn) return;
+
+  const footer = document.querySelector("footer");
+
+  function updateBtn() {
+    btn.classList.toggle("is-visible", window.scrollY > 400);
+
+    if (footer) {
+      const footerVisible = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top);
+      btn.style.bottom = footerVisible > 0 ? `${footerVisible + 16}px` : "";
+    }
+  }
+
+  window.addEventListener("scroll", updateBtn, { passive: true });
+
+  btn.addEventListener("click", () => {
+    animateScrollTo(0);
+  });
+})();
+
 // Lightbox
 (() => {
   const lightbox = document.getElementById("lightbox");
   const imgEl = document.getElementById("lightboxImg");
+  const counterEl = document.getElementById("lightboxCounter");
   const btnClose = lightbox?.querySelector(".lightbox__close");
   const btnPrev = lightbox?.querySelector(".lightbox__nav--prev");
   const btnNext = lightbox?.querySelector(".lightbox__nav--next");
 
   if (!lightbox || !imgEl || !btnClose || !btnPrev || !btnNext) return;
 
+  const frame = lightbox.querySelector(".lightbox__frame");
   const galleryLinks = Array.from(document.querySelectorAll("#project-details .gallery-item"))
     .filter(a => a.getAttribute("href") && /\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i.test(a.getAttribute("href")));
 
   const sources = galleryLinks.map(a => a.getAttribute("href"));
   let index = -1;
+  let hideTimer;
+
+  function showControls() {
+    frame.classList.add("controls-visible");
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => frame.classList.remove("controls-visible"), 2000);
+  }
+
+  function updateCounter() {
+    if (!counterEl) return;
+    counterEl.textContent = sources.length > 1 ? `${index + 1} / ${sources.length}` : "";
+  }
 
   function setNavVisibility() {
     const hasMany = sources.length > 1;
@@ -151,64 +276,92 @@
     btnNext.classList.toggle("is-hidden", !hasMany);
   }
 
+  function setImage(i) {
+    imgEl.src = sources[i];
+    imgEl.alt = galleryLinks[i]?.querySelector("img")?.alt || "Gallery image";
+  }
+
   function openAt(i) {
     if (!sources.length) return;
-    index = (i + sources.length) % sources.length;
+    const newIndex = (i + sources.length) % sources.length;
 
-    imgEl.src = sources[index];
-    imgEl.alt = galleryLinks[index]?.querySelector("img")?.alt || "Gallery image";
-
-    lightbox.classList.add("is-open");
-    lightbox.setAttribute("aria-hidden", "false");
-    document.body.classList.add("lb-lock");
-
-    setNavVisibility();
+    if (lightbox.classList.contains("is-open") && newIndex !== index) {
+      // Instant swap, fade new image in
+      index = newIndex;
+      imgEl.style.transition = "none";
+      imgEl.style.opacity = "0";
+      setImage(index);
+      imgEl.offsetHeight; // force reflow to restart transition
+      imgEl.style.transition = "";
+      imgEl.style.opacity = "1";
+      updateCounter();
+      setNavVisibility();
+    } else {
+      index = newIndex;
+      setImage(index);
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+      document.body.classList.add("lb-lock");
+      updateCounter();
+      setNavVisibility();
+      showControls();
+    }
   }
 
   function close() {
     lightbox.classList.remove("is-open");
     lightbox.setAttribute("aria-hidden", "true");
     document.body.classList.remove("lb-lock");
-
-    imgEl.src = "";
-    imgEl.alt = "";
+    clearTimeout(hideTimer);
+    frame.classList.remove("controls-visible");
     index = -1;
+    // Clear src after fade-out completes
+    setTimeout(() => {
+      if (!lightbox.classList.contains("is-open")) {
+        imgEl.src = "";
+        imgEl.alt = "";
+      }
+    }, 250);
   }
 
-  function next() {
-    if (index === -1) return;
-    openAt(index + 1);
-  }
+  function next() { if (index !== -1) openAt(index + 1); }
+  function prev() { if (index !== -1) openAt(index - 1); }
 
-  function prev() {
-    if (index === -1) return;
-    openAt(index - 1);
-  }
-
-  // open gallery
+  // Open from gallery
   galleryLinks.forEach((a, i) => {
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      openAt(i);
-    });
+    a.addEventListener("click", e => { e.preventDefault(); openAt(i); });
   });
 
-  // backdrop close
-  lightbox.addEventListener("click", (e) => {
-    if (e.target === lightbox) close();
+  // Show controls on movement inside frame, hide instantly on leave
+  frame.addEventListener("mousemove", showControls, { passive: true });
+  frame.addEventListener("mouseleave", () => {
+    clearTimeout(hideTimer);
+    frame.classList.remove("controls-visible");
   });
 
-  // buttons
-  btnClose.addEventListener("click", (e) => { e.stopPropagation(); close(); });
-  btnNext.addEventListener("click", (e) => { e.stopPropagation(); next(); });
-  btnPrev.addEventListener("click", (e) => { e.stopPropagation(); prev(); });
+  // Backdrop close
+  lightbox.addEventListener("click", e => { if (e.target === lightbox) close(); });
 
-  // keyboard
-  document.addEventListener("keydown", (e) => {
+  // Buttons
+  btnClose.addEventListener("click", e => { e.stopPropagation(); close(); });
+  btnNext.addEventListener("click", e => { e.stopPropagation(); next(); });
+  btnPrev.addEventListener("click", e => { e.stopPropagation(); prev(); });
+
+  // Keyboard
+  document.addEventListener("keydown", e => {
     if (!lightbox.classList.contains("is-open")) return;
-
     if (e.key === "Escape") close();
     if (e.key === "ArrowRight") next();
     if (e.key === "ArrowLeft") prev();
   });
+
+  // Swipe support
+  let touchStartX = 0;
+  lightbox.addEventListener("touchstart", e => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  lightbox.addEventListener("touchend", e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
+  }, { passive: true });
 })();

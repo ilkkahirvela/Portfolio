@@ -3,7 +3,7 @@ const PROJECTS = [
     id: "kindling",
     title: "Kindling",
     year: 2026,
-    image: "images/kindling/.png",
+    image: "",
     description:
       "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
@@ -55,14 +55,10 @@ const PROJECTS = [
         }
       ]
       ,
-      gallery: [
-        "images/kindling/.png",
-        "images/kindling/.png",
-        "images/kindling/.png"
-      ],
+      gallery: [],
       links: {
         itch: "https://ilkkahi.itch.io/kindling",
-        trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        trailer: "https://www.youtube.com/watch?v=5APzuSg-J1g&t=1s"
       }
     }
   },
@@ -105,41 +101,4 @@ const PROJECTS = [
     }
   },
 
-  {
-    id: "placeholder-1",
-    title: "Placeholder Project",
-    year: 1234,
-    image: "images/viridianland/viridianland2.png",
-    description: "Placeholder description for a future project.",
-    tags: ["JavaScript", "HTML", "CSS"],
-
-    detailsUrl: "project.html?id=placeholder-1",
-    link: "",
-
-    content: {
-      summary: "TODO",
-      sections: [{ h2: "Overview", p: "TODO" }],
-      gallery: [],
-      links: {}
-    }
-  },
-
-  {
-    id: "placeholder-2",
-    title: "Placeholder Project",
-    year: 1234,
-    image: "images/viridianland/viridianland3.png",
-    description: "Placeholder description for a future project.",
-    tags: ["JavaScript", "HTML", "CSS"],
-
-    detailsUrl: "project.html?id=placeholder-2",
-    link: "",
-
-    content: {
-      summary: "TODO",
-      sections: [{ h2: "Overview", p: "TODO" }],
-      gallery: [],
-      links: {}
-    }
-  }
 ];

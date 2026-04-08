@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ilkka Hirvelä | Project</title>
+  <meta name="description" content="Project details — Ilkka Hirvelä's game development portfolio.">
+  <meta property="og:type" content="website">
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -54,17 +56,24 @@
   </section>
 
   <div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lightbox__close" type="button" aria-label="Close (Esc)">×</button>
-    <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous image"></button>
-
     <figure class="lightbox__frame" role="dialog" aria-modal="true" aria-label="Image preview">
       <img class="lightbox__img" id="lightboxImg" alt="" />
+      <button class="lightbox__close" type="button" aria-label="Close (Esc)">×</button>
+      <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous image"></button>
+      <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next image"></button>
+      <div class="lightbox__counter" id="lightboxCounter"></div>
     </figure>
-
-    <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next image"></button>
   </div>
 
-  <footer></footer>
+  <footer>
+    <div class="footer-inner">
+      <span>© 2026 Ilkka Hirvelä</span>
+      <div class="footer-links">
+        <a href="mailto:hirvela.ilkka@gmail.com">Email</a>
+        <a href="https://github.com/ilkkahirvela" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="projects.js" defer></script>
   <script src="projectPage.js" defer></script>
