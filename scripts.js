@@ -193,6 +193,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Page exit transition for internal navigation
+window.addEventListener("pageshow", e => {
+  if (e.persisted) document.body.classList.remove("page-exit");
+});
+
 document.addEventListener("click", e => {
   const link = e.target.closest("a[href]");
   if (!link) return;
