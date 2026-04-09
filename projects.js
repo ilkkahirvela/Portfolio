@@ -67,7 +67,7 @@ const PROJECTS = [
     id: "viridianland",
     title: "Viridianland",
     year: 2024,
-    image: "images/viridianland/viridianland1.png",
+    image: "images/viridianland/viridianland1.webp",
     description:
       "Fast-paced top-down shooter built as a school project. Designed and implemented gameplay + visuals (sound externally sourced).",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
@@ -89,9 +89,9 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        "images/viridianland/viridianland2.png",
-        "images/viridianland/viridianland3.png",
-        "images/viridianland/viridianland4.png"
+        "images/viridianland/viridianland2.webp",
+        "images/viridianland/viridianland3.webp",
+        "images/viridianland/viridianland4.webp"
       ],
       links: {
         itch: "https://ilkkahi.itch.io/viridianland"
