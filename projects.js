@@ -22,7 +22,7 @@ const PROJECTS = [
         },
         {
           h2: "Team",
-          p: [
+          ul: [
             "Team size: 6",
             "Programmers: 4",
             "2D Artist: 1",
@@ -31,7 +31,7 @@ const PROJECTS = [
         },
         {
           h2: "My Role & Contributions",
-          p: [
+          ul: [
             "Implementation of key gameplay systems.",
             "Built the lantern system with multiple light modes and behaviors.",
             "Implemented light-driven interactions affecting enemies, the environment, and the player.",
@@ -42,7 +42,7 @@ const PROJECTS = [
         },
         {
           h2: "Technical Focus",
-          p: [
+          ul: [
             "Modular and maintainable code structure.",
             "Scalable system design suitable for long-term development.",
             "Clear separation of data and logic for rapid tuning and content iteration."

@@ -1020,11 +1020,46 @@ footer{
   font-size: 1.25rem;
   letter-spacing: 0.2px;
   color: var(--accent2);
+  border-left: 3px solid var(--accent2);
+  padding-left: 12px;
 }
 
 #project-details p{
   margin: 0 0 12px 0;
   max-width: 75ch;
+}
+
+#project-details .project-section p:last-child{
+  margin-bottom: 0;
+}
+
+#project-details ul{
+  margin: 0 0 12px 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+#project-details ul:last-child{
+  margin-bottom: 0;
+}
+
+#project-details ul li{
+  position: relative;
+  padding-left: 1.1rem;
+  margin-bottom: 6px;
+  max-width: 75ch;
+}
+
+#project-details ul li:last-child{
+  margin-bottom: 0;
+}
+
+#project-details ul li::before{
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--accent2);
+  opacity: 0.7;
 }
 
 /* Tags */
