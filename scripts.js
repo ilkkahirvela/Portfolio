@@ -433,6 +433,17 @@ document.addEventListener("click", e => {
   sections.forEach(s => obs.observe(s));
 })();
 
+// Dot grid parallax
+(() => {
+  const SPEED = 0.05; // background moves at 5% of scroll speed
+  window.addEventListener('scroll', () => {
+    document.documentElement.style.setProperty(
+      '--parallax-y',
+      (window.scrollY * SPEED).toFixed(1) + 'px'
+    );
+  }, { passive: true });
+})();
+
 // Header scroll effect
 (() => {
   const header = document.querySelector("header");
