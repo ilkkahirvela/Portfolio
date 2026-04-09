@@ -165,13 +165,15 @@
   const ctx = canvas.getContext('2d');
   const section = document.getElementById('about');
 
-  const COLS = 26;
-  const ROWS = 13;
+  const isMobile = window.innerWidth < 640;
+  const COLS = isMobile ? 16 : 26;
+  const ROWS = isMobile ? 8 : 13;
   const AMP  = 28;  // wave height in px
   const COS  = Math.cos(Math.PI / 6);
   const SIN  = Math.sin(Math.PI / 6);
 
   let w, h, maxWy, xScale, t = 0;
+  let visible = true;
   let bumps = new Float32Array(COLS * ROWS);
   let mouse = { x: null, y: null };
 
@@ -263,7 +265,7 @@
     ctx.stroke();
 
     t += 0.009;
-    requestAnimationFrame(animate);
+    if (visible) requestAnimationFrame(animate);
   }
 
   section.addEventListener('mousemove', e => {
@@ -273,6 +275,12 @@
   });
   section.addEventListener('mouseleave', () => { mouse.x = mouse.y = null; });
   window.addEventListener('resize', () => { resize(); bumps.fill(0); });
+
+  new IntersectionObserver(entries => {
+    const wasVisible = visible;
+    visible = entries[0].isIntersecting;
+    if (visible && !wasVisible) animate();
+  }, { threshold: 0 }).observe(section);
 
   resize();
   animate();
@@ -310,6 +318,7 @@ scrambleText(document.querySelector('#pTitle'));
 
 // Card 3D tilt on hover
 (() => {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
   const grid = document.getElementById('projectsGrid');
   if (!grid) return;
 
