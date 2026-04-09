@@ -129,7 +129,7 @@
     const showCta = href !== "#";
 
     card.innerHTML = `
-      <div class="thumb" style="${img}"></div>
+      <div class="thumb-wrap"><div class="thumb" style="${img}"></div></div>
       ${p.featured ? `<span class="card-badge">Featured</span>` : ""}
       <div class="card-body">
         <div class="title-row">
@@ -157,15 +157,13 @@
   }
 })();
 
-// Text scramble on hero h1
-(() => {
-  const el = document.querySelector('#about h1');
-  if (!el) return;
-
+// Text scramble
+function scrambleText(el) {
+  if (!el || !el.textContent.trim()) return;
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!';
   const original = el.textContent;
   const duration = 900;
-  const frameMs = 33; // ~30fps
+  const frameMs = 33;
   const totalFrames = Math.round(duration / frameMs);
   let frame = 0;
 
@@ -184,6 +182,51 @@
       clearInterval(id);
     }
   }, frameMs);
+}
+
+scrambleText(document.querySelector('#about h1'));
+scrambleText(document.querySelector('#pTitle'));
+
+// Card 3D tilt on hover
+(() => {
+  const grid = document.getElementById('projectsGrid');
+  if (!grid) return;
+
+  const MAX_TILT = 1.5;
+  const PERSPECTIVE = 1000;
+
+  grid.addEventListener('mousemove', e => {
+    const card = e.target.closest('.project-card');
+    if (!card) return;
+
+    if (!card.dataset.tiltReady) {
+      card.style.opacity = '1';
+      card.style.animation = 'none';
+      card.dataset.tiltReady = '1';
+    }
+
+    const rect = card.getBoundingClientRect();
+    const dx = ((e.clientX - rect.left) / rect.width  - 0.5) * 2;
+    const dy = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+
+    card.style.transition = 'transform 0.08s ease';
+    card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${-dy * MAX_TILT}deg) rotateY(${dx * MAX_TILT}deg) translateY(-4px)`;
+    card.style.boxShadow = `${dx * 6}px ${dy * 6}px 18px rgba(247,140,140,0.12), 0 20px 48px rgba(0,0,0,0.5)`;
+  });
+
+  grid.addEventListener('mouseout', e => {
+    const card = e.target.closest('.project-card');
+    if (!card || card.contains(e.relatedTarget)) return;
+
+    card.style.transition = 'transform 0.45s ease, box-shadow 0.45s ease';
+    card.style.transform = '';
+    card.style.boxShadow = '';
+
+    card.addEventListener('transitionend', () => {
+      card.style.transition = '';
+      card.style.transform = '';
+    }, { once: true });
+  });
 })();
 
 // Shared scroll animation
