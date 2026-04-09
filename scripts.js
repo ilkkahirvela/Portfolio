@@ -157,6 +157,35 @@
   }
 })();
 
+// Text scramble on hero h1
+(() => {
+  const el = document.querySelector('#about h1');
+  if (!el) return;
+
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!';
+  const original = el.textContent;
+  const duration = 900;
+  const frameMs = 33; // ~30fps
+  const totalFrames = Math.round(duration / frameMs);
+  let frame = 0;
+
+  const id = setInterval(() => {
+    let out = '';
+    for (let i = 0; i < original.length; i++) {
+      if (original[i] === ' ') { out += ' '; continue; }
+      const lockAt = Math.floor((i / original.length) * totalFrames * 0.75);
+      out += frame >= lockAt
+        ? original[i]
+        : chars[Math.floor(Math.random() * chars.length)];
+    }
+    el.textContent = out;
+    if (++frame > totalFrames) {
+      el.textContent = original;
+      clearInterval(id);
+    }
+  }, frameMs);
+})();
+
 // Shared scroll animation
 function animateScrollTo(targetY, duration = 480) {
   const start = window.scrollY;
