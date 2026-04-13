@@ -131,6 +131,7 @@
     card.innerHTML = `
       <div class="thumb-wrap"><div class="thumb" style="${img}"></div></div>
       ${p.featured ? `<span class="card-badge">Featured</span>` : ""}
+      ${p.wip ? `<span class="card-badge card-badge--wip">WIP</span>` : ""}
       <div class="card-body">
         <div class="title-row">
           <h3>${escapeHtml(p.title ?? "Untitled")}</h3>

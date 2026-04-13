@@ -103,16 +103,18 @@ if (elLinks) {
 }
 
 
-  // Body sections (skip empty/TODO)
+  // Body sections (skip empty/TODO) — hidden when project is WIP
   if (elBody) {
-    elBody.innerHTML = renderSections(project.content?.sections);
-
-    // If nothing rendered, show nothing
-    if (!elBody.innerHTML.trim()) elBody.innerHTML = "";
+    if (project.wip) {
+      elBody.innerHTML = `<div class="project-section wip-notice"><p>This project page is under construction. More details coming soon.</p></div>`;
+    } else {
+      elBody.innerHTML = renderSections(project.content?.sections);
+      if (!elBody.innerHTML.trim()) elBody.innerHTML = "";
+    }
   }
 
-  // Gallery (right rail)
-  const gallery = Array.isArray(project.content?.gallery) ? project.content.gallery : [];
+  // Gallery (right rail) — hidden when project is WIP
+  const gallery = (!project.wip && Array.isArray(project.content?.gallery)) ? project.content.gallery : [];
   if (elGallery) {
     if (!gallery.length) {
       elGallery.innerHTML = "";

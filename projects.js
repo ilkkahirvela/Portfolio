@@ -2,12 +2,13 @@ const PROJECTS = [
   {
     id: "kindling",
     title: "Kindling",
+    wip: true,
     year: 2026,
     image: "",
     description:
       "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
-    featured: true,
+    // featured: true,
 
     detailsUrl: "project.html?id=kindling",
 

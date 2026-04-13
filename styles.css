@@ -500,6 +500,19 @@ section{
   -webkit-backdrop-filter: blur(6px);
 }
 
+.card-badge--wip {
+  left: auto;
+  right: 14px;
+  color: #f5c842;
+  background: rgba(245,200,66,0.1);
+  border-color: rgba(245,200,66,0.35);
+}
+
+.wip-notice {
+  color: var(--text-muted, #8899aa);
+  font-style: italic;
+}
+
 .project-card .thumb::after{
   content: "";
   position: absolute;
