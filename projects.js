@@ -64,6 +64,64 @@ const PROJECTS = [
   },
 
   {
+    id: "mazesolver",
+    title: "Maze Solver",
+    year: 2025,
+    image: "images/mazesolver/mazesolver-preview.webp",
+    description:
+      "Generates and solves mazes in real time, with animated step-by-step visualization and adjustable settings.",
+    tags: ["C++", "SFML", "ImGui", "Algorithms", "Visualization"],
+    featured: false,
+
+    detailsUrl: "project.html?id=mazesolver",
+
+    content: {
+      summary:
+        "A solo C++ project. Generates mazes and solves them with animated step-by-step visualization, showing the shortest path in real time.",
+      sections: [
+        {
+          h2: "About",
+          p: [
+            "A solo project built in C++. MazeSolver generates mazes and solves them with real-time animated visualization. Mazes are generated using recursive backtracking and solved with breadth-first search, which guarantees the shortest possible path.",
+            "Users can configure the maze size and animation speed before generation."
+          ]
+        },
+        {
+          h2: "Features",
+          ul: [
+            "Maze generation using recursive backtracking.",
+            "Pathfinding with BFS, guaranteeing the shortest path.",
+            "Real-time step-by-step animation.",
+            "Separated rendering layers for performance.",
+            "Resolution-aware scaling."
+          ]
+        },
+        {
+          h2: "Background",
+          p: "Built as an exercise in working with external libraries in C++. The algorithms and visualization gave it purpose, but the main goal was getting comfortable integrating unfamiliar tools."
+        },
+        {
+          h2: "Tech Stack",
+          ul: [
+            "C++17",
+            "SFML 3.0",
+            "Dear ImGui + ImGui-SFML"
+          ]
+        }
+      ],
+      gallery: [
+        "images/mazesolver/maze-solver-demo.gif",
+        "images/mazesolver/settings.webp",
+        "images/mazesolver/mazesolver-preview.webp"
+      ],
+      links: {
+        github: "https://github.com/ilkkahirvela/MazeSolver-SFML",
+        docs: "https://ilkkahirvela.github.io/MazeSolver-SFML/"
+      }
+    }
+  },
+
+  {
     id: "viridianland",
     title: "Viridianland",
     year: 2024,

@@ -91,9 +91,12 @@ if (elLinks) {
   if (linksObj.trailer)
     linksHtml.push(btnHtml(linksObj.trailer, "Watch Trailer →", "primary", true));
 
-  // Secondary: github
+  // Secondary: github, docs
   if (linksObj.github)
     linksHtml.push(btnHtml(linksObj.github, "View on GitHub →", "secondary", true));
+
+  if (linksObj.docs)
+    linksHtml.push(btnHtml(linksObj.docs, "Documentation →", "secondary", true));
 
   elLinks.innerHTML = linksHtml.join(" ");
   elLinks.style.display = linksHtml.length ? "" : "none";
