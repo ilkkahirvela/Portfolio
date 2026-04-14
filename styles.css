@@ -1191,6 +1191,7 @@ footer{
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
 
   padding: 10px 14px;
   border-radius: 12px;
@@ -1204,22 +1205,45 @@ footer{
   transition:
     transform 0.12s ease,
     border-color 0.12s ease,
-    background 0.12s ease;
+    background 0.12s ease,
+    filter 0.12s ease;
+}
+
+#project-details .btn-icon{
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 #project-details .btn:hover{
   transform: translateY(-2px);
-  border-color: rgba(95,157,231,0.55);
+  filter: brightness(1.15);
 }
 
-#project-details .btn-primary{
-  color: var(--accent);
+/* Itch.io / demo — red */
+#project-details .btn-itch{
+  color: #F78C8C;
   border-color: rgba(247,140,140,0.55);
-  background: rgba(247,140,140,0.12);
+  background: rgba(247,140,140,0.10);
 }
 
-#project-details .btn:not(.btn-primary){
-  color: var(--accent2);
+/* Trailer / video — purple */
+#project-details .btn-trailer{
+  color: #B97EE8;
+  border-color: rgba(185,126,232,0.50);
+  background: rgba(185,126,232,0.10);
+}
+
+/* GitHub — silver-blue */
+#project-details .btn-github{
+  color: #9DB8CE;
+  border-color: rgba(157,184,206,0.45);
+  background: rgba(157,184,206,0.08);
+}
+
+/* Docs — blue */
+#project-details .btn-docs{
+  color: #5F9DE7;
   border-color: rgba(95,157,231,0.45);
   background: rgba(95,157,231,0.08);
 }
