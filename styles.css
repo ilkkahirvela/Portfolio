@@ -1033,7 +1033,7 @@ footer{
   font-size: clamp(2.2rem, 3.4vw, 3.1rem);
   line-height: 1.05;
   letter-spacing: 0.2px;
-  color: var(--accent2);
+  color: var(--accent);
 }
 
 #project-details .year{
