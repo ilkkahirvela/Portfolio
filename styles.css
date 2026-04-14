@@ -561,6 +561,12 @@ section{
   color: var(--accent);
 }
 
+.meta-sep{
+  color: var(--muted);
+  opacity: 0.35;
+  user-select: none;
+}
+
 .year{
   color: var(--muted);
   font-size: 0.9rem;

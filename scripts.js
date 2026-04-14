@@ -1,27 +1,4 @@
 // ============================
-// Shared UI builders
-// ============================
-
-function buildDurationIndicator(duration) {
-  if (duration == null) return "";
-  const svg = `<svg class="clock-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="5"/><polyline points="6,3 6,6 8,7.5"/></svg>`;
-  return `<span class="duration-indicator" title="${duration}">${svg}<span class="duration-label">${duration}</span></span>`;
-}
-
-function buildTeamIndicator(teamSize) {
-  if (teamSize == null) return "";
-  const icon = (extraClass = "") =>
-    `<svg class="person-icon${extraClass}" viewBox="0 0 10 12" fill="currentColor" aria-hidden="true"><circle cx="5" cy="3.5" r="2.8"/><path d="M0.5 12 C0.5 8.5 9.5 8.5 9.5 12 Z"/></svg>`;
-  if (teamSize === 1) {
-    return `<span class="team-indicator team-indicator--solo" title="Solo project">${icon()}</span>`;
-  }
-  const icons = [1, 0.45, 0.15].map((op, i) =>
-    `<span style="opacity:${op};line-height:0">${icon(i ? " person-icon--stack" : "")}</span>`
-  ).join("");
-  return `<span class="team-indicator team-indicator--team" title="Team project · ${teamSize} people">${icons}</span>`;
-}
-
-// ============================
 // Projects grid
 // ============================
 (() => {
@@ -154,9 +131,14 @@ function buildTeamIndicator(teamSize) {
       ? p.tags.map(t => `<span class="tag">${escapeHtml(String(t))}</span>`).join("")
       : "";
 
-    const teamIndicator = buildTeamIndicator(p.team ?? null);
-    const durationIndicator = buildDurationIndicator(p.duration ?? null);
     const showCta = href !== "#";
+
+    const metaParts = [
+      buildTeamIndicator(p.team ?? null),
+      buildDurationIndicator(p.duration ?? null),
+      p.year != null ? `<span class="year">${escapeHtml(String(p.year))}</span>` : "",
+    ].filter(Boolean);
+    const titleRightHtml = metaParts.join('<span class="meta-sep">·</span>');
 
     card.innerHTML = `
       <div class="thumb-wrap"><div class="thumb" style="${img}"></div></div>
@@ -165,11 +147,7 @@ function buildTeamIndicator(teamSize) {
       <div class="card-body">
         <div class="title-row">
           <h3>${escapeHtml(p.title ?? "Untitled")}</h3>
-          <div class="title-row-right">
-            ${teamIndicator}
-            ${durationIndicator}
-            <span class="year">${escapeHtml(String(p.year ?? ""))}</span>
-          </div>
+          <div class="title-row-right">${titleRightHtml}</div>
         </div>
         <p class="desc">${escapeHtml(p.description ?? "")}</p>
         <div class="card-footer">
