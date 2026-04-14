@@ -5,6 +5,7 @@ const PROJECTS = [
     wip: true,
     year: 2026,
     team: 6,
+    duration: "10+ weeks",
     image: "",
     description:
       "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
@@ -71,6 +72,7 @@ const PROJECTS = [
     year: 2025,
     order: 2,
     team: 1,
+    duration: "~8 weeks",
     image: "images/chessmachine3000/gameplay.webp",
     description:
       "Terminal-based chess engine with a minimax AI opponent. Supports human vs bot and bot vs bot modes with full chess rule coverage.",
@@ -137,6 +139,7 @@ const PROJECTS = [
     year: 2025,
     order: 1,
     team: 1,
+    duration: "~1 week",
     image: "images/mazesolver/mazesolver-preview.webp",
     description:
       "Generates and solves mazes in real time, with animated step-by-step visualization and adjustable settings.",
@@ -196,6 +199,7 @@ const PROJECTS = [
     title: "Viridianland",
     year: 2024,
     team: 1,
+    duration: "~6 weeks",
     image: "images/viridianland/viridianland1.webp",
     description:
       "Fast-paced top-down shooter built as a school project. Designed and implemented gameplay + visuals (sound externally sourced).",
@@ -231,6 +235,12 @@ const PROJECTS = [
   },
 
 ];
+
+function buildDurationIndicator(duration) {
+  if (duration == null) return "";
+  const svg = `<svg class="clock-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="5"/><polyline points="6,3 6,6 8,7.5"/></svg>`;
+  return `<span class="duration-indicator" title="${duration}">${svg}<span class="duration-label">${duration}</span></span>`;
+}
 
 function buildTeamIndicator(teamSize) {
   if (teamSize == null) return "";

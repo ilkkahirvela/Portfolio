@@ -132,6 +132,7 @@
       : "";
 
     const teamIndicator = buildTeamIndicator(p.team ?? null);
+    const durationIndicator = buildDurationIndicator(p.duration ?? null);
     const showCta = href !== "#";
 
     card.innerHTML = `
@@ -143,6 +144,7 @@
           <h3>${escapeHtml(p.title ?? "Untitled")}</h3>
           <div class="title-row-right">
             ${teamIndicator}
+            ${durationIndicator}
             <span class="year">${escapeHtml(String(p.year ?? ""))}</span>
           </div>
         </div>

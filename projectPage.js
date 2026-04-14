@@ -82,6 +82,17 @@
     elTitleRight.insertAdjacentHTML("afterbegin", buildTeamIndicator(project.team));
   }
 
+  // Duration indicator
+  if (elTitleRight && project.duration != null) {
+    const yearEl = elTitleRight.querySelector(".year");
+    const durationHtml = buildDurationIndicator(project.duration);
+    if (yearEl) {
+      yearEl.insertAdjacentHTML("beforebegin", durationHtml);
+    } else {
+      elTitleRight.insertAdjacentHTML("beforeend", durationHtml);
+    }
+  }
+
   // Links
 if (elLinks) {
   const linksObj = project.content?.links || project.links || {};

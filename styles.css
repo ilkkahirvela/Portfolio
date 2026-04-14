@@ -1133,6 +1133,28 @@ footer{
   margin-left: -4px;
 }
 
+/* Duration indicator — clock icon + label */
+.duration-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  line-height: 0;
+}
+
+.clock-icon {
+  display: block;
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+}
+
+.duration-label {
+  font-size: 0.8rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 /* Tags */
 #project-details .detail-tags{
   margin-top: 14px;
