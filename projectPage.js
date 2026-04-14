@@ -16,6 +16,7 @@
   const elYear = document.getElementById("pYear");
   const elLead = document.getElementById("pLead");
   const elTags = document.getElementById("pTags");
+  const elTitleRight = document.getElementById("pTitleRight");
   const elLinks = document.getElementById("pLinks");
   const elBody = document.getElementById("pBody");
   const elGallery = document.getElementById("pGallery");
@@ -74,6 +75,11 @@
   if (elTags) {
     const tags = Array.isArray(project.tags) ? project.tags : [];
     elTags.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(String(t))}</span>`).join("");
+  }
+
+  // Team indicator
+  if (elTitleRight && project.team != null) {
+    elTitleRight.insertAdjacentHTML("afterbegin", buildTeamIndicator(project.team));
   }
 
   // Links

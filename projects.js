@@ -4,6 +4,7 @@ const PROJECTS = [
     title: "Kindling",
     wip: true,
     year: 2026,
+    team: 6,
     image: "",
     description:
       "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
@@ -69,6 +70,7 @@ const PROJECTS = [
     title: "ChessMachine3000",
     year: 2025,
     order: 2,
+    team: 1,
     image: "images/chessmachine3000/gameplay.webp",
     description:
       "Terminal-based chess engine with a minimax AI opponent. Supports human vs bot and bot vs bot modes with full chess rule coverage.",
@@ -134,6 +136,7 @@ const PROJECTS = [
     title: "Maze Solver",
     year: 2025,
     order: 1,
+    team: 1,
     image: "images/mazesolver/mazesolver-preview.webp",
     description:
       "Generates and solves mazes in real time, with animated step-by-step visualization and adjustable settings.",
@@ -192,6 +195,7 @@ const PROJECTS = [
     id: "viridianland",
     title: "Viridianland",
     year: 2024,
+    team: 1,
     image: "images/viridianland/viridianland1.webp",
     description:
       "Fast-paced top-down shooter built as a school project. Designed and implemented gameplay + visuals (sound externally sourced).",
@@ -227,3 +231,16 @@ const PROJECTS = [
   },
 
 ];
+
+function buildTeamIndicator(teamSize) {
+  if (teamSize == null) return "";
+  const icon = (extraClass = "") =>
+    `<svg class="person-icon${extraClass}" viewBox="0 0 10 12" fill="currentColor" aria-hidden="true"><circle cx="5" cy="3.5" r="2.8"/><path d="M0.5 12 C0.5 8.5 9.5 8.5 9.5 12 Z"/></svg>`;
+  if (teamSize === 1) {
+    return `<span class="team-indicator team-indicator--solo" title="Solo project">${icon()}</span>`;
+  }
+  const icons = [1, 0.45, 0.15].map((op, i) =>
+    `<span style="opacity:${op};line-height:0">${icon(i ? " person-icon--stack" : "")}</span>`
+  ).join("");
+  return `<span class="team-indicator team-indicator--team" title="Team project · ${teamSize} people">${icons}</span>`;
+}

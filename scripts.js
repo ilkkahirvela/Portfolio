@@ -131,6 +131,7 @@
       ? p.tags.map(t => `<span class="tag">${escapeHtml(String(t))}</span>`).join("")
       : "";
 
+    const teamIndicator = buildTeamIndicator(p.team ?? null);
     const showCta = href !== "#";
 
     card.innerHTML = `
@@ -140,7 +141,10 @@
       <div class="card-body">
         <div class="title-row">
           <h3>${escapeHtml(p.title ?? "Untitled")}</h3>
-          <span class="year">${escapeHtml(String(p.year ?? ""))}</span>
+          <div class="title-row-right">
+            ${teamIndicator}
+            <span class="year">${escapeHtml(String(p.year ?? ""))}</span>
+          </div>
         </div>
         <p class="desc">${escapeHtml(p.description ?? "")}</p>
         <div class="card-footer">
