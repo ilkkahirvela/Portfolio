@@ -12,6 +12,7 @@ Personal portfolio site showcasing my game development projects and technical sk
 |---------|------|-------------|
 | [Kindling](https://ilkkahirvela.github.io/Portfolio/project.html?id=kindling) | 2026 | Systems-driven top-down adventure game built around light-based mechanics. Developed in Unity as a team project. |
 | [Maze Solver](https://ilkkahirvela.github.io/Portfolio/project.html?id=mazesolver) | 2025 | Generates and solves mazes with real-time animated visualization. Built in C++ with SFML and Dear ImGui. |
+| [ChessMachine3000](https://ilkkahirvela.github.io/Portfolio/project.html?id=chessmachine3000) | 2025 | Terminal-based chess engine with a minimax AI opponent. Supports human vs bot and bot vs bot modes with full chess rule coverage. |
 | [Viridianland](https://ilkkahirvela.github.io/Portfolio/project.html?id=viridianland) | 2024 | Fast-paced top-down shooter built as a school project in Unity. |
 
 > More coming soon.
