@@ -1430,9 +1430,9 @@ footer{
 }
 
 /* Reveal controls via JS class or keyboard focus */
-.lightbox__frame:focus-within .lightbox__close,
-.lightbox__frame:focus-within .lightbox__nav,
-.lightbox__frame:focus-within .lightbox__counter,
+.lightbox__frame:has(:focus-visible) .lightbox__close,
+.lightbox__frame:has(:focus-visible) .lightbox__nav,
+.lightbox__frame:has(:focus-visible) .lightbox__counter,
 .lightbox__frame.controls-visible .lightbox__close,
 .lightbox__frame.controls-visible .lightbox__nav,
 .lightbox__frame.controls-visible .lightbox__counter{
