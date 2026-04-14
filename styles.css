@@ -1042,7 +1042,7 @@ footer{
 }
 
 #project-details .project-lead{
-  margin: 12px 0 0 0;
+  margin: 14px 0 0 0;
   max-width: 70ch;
 
   font-size: 1.05rem;
@@ -1163,20 +1163,20 @@ footer{
 
 /* Tags */
 #project-details .detail-tags{
-  margin-top: 14px;
+  margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
 #project-details .tag{
-  padding: 6px 11px;
-  font-size: 0.85rem;
+  padding: 3px 9px;
+  font-size: 0.75rem;
   border-radius: 999px;
 
-  color: var(--accent);
-  border: 1px solid rgba(247,140,140,0.40);
-  background: rgba(247,140,140,0.06);
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
 }
 
 /* Buttons */
