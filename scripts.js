@@ -614,3 +614,39 @@ document.addEventListener("click", e => {
     if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
   }, { passive: true });
 })();
+
+// Email popover
+(() => {
+  const wrap = document.querySelector(".email-wrap");
+  if (!wrap) return;
+
+  const trigger = wrap.querySelector(".email-trigger");
+  const copyBtn = document.getElementById("emailCopyBtn");
+  const EMAIL = "hirvela.ilkka@gmail.com";
+
+  // On touch devices (no hover), tap trigger to open, tap outside to close
+  if (window.matchMedia("(pointer: coarse)").matches) {
+    trigger?.addEventListener("click", e => {
+      e.stopPropagation();
+      const opening = !wrap.classList.contains("is-open");
+      wrap.classList.toggle("is-open", opening);
+      trigger.setAttribute("aria-expanded", String(opening));
+    });
+    document.addEventListener("click", () => {
+      wrap.classList.remove("is-open");
+      trigger?.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  // Copy to clipboard
+  const originalCopyHtml = copyBtn?.innerHTML;
+  let copyResetTimer;
+  copyBtn?.addEventListener("click", e => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(EMAIL).then(() => {
+      clearTimeout(copyResetTimer);
+      copyBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+      copyResetTimer = setTimeout(() => { copyBtn.innerHTML = originalCopyHtml; }, 2000);
+    });
+  });
+})();

@@ -801,6 +801,95 @@ section{
   background: rgba(95,157,231,0.14);
 }
 
+button.contact-btn{
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+/* Keep trigger styled as hovered while popover is open */
+.email-wrap:hover .email-trigger{
+  transform: translateY(-2px);
+  border-color: rgba(247,140,140,0.8);
+  background: rgba(247,140,140,0.14);
+}
+
+/* Email popover */
+.email-wrap{
+  position: relative;
+}
+
+/* Invisible bridge — keeps :hover alive while cursor crosses the gap */
+.email-wrap::after{
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 6px;
+}
+
+.email-popover{
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 100;
+
+  min-width: 210px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  background: rgba(12,12,18,0.96);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.email-wrap:hover .email-popover,
+.email-wrap.is-open .email-popover{
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.email-popover__item{
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 10px 14px;
+
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: left;
+
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.email-popover__item:last-child{
+  border-bottom: none;
+}
+
+.email-popover__item:hover{
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+}
+
 .contact-btn--itch{
   border-color: rgba(250,92,92,0.50);
   background: rgba(250,92,92,0.08);
