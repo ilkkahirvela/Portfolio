@@ -59,7 +59,72 @@ const PROJECTS = [
       gallery: [],
       links: {
         itch: "https://ilkkahi.itch.io/kindling",
-        trailer: "https://www.youtube.com/watch?v=5APzuSg-J1g&t=1s"
+        trailer: "https://www.youtube.com/watch?v=UE9aJpK1Qm0"
+      }
+    }
+  },
+
+  {
+    id: "chessmachine3000",
+    title: "ChessMachine3000",
+    year: 2025,
+    order: 2,
+    image: "images/chessmachine3000/gameplay.webp",
+    description:
+      "Terminal-based chess engine with a minimax AI opponent. Supports human vs bot and bot vs bot modes with full chess rule coverage.",
+    tags: ["C++", "Chess", "AI", "Minimax", "Algorithms"],
+    featured: false,
+
+    detailsUrl: "project.html?id=chessmachine3000",
+
+    content: {
+      summary:
+        "A solo C++ project. A terminal-based chess engine featuring a minimax AI with alpha-beta pruning. Supports human vs bot and bot vs bot modes with full chess rule coverage.",
+      sections: [
+        {
+          h2: "About",
+          p: [
+            "ChessMachine3000 is a terminal-based chess engine built in C++. Players can compete against an AI opponent or watch two bots play each other. The board is rendered in the terminal with colored output and move highlighting.",
+            "The AI uses iterative deepening minimax with alpha-beta pruning and parallel root-level search, with move ordering that prioritizes captures and promotions for more efficient pruning."
+          ]
+        },
+        {
+          h2: "Background",
+          p: "Built for a data structures and algorithms course, where implementing a chess engine was the set task. After the course, additional work went into polishing the engine and making it more presentable."
+        },
+        {
+          h2: "Features",
+          ul: [
+            "Human vs Bot and Bot vs Bot gameplay modes.",
+            "Colored terminal board with move highlighting.",
+            "Adjustable AI think time (1–5 seconds).",
+            "Full chess rule support: castling, en passant, promotion, 50-move rule, threefold repetition.",
+            "Material balance and check status display."
+          ]
+        },
+        {
+          h2: "AI Engine",
+          p: [
+            "The engine uses iterative deepening minimax with alpha-beta pruning. Rather than searching to a fixed depth, it deepens incrementally, completing a full search at each depth before going one level deeper. This means the best move found so far is always available, and the think time can be cut off cleanly at any point.",
+            "At the root level, moves are searched in parallel to make better use of available CPU cores. Below the root, move ordering prioritizes captures and promotions, which improves alpha-beta pruning efficiency by increasing the chance of early cutoffs in the sequential search."
+          ]
+        },
+        {
+          h2: "Tech Stack",
+          ul: [
+            "C++",
+            "Visual Studio 2022"
+          ]
+        }
+      ],
+      gallery: [
+        "images/chessmachine3000/bot-vs-bot.gif",
+        "images/chessmachine3000/settings.webp",
+        "images/chessmachine3000/gameplay.webp"
+      ],
+      links: {
+        github: "https://github.com/ilkkahirvela/ChessMachine3000",
+        docs: "https://ilkkahirvela.github.io/ChessMachine3000"
       }
     }
   },
@@ -68,6 +133,7 @@ const PROJECTS = [
     id: "mazesolver",
     title: "Maze Solver",
     year: 2025,
+    order: 1,
     image: "images/mazesolver/mazesolver-preview.webp",
     description:
       "Generates and solves mazes in real time, with animated step-by-step visualization and adjustable settings.",

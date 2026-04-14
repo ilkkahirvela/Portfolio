@@ -14,12 +14,17 @@
   const tagFiltersEl = document.getElementById("tagFilters");
   const resultsCountEl = document.getElementById("resultsCount");
 
-  // featured first, then newest
+  // featured first, then non-WIP before WIP, then newest, then manual order
   const allProjects = [...PROJECTS].sort((a, b) => {
     const af = a.featured ? 1 : 0;
     const bf = b.featured ? 1 : 0;
     if (af !== bf) return bf - af;
-    return (Number(b.year) || 0) - (Number(a.year) || 0);
+    const aw = a.wip ? 1 : 0;
+    const bw = b.wip ? 1 : 0;
+    if (aw !== bw) return aw - bw;
+    const yearDiff = (Number(b.year) || 0) - (Number(a.year) || 0);
+    if (yearDiff !== 0) return yearDiff;
+    return (a.order ?? 0) - (b.order ?? 0);
   });
 
   // tags from data
