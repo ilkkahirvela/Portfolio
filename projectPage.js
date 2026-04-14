@@ -65,7 +65,6 @@
   // Title
   document.title = `Ilkka Hirvelä | ${project.title || "Project"}`;
   if (elTitle) elTitle.textContent = project.title || "Project";
-  if (elYear) elYear.textContent = project.year != null ? String(project.year) : "";
 
   // Lead text: prefer content.summary, fallback to description
   const lead = cleanText(project.content?.summary) || cleanText(project.description) || "";
@@ -77,20 +76,14 @@
     elTags.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(String(t))}</span>`).join("");
   }
 
-  // Team indicator
-  if (elTitleRight && project.team != null) {
-    elTitleRight.insertAdjacentHTML("afterbegin", buildTeamIndicator(project.team));
-  }
-
-  // Duration indicator
-  if (elTitleRight && project.duration != null) {
-    const yearEl = elTitleRight.querySelector(".year");
-    const durationHtml = buildDurationIndicator(project.duration);
-    if (yearEl) {
-      yearEl.insertAdjacentHTML("beforebegin", durationHtml);
-    } else {
-      elTitleRight.insertAdjacentHTML("beforeend", durationHtml);
-    }
+  // Meta row: team · duration · year
+  if (elTitleRight) {
+    const metaParts = [
+      buildTeamIndicator(project.team ?? null),
+      buildDurationIndicator(project.duration ?? null),
+      project.year != null ? `<span class="year">${escapeHtml(String(project.year))}</span>` : "",
+    ].filter(Boolean);
+    elTitleRight.innerHTML = metaParts.join('<span class="meta-sep">·</span>');
   }
 
   // Links
