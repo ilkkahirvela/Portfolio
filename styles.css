@@ -1069,10 +1069,15 @@ footer{
    Project Details
 ============================ */
 
-body:has(#project-details){
+body:has(#project-details),
+body:has(#about){
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+body:has(#about) main{
+  flex: 1;
 }
 
 #project-details{
