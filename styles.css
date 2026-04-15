@@ -791,14 +791,14 @@ section{
 }
 
 .contact-btn--secondary{
-  border-color: rgba(95,157,231,0.50);
-  background: rgba(95,157,231,0.08);
-  color: var(--accent2);
+  border-color: rgba(15,191,62,0.45);
+  background: rgba(15,191,62,0.08);
+  color: #0FBF3E;
 }
 
 .contact-btn--secondary:hover{
-  border-color: rgba(95,157,231,0.8);
-  background: rgba(95,157,231,0.14);
+  border-color: rgba(15,191,62,0.75);
+  background: rgba(15,191,62,0.14);
 }
 
 button.contact-btn{
@@ -1323,11 +1323,11 @@ footer{
   background: rgba(185,126,232,0.10);
 }
 
-/* GitHub — silver-blue */
+/* GitHub — green */
 #project-details .btn-github{
-  color: #9DB8CE;
-  border-color: rgba(157,184,206,0.45);
-  background: rgba(157,184,206,0.08);
+  color: #0FBF3E;
+  border-color: rgba(15,191,62,0.45);
+  background: rgba(15,191,62,0.08);
 }
 
 /* Docs — blue */
