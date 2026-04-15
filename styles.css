@@ -893,7 +893,7 @@ button.contact-btn{
 .contact-btn--itch{
   border-color: rgba(250,92,92,0.50);
   background: rgba(250,92,92,0.08);
-  color: #fa7070;
+  color: #fa5c5c;
 }
 
 .contact-btn--itch:hover{
@@ -1311,9 +1311,9 @@ footer{
 
 /* Itch.io / demo — red */
 #project-details .btn-itch{
-  color: #F78C8C;
-  border-color: rgba(247,140,140,0.55);
-  background: rgba(247,140,140,0.10);
+  color: #fa5c5c;
+  border-color: rgba(250,92,92,0.55);
+  background: rgba(250,92,92,0.10);
 }
 
 /* Trailer / video — purple */
