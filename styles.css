@@ -1056,7 +1056,14 @@ footer{
    Project Details
 ============================ */
 
+body:has(#project-details){
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 #project-details{
+  flex: 1;
   max-width: 1100px;
   margin: 0 auto;
   padding: 3.25rem 20px;
