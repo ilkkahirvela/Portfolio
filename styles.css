@@ -211,24 +211,11 @@ section{
 /* ============================
    About
 ============================ */
-@keyframes aboutGlow{
-  to{ opacity: 0.45; }
-}
 
 #about{
   position: relative;
 }
 
-#about::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 70% 80% at 0% 50%, rgba(95,157,231,0.09) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 60% at 100% 30%, rgba(247,140,140,0.06) 0%, transparent 70%);
-  pointer-events: none;
-  animation: aboutGlow 6s ease-in-out infinite alternate;
-}
 
 #heroCanvas{
   position: absolute;
@@ -237,6 +224,8 @@ section{
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
 }
 
 #about h1,
@@ -257,6 +246,30 @@ section{
   margin: 0 0 0.75rem 0;
   color: var(--text);
   opacity: 0.95;
+}
+
+/* ============================
+   About glow
+============================ */
+@keyframes aboutGlow{
+  to{ opacity: 0.45; }
+}
+
+#about::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 80% at 0%   50%, rgba(95,157,231,0.09)  0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 100% 30%, rgba(247,140,140,0.09) 0%, transparent 70%);
+  pointer-events: none;
+  animation: aboutGlow 6s ease-in-out infinite alternate;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%),
+                      linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+  -webkit-mask-composite: destination-in;
+  mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%),
+              linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
+  mask-composite: intersect;
 }
 
 @keyframes pulse{
