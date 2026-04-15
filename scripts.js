@@ -303,7 +303,20 @@
 function scrambleText(el) {
   if (!el || !el.textContent.trim()) return;
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!';
-  const original = el.textContent;
+
+  // Cancel any in-progress scramble (e.g. bfcache resume with stale interval)
+  if (el._scrambleId) {
+    clearInterval(el._scrambleId);
+    el._scrambleId = null;
+  }
+  // Preserve the true original on first run; reuse it on subsequent calls
+  // so a mid-scramble textContent is never mistaken for the real text.
+  if (!el._scrambleOriginal) {
+    el._scrambleOriginal = el.textContent;
+  }
+  const original = el._scrambleOriginal;
+  el.textContent = original; // reset before restarting
+
   const duration = 900;
   const frameMs = 33;
   const totalFrames = Math.round(duration / frameMs);
@@ -322,8 +335,11 @@ function scrambleText(el) {
     if (++frame > totalFrames) {
       el.textContent = original;
       clearInterval(id);
+      el._scrambleId = null;
     }
   }, frameMs);
+
+  el._scrambleId = id;
 }
 
 scrambleText(document.querySelector('#about h1'));
