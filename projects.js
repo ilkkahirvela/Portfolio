@@ -6,7 +6,7 @@ const PROJECTS = [
     year: 2026,
     team: 6,
     duration: "10+ weeks",
-    image: "",
+    image: "images/kindling/kindling-preview.webp",
     description:
       "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
