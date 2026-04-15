@@ -422,6 +422,10 @@ window.addEventListener("pageshow", e => {
       el.offsetHeight; // force reflow so the reset takes effect
       el.style.animation = "";
     });
+
+    // Re-run title scramble animations
+    scrambleText(document.querySelector("#about h1"));
+    scrambleText(document.querySelector("#pTitle"));
   }
 });
 
