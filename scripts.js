@@ -409,7 +409,20 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Page exit transition for internal navigation
 window.addEventListener("pageshow", e => {
-  if (e.persisted) document.body.classList.remove("page-exit");
+  document.body.classList.remove("page-exit");
+  if (e.persisted) {
+    // bfcache restore: CSS animations have already played — force-restart them
+    const animated = document.querySelectorAll(
+      "#about, #projects, #tech-exp, #contact," +
+      "#project-details .back-link, #project-details .project-header," +
+      "#project-details .project-section, #project-details .project-rail"
+    );
+    animated.forEach(el => {
+      el.style.animation = "none";
+      el.offsetHeight; // force reflow so the reset takes effect
+      el.style.animation = "";
+    });
+  }
 });
 
 document.addEventListener("click", e => {
