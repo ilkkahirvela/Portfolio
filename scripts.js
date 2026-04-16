@@ -686,7 +686,23 @@ document.addEventListener("click", e => {
     navigator.clipboard.writeText(EMAIL).then(() => {
       clearTimeout(copyResetTimer);
       copyBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
-      copyResetTimer = setTimeout(() => { copyBtn.innerHTML = originalCopyHtml; }, 2000);
+      copyResetTimer = setTimeout(() => { copyBtn.innerHTML = originalCopyHtml; }, 1200);
+    });
+  });
+})();
+
+// Footer email — click copies address, href keeps mailto for right-click
+(() => {
+  const link = document.querySelector("a.footer-email");
+  if (!link) return;
+
+  let resetTimer;
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    navigator.clipboard.writeText("hirvela.ilkka@gmail.com").then(() => {
+      clearTimeout(resetTimer);
+      link.textContent = "Email copied!";
+      resetTimer = setTimeout(() => { link.textContent = "Email"; }, 1200);
     });
   });
 })();
