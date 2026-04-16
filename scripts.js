@@ -117,6 +117,7 @@
     card.style.setProperty("--card-index", index);
     if (p.wide) card.classList.add("wide");
     if (!p.image) card.classList.add("no-image");
+    if (p.featured) card.classList.add("featured");
 
     const href = getProjectHref(p);
     card.href = href;

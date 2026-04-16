@@ -491,6 +491,66 @@ section{
   animation: gradientDrift 10s ease infinite;
 }
 
+/* ============================
+   Featured card glint sweep
+============================ */
+@keyframes glintSweep {
+  0%   { transform: translateX(-100%) skewX(-18deg); }
+  13%  { transform: translateX(200%) skewX(-18deg); }
+  100% { transform: translateX(200%) skewX(-18deg); }
+}
+
+.project-card.featured .thumb-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Primary band + faint echo band — mimics light reflecting off glass */
+  background: linear-gradient(
+    to right,
+    transparent 35%,
+    rgba(255, 255, 255, 0.012) 40%,
+    rgba(255, 255, 255, 0.08)  45%,
+    rgba(255, 255, 255, 0.13)  49%,
+    rgba(255, 255, 255, 0.08)  53%,
+    rgba(255, 255, 255, 0.012) 58%,
+    transparent 63%,
+    rgba(255, 255, 255, 0.032) 67%,
+    transparent 73%
+  );
+  animation: glintSweep 5.5s linear infinite;
+  animation-delay: calc(var(--card-index, 0) * -1.85s);
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes borderGlint {
+  0%    { opacity: 0; }
+  5%    { opacity: 1; }
+  13%   { opacity: 1; }
+  19%   { opacity: 0; }
+  100%  { opacity: 0; }
+}
+
+.project-card.featured::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 1px rgba(173, 216, 230, 0.32),
+              0 0 18px 2px rgba(173, 216, 230, 0.03);
+  opacity: 0;
+  animation: borderGlint 5.5s linear infinite;
+  animation-delay: calc(var(--card-index, 0) * -1.85s);
+  transition: box-shadow 0.15s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.project-card.featured:hover::before {
+  box-shadow: 0 0 0 1px rgba(247, 140, 140, 0.55),
+              0 0 18px 2px rgba(247, 140, 140, 0.09);
+}
+
 /* Featured badge */
 .card-badge{
   position: absolute;
