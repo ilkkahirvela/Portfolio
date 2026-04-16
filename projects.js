@@ -200,9 +200,9 @@ const PROJECTS = [
     year: 2024,
     team: 1,
     duration: "~6 weeks",
-    image: "images/viridianland/viridianland1.webp",
+    image: "images/viridianland/preview.webp",
     description:
-      "Fast-paced top-down shooter built as a school project. Designed and implemented gameplay + visuals (sound externally sourced).",
+      "Top-down shooter built in Unity over six weeks. My first game in the engine, covering gameplay systems and pixel art from scratch.",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
     featured: false,
 
@@ -210,21 +210,35 @@ const PROJECTS = [
 
     content: {
       summary:
-        "Fast-paced top-down shooter developed in 6 weeks as a school project. I implemented gameplay + core systems and created the visuals (sound externally sourced).",
+        "A top-down shooter made solo over six weeks as a school project and my first Unity game. I handled everything from gameplay systems and pixel art to building the audio system, learning the engine while delivering something complete under a real deadline.",
       sections: [
         {
           h2: "About",
           p: [
-            "Viridianland is a fast-paced top-down shooter developed as a school project within a span of six weeks. Using Unity and C#, I was responsible for implementing gameplay mechanics, visual assets, and core systems. Pixel art was created using Aseprite, while sound was sourced externally to support the fast-paced action.",
+            "Viridianland spans three levels, each with a unique music track and a target elimination count required to progress. Two enemy types populate each level: a melee variant that closes in to deal damage, and a ranged type that attacks from a distance.",
+          ]
+        },
+        {
+          h2: "Systems",
+          p: [
+            "The item drop system rewards enemy kills with heal and weapon pickups, with drop rates varying per level. Two weapons are available as pickups, one being a straight upgrade over the starting gun. Grabbing either also reloads your magazine instantly, giving the pickup a secondary tactical use.",
 
-            "The project focused on delivering a cohesive, playable game under a tight deadline while showcasing my ability to handle both programming and design."
+            "The audio system handles per-level music tracks and individual sound effects for weapons and pickups.",
+
+            "All visual assets were hand-made in Aseprite, font aside. Working out what art was actually needed, how to organize it, and getting used to sprite sheet animations was a meaningful part of the process."
+          ]
+        },
+        {
+          h2: "Reflection",
+          p: [
+            "Learning the engine's 2D fundamentals while shipping a finished product taught me a lot about time management and scoping. A few UI elements and a planned endless mode were cut to meet the deadline. Given six weeks and where my skills were at the time, the scope ended up being about right."
           ]
         }
       ],
       gallery: [
-        "images/viridianland/viridianland2.webp",
-        "images/viridianland/viridianland3.webp",
-        "images/viridianland/viridianland4.webp"
+        "images/viridianland/main-menu.webp",
+        "images/viridianland/gameplay.webp",
+        "images/viridianland/pause-menu.webp"
       ],
       links: {
         itch: "https://ilkkahi.itch.io/viridianland"
