@@ -115,7 +115,7 @@
     card.className = "project-card";
     card.classList.add("card-animate");
     card.style.setProperty("--card-index", index);
-    if (p.featured) card.classList.add("featured");
+    if (p.wide) card.classList.add("wide");
     if (!p.image) card.classList.add("no-image");
 
     const href = getProjectHref(p);

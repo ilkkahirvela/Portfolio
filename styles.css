@@ -636,13 +636,13 @@ section{
   border: 1px solid rgba(247,140,140,0.45);
 }
 
-/* Featured card */
-.project-card.featured{
+/* Wide card */
+.project-card.wide{
   grid-column: span 12;
   min-height: 420px;
 }
 
-.project-card.featured .card-body{
+.project-card.wide .card-body{
   left: 0;
   right: 0;
   bottom: 0;
@@ -997,7 +997,7 @@ footer{
     grid-column: span 12;
   }
 
-  .project-card.featured{
+  .project-card.wide{
     min-height: 320px;
   }
 
