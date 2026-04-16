@@ -434,9 +434,15 @@ window.addEventListener("pageshow", e => {
       "#project-details .project-section, #project-details .project-rail"
     );
     animated.forEach(el => {
-      el.style.animation = "none";
-      el.offsetHeight; // force reflow so the reset takes effect
-      el.style.animation = "";
+      const anims = el.getAnimations();
+      if (anims.length) {
+        anims.forEach(a => { a.cancel(); a.play(); });
+      } else {
+        // Fallback for browsers where getAnimations() omits finished animations
+        el.style.animation = "none";
+        void el.offsetHeight;
+        el.style.animation = "";
+      }
     });
 
     // Re-run title scramble animations
