@@ -805,6 +805,21 @@ section{
   background: rgba(255,255,255,0.12);
 }
 
+.pips-legend{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin: 0.4rem 0 1.4rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.pips-legend > span{
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
 @media (max-width: 520px){
   .skill-group{
     grid-template-columns: 1fr;
