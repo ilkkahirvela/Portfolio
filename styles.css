@@ -881,7 +881,8 @@ button.contact-btn{
 }
 
 /* Keep trigger styled as hovered while popover is open */
-.email-wrap:hover .email-trigger{
+.email-wrap:hover .email-trigger,
+.email-wrap:focus-within .email-trigger{
   transform: translateY(-2px);
   border-color: rgba(247,140,140,0.8);
   background: rgba(247,140,140,0.14);
@@ -926,6 +927,7 @@ button.contact-btn{
 }
 
 .email-wrap:hover .email-popover,
+.email-wrap:focus-within .email-popover,
 .email-wrap.is-open .email-popover{
   opacity: 1;
   pointer-events: all;

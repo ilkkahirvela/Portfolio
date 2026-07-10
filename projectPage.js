@@ -20,7 +20,6 @@
   const id = idRaw.toLowerCase();
 
   const elTitle = document.getElementById("pTitle");
-  const elYear = document.getElementById("pYear");
   const elLead = document.getElementById("pLead");
   const elTags = document.getElementById("pTags");
   const elTitleRight = document.getElementById("pTitleRight");
@@ -32,7 +31,6 @@
   if (!id) {
     document.title = "Ilkka Hirvelä | Project";
     if (elTitle) elTitle.textContent = "Project";
-    if (elYear) elYear.textContent = "";
     if (elLead) elLead.textContent = "Choose a project from the Projects section.";
     if (elTags) elTags.innerHTML = "";
     if (elLinks) elLinks.innerHTML = "";
@@ -53,7 +51,6 @@
   if (!project) {
     document.title = "Ilkka Hirvelä | Project Not Found";
     if (elTitle) elTitle.textContent = "Project not found";
-    if (elYear) elYear.textContent = "";
     if (elLead) elLead.textContent = "This project doesn't exist (or the URL is wrong).";
     if (elTags) elTags.innerHTML = "";
     if (elLinks) elLinks.innerHTML = "";
