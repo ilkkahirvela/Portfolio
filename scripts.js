@@ -1,3 +1,5 @@
+const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 // ============================
 // Projects grid
 // ============================
@@ -279,7 +281,8 @@
     ctx.stroke();
 
     t += 0.009;
-    if (visible) requestAnimationFrame(animate);
+    // Reduced motion: draw a single static frame, no loop
+    if (visible && !REDUCED_MOTION) requestAnimationFrame(animate);
   }
 
   section.addEventListener('mousemove', e => {
@@ -302,6 +305,7 @@
 
 // Text scramble
 function scrambleText(el) {
+  if (REDUCED_MOTION) return;
   if (!el || !el.textContent.trim()) return;
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$!';
 
@@ -348,7 +352,7 @@ scrambleText(document.querySelector('#pTitle'));
 
 // Card 3D tilt on hover
 (() => {
-  if (window.matchMedia('(pointer: coarse)').matches) return;
+  if (REDUCED_MOTION || window.matchMedia('(pointer: coarse)').matches) return;
   const grid = document.getElementById('projectsGrid');
   if (!grid) return;
 
@@ -391,6 +395,10 @@ scrambleText(document.querySelector('#pTitle'));
 
 // Shared scroll animation
 function animateScrollTo(targetY, duration = 480) {
+  if (REDUCED_MOTION) {
+    window.scrollTo(0, targetY);
+    return;
+  }
   const start = window.scrollY;
   const distance = targetY - start;
   const startTime = performance.now();
@@ -453,6 +461,7 @@ window.addEventListener("pageshow", e => {
 });
 
 document.addEventListener("click", e => {
+  if (REDUCED_MOTION) return; // navigate natively, no exit transition
   const link = e.target.closest("a[href]");
   if (!link) return;
   const href = link.getAttribute("href");
