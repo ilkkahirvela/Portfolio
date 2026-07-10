@@ -12,9 +12,17 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     return;
   }
 
-  const searchInput = document.getElementById("projectSearch");
+  let searchInput = document.getElementById("projectSearch");
   const tagFiltersEl = document.getElementById("tagFilters");
-  const resultsCountEl = document.getElementById("resultsCount");
+  let resultsCountEl = document.getElementById("resultsCount");
+
+  // Search and result count add little value with only a handful of projects
+  if (PROJECTS.length < 6) {
+    searchInput?.remove();
+    resultsCountEl?.remove();
+    searchInput = null;
+    resultsCountEl = null;
+  }
 
   // featured first, then non-WIP before WIP, then newest, then manual order
   const allProjects = [...PROJECTS].sort((a, b) => {
