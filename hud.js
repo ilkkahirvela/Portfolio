@@ -29,13 +29,26 @@
 
   document.body.append(scanlines, bar, toasts);
 
-  // ---- score + toasts ----
-  let score = 0;
+  // ---- score + toasts (persisted across visits) ----
+  const stored = (() => {
+    try { return JSON.parse(localStorage.getItem("ih-hud")) || null; }
+    catch { return null; }
+  })();
+  let score = Number(stored?.score) || 0;
+  const unlocked = new Set(Array.isArray(stored?.unlocked) ? stored.unlocked : []);
+
+  function save() {
+    try { localStorage.setItem("ih-hud", JSON.stringify({ score, unlocked: [...unlocked] })); }
+    catch { /* storage unavailable — session-only score */ }
+  }
+
   const scoreEl = bar.querySelector(".hud-score b");
+  scoreEl.textContent = String(score).padStart(6, "0");
 
   function addScore(n) {
     const from = score;
     score += n;
+    save();
     if (REDUCED) {
       scoreEl.textContent = String(score).padStart(6, "0");
       return;
@@ -63,10 +76,10 @@
     if (pts) addScore(pts);
   }
 
-  const unlocked = new Set();
   function achieve(key, name, pts = 0) {
     if (unlocked.has(key)) return;
     unlocked.add(key);
+    save();
     toast(name, pts);
   }
 
@@ -131,6 +144,53 @@
       });
     }, { rootMargin: "-45% 0px -45% 0px" });
     sections.forEach(s => io.observe(s));
+  }
+
+  // ---- section banners (home only) — sweep once per section per visit ----
+  if (isHome && !REDUCED) {
+    const bannerEl = document.createElement("div");
+    bannerEl.className = "hud-banner";
+    bannerEl.setAttribute("aria-hidden", "true");
+    document.body.appendChild(bannerEl);
+
+    let bannerTimer;
+    function showBanner(text) {
+      clearTimeout(bannerTimer);
+      bannerEl.textContent = text;
+      bannerEl.classList.remove("show");
+      void bannerEl.offsetWidth; // restart the sweep
+      bannerEl.classList.add("show");
+      bannerTimer = setTimeout(() => bannerEl.classList.remove("show"), 1200);
+    }
+
+    const bannerIo = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting || e.target.dataset.bannerDone) return;
+        e.target.dataset.bannerDone = "1";
+        showBanner(LABELS[e.target.id]);
+      });
+    }, { threshold: 0.35 });
+
+    sections.forEach(s => {
+      if (s.id !== "about") bannerIo.observe(s);
+    });
+  }
+
+  // ---- konami code ----
+  {
+    const SEQ = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
+                 "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+    let pos = 0;
+    window.addEventListener("keydown", (e) => {
+      pos = (e.key === SEQ[pos]) ? pos + 1 : (e.key === SEQ[0] ? 1 : 0);
+      if (pos !== SEQ.length) return;
+      pos = 0;
+      achieve("konami", "OLD SCHOOL — code accepted", 500);
+      if (!REDUCED) {
+        document.body.classList.add("crt-flash");
+        setTimeout(() => document.body.classList.remove("crt-flash"), 700);
+      }
+    });
   }
 
   // ---- boot sequence (once per session, skipped under reduced motion) ----

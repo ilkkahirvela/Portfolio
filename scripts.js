@@ -47,6 +47,17 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     });
   }
 
+  // LEVEL SCOUT — inspect three different levels (hover or keyboard focus)
+  const scouted = new Set();
+  function scout(e) {
+    const card = e.target.closest?.(".level-card");
+    if (!card) return;
+    scouted.add(card.href);
+    if (scouted.size >= 3) window.HUD?.achieve?.("scout", "LEVEL SCOUT — browsed the worlds", 150);
+  }
+  grid.addEventListener("mouseover", scout);
+  grid.addEventListener("focusin", scout);
+
   // Arrow keys browse the level strip; Enter opens (native anchor behavior)
   grid.addEventListener("keydown", (e) => {
     if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
@@ -101,6 +112,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
 
       chip.addEventListener("click", () => {
         activeTag = tag;
+        if (tag !== "All") window.HUD?.achieve?.("curator", "CURATOR — filtered the archive", 50);
         renderFilterChips();
         render();
       });
@@ -681,6 +693,7 @@ document.addEventListener("click", e => {
     } else {
       index = newIndex;
       setImage(index);
+      window.HUD?.achieve?.("intel", "INTEL GATHERED — opened the gallery", 50);
       lightbox.classList.add("is-open");
       lightbox.setAttribute("aria-hidden", "false");
       document.body.classList.add("lb-lock");
