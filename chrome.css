@@ -1,0 +1,185 @@
+/* ============================
+   Game chrome layer (hud.js)
+   Boot · HUD bar · scanlines · toasts
+============================ */
+
+body.has-chrome{
+  padding-bottom: 46px;
+}
+
+/* CRT scanlines — sits above content, below the lightbox */
+.crt-scanlines{
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.12) 0 1px, transparent 1px 3px);
+  opacity: 0.45;
+}
+
+/* Bottom HUD bar */
+.hud-bar{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1200;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 42px;
+  padding: 0 18px;
+
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+
+  background: rgba(11,9,8,0.85);
+  border-top: 1px solid rgba(255,180,84,0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hud-bar b{
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hud-section{
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.hud-xp{
+  flex: 1;
+  height: 7px;
+  border: 1px solid rgba(255,180,84,0.3);
+}
+
+.hud-xp i{
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #FF8A3D, #FFB454);
+}
+
+.hud-pct{
+  min-width: 4ch;
+  text-align: right;
+  color: var(--accent);
+}
+
+.hud-score{
+  white-space: nowrap;
+}
+
+@media (max-width: 640px){
+  .hud-section{ display: none; }
+  .hud-bar{ padding: 0 14px; gap: 10px; }
+}
+
+/* Achievement toasts */
+.hud-toasts{
+  position: fixed;
+  right: 16px;
+  bottom: 56px;
+  z-index: 1300;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.hud-toast{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px;
+
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: rgba(16,14,11,0.94);
+  font-family: var(--mono);
+
+  transform: translateX(calc(100% + 24px));
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.05);
+}
+
+.hud-toast.show{
+  transform: translateX(0);
+}
+
+.hud-toast b{
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hud-toast span{
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+/* Boot sequence overlay */
+#chromeBoot{
+  position: fixed;
+  inset: 0;
+  z-index: 6000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #070605;
+  transition: transform 0.45s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.45s ease;
+}
+
+#chromeBoot.done{
+  transform: translateY(-100%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.boot-inner{
+  width: min(560px, 84vw);
+  font-family: var(--mono);
+}
+
+.boot-log{
+  margin: 0 0 18px;
+  min-height: 7.5em;
+  font-family: inherit;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(255,180,84,0.35);
+  white-space: pre-wrap;
+}
+
+.boot-bar{
+  height: 8px;
+  border: 1px solid var(--border);
+}
+
+.boot-fill{
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.18s steps(4);
+}
+
+.boot-skip{
+  margin-top: 14px;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
