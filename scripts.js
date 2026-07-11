@@ -37,6 +37,9 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     return (a.order ?? 0) - (b.order ?? 0);
   });
 
+  // stable WORLD numbering — follows the sorted order, unaffected by filtering
+  allProjects.forEach((p, i) => { p._world = i; });
+
   // tags from data
   const tagSet = new Set();
   allProjects.forEach(p => (p.tags || []).forEach(t => tagSet.add(String(t))));
@@ -54,6 +57,48 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
       render();
     });
   }
+
+  // Arrow keys browse the level strip; Enter opens (native anchor behavior)
+  grid.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const cards = Array.from(grid.querySelectorAll(".level-card"));
+    if (!cards.length) return;
+    const cur = cards.indexOf(document.activeElement);
+    const next = cur === -1
+      ? 0
+      : Math.min(Math.max(cur + (e.key === "ArrowRight" ? 1 : -1), 0), cards.length - 1);
+    if (next === cur) return;
+    e.preventDefault();
+    cards[next].focus({ preventScroll: true });
+    cards[next].scrollIntoView({
+      behavior: REDUCED_MOTION ? "auto" : "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  });
+
+  // Mouse drag-to-scroll (touch scrolls natively); suppresses the click after a drag
+  let dragStartX = null, dragStartLeft = 0, dragMoved = false;
+  grid.addEventListener("mousedown", (e) => {
+    dragStartX = e.pageX;
+    dragStartLeft = grid.scrollLeft;
+    dragMoved = false;
+  });
+  window.addEventListener("mousemove", (e) => {
+    if (dragStartX === null) return;
+    const dx = e.pageX - dragStartX;
+    if (Math.abs(dx) > 4) {
+      dragMoved = true;
+      grid.scrollLeft = dragStartLeft - dx;
+    }
+  });
+  window.addEventListener("mouseup", () => { dragStartX = null; });
+  grid.addEventListener("click", (e) => {
+    if (dragMoved) {
+      e.preventDefault();
+      dragMoved = false;
+    }
+  }, true);
 
   function renderFilterChips() {
     if (!tagFiltersEl) return;
@@ -122,11 +167,8 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
 
   function makeCard(p, index = 0) {
     const card = document.createElement("a");
-    card.className = "project-card";
-    card.classList.add("card-animate");
+    card.className = "project-card level-card card-animate";
     card.style.setProperty("--card-index", index);
-    if (p.wide) card.classList.add("wide");
-    if (!p.image) card.classList.add("no-image");
     if (p.featured) card.classList.add("featured");
 
     const href = getProjectHref(p);
@@ -138,35 +180,53 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     }
 
     const img = p.image ? `background-image:url('${p.image}')` : "";
-    const tagsHtml = Array.isArray(p.tags)
-      ? p.tags.map(t => `<span class="tag">${escapeHtml(String(t))}</span>`).join("")
-      : "";
+    const world = String((p._world ?? index) + 1).padStart(2, "0");
+    const yearHtml = p.year != null ? ` · ${escapeHtml(String(p.year))}` : "";
 
-    const showCta = href !== "#";
+    const stamps = [
+      p.featured ? `<span class="stamp stamp-feat">Featured</span>` : "",
+      p.wip
+        ? `<span class="stamp stamp-dev">In Dev</span>`
+        : `<span class="stamp stamp-clear">Clear!</span>`,
+    ].filter(Boolean).join("");
+
+    const tagsHtml = Array.isArray(p.tags)
+      ? p.tags.map(t => escapeHtml(String(t))).join(" · ")
+      : "";
 
     const metaParts = [
       buildTeamIndicator(p.team ?? null),
       buildDurationIndicator(p.duration ?? null),
-      p.year != null ? `<span class="year">${escapeHtml(String(p.year))}</span>` : "",
     ].filter(Boolean);
-    const titleRightHtml = metaParts.join('<span class="meta-sep">·</span>');
+    const indicatorsHtml = metaParts.join('<span class="meta-sep">·</span>');
 
     card.innerHTML = `
-      <div class="thumb-wrap"><div class="thumb" style="${img}"></div></div>
-      ${p.featured ? `<span class="card-badge">Featured</span>` : ""}
-      ${p.wip ? `<span class="card-badge card-badge--wip">WIP</span>` : ""}
-      <div class="card-body">
-        <div class="title-row">
-          <h3>${escapeHtml(p.title ?? "Untitled")}</h3>
-          <div class="title-row-right">${titleRightHtml}</div>
+      <div class="level-art"><div class="level-art-img${p.image ? "" : " no-image"}" style="${img}"></div></div>
+      <div class="level-meta">
+        <div class="level-topline">
+          <span class="level-num">World ${world}${yearHtml}</span>
+          <span class="level-stamps">${stamps}</span>
         </div>
-        <p class="desc">${escapeHtml(p.description ?? "")}</p>
-        <div class="card-footer">
-          <div class="tags">${tagsHtml}</div>
-          ${showCta ? `<span class="card-cta">View Details →</span>` : ""}
+        <h3 class="level-title">${escapeHtml(p.title ?? "Untitled")}</h3>
+        <p class="level-desc">${escapeHtml(p.description ?? "")}</p>
+        <div class="level-foot">
+          <span class="level-indicators">${indicatorsHtml}</span>
+          <span class="level-tags">${tagsHtml}</span>
         </div>
+        ${href !== "#" ? `<span class="level-enter">▸ Enter Level</span>` : ""}
       </div>
     `;
+
+    // Motion preview — swap art to the gameplay loop on hover (lazy-loads once)
+    if (p.preview) {
+      const art = card.querySelector(".level-art-img");
+      card.addEventListener("mouseenter", () => {
+        art.style.backgroundImage = `url('${p.preview}')`;
+      });
+      card.addEventListener("mouseleave", () => {
+        art.style.backgroundImage = p.image ? `url('${p.image}')` : "";
+      });
+    }
 
     return card;
   }

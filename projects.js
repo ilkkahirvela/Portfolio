@@ -74,6 +74,7 @@ const PROJECTS = [
     team: 1,
     duration: "~8 weeks",
     image: "images/chessmachine3000/gameplay.webp",
+    preview: "images/chessmachine3000/bot-vs-bot.gif",
     description:
       "Terminal-based chess engine with a minimax AI opponent. Supports human vs bot and bot vs bot modes with full chess rule coverage.",
     tags: ["C++", "Chess", "AI", "Minimax", "Algorithms"],
@@ -141,6 +142,7 @@ const PROJECTS = [
     team: 1,
     duration: "~1 week",
     image: "images/mazesolver/mazesolver-preview.webp",
+    preview: "images/mazesolver/maze-solver-demo.gif",
     description:
       "Generates and solves mazes in real time, with animated step-by-step visualization and adjustable settings.",
     tags: ["C++", "SFML", "ImGui", "Algorithms", "Visualization"],
