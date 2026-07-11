@@ -265,7 +265,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
         }
       }
     }
-    ctx.strokeStyle = 'rgba(95,157,231,0.10)';
+    ctx.strokeStyle = 'rgba(255,180,84,0.10)';
     ctx.lineWidth = 0.7;
     ctx.stroke();
 
@@ -285,7 +285,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
         }
       }
     }
-    ctx.strokeStyle = 'rgba(95,157,231,0.22)';
+    ctx.strokeStyle = 'rgba(255,180,84,0.22)';
     ctx.stroke();
 
     t += 0.009;
@@ -383,7 +383,7 @@ scrambleText(document.querySelector('#pTitle'));
 
     card.style.transition = 'transform 0.08s ease';
     card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${-dy * MAX_TILT}deg) rotateY(${dx * MAX_TILT}deg) translateY(-4px)`;
-    card.style.boxShadow = `${dx * 6}px ${dy * 6}px 18px rgba(247,140,140,0.12), 0 20px 48px rgba(0,0,0,0.5)`;
+    card.style.boxShadow = `${dx * 6}px ${dy * 6}px 18px rgba(255,180,84,0.10), 0 20px 48px rgba(0,0,0,0.5)`;
   });
 
   grid.addEventListener('mouseout', e => {
@@ -535,7 +535,8 @@ document.addEventListener("click", e => {
 
     if (footer) {
       const footerVisible = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top);
-      btn.style.bottom = footerVisible > 0 ? `${footerVisible + 16}px` : "";
+      // 60px base offset keeps the button above the fixed HUD bar
+      btn.style.bottom = footerVisible > 0 ? `${Math.max(footerVisible + 16, 60)}px` : "";
     }
   }
 
