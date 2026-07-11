@@ -691,9 +691,9 @@ section{
   padding: 5px 10px;
   border-radius: 999px;
 
-  color: var(--accent);
-  background: rgba(0,0,0,0.25);
-  border: 1px solid rgba(247,140,140,0.45);
+  color: var(--muted);
+  background: rgba(0,0,0,0.30);
+  border: 1px solid rgba(255,255,255,0.14);
 }
 
 /* Wide card */
@@ -769,11 +769,11 @@ section{
   align-items: center;
   gap: 6px;
   background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(247,140,140,0.45);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 999px;
   padding: 6px 13px;
 
-  color: var(--accent);
+  color: var(--text);
   font-size: 0.875rem;
   font-weight: 500;
 
@@ -782,7 +782,7 @@ section{
 
 .tech-tag:hover{
   transform: translateY(-2px);
-  background: rgba(247,140,140,0.12);
+  background: rgba(255,255,255,0.07);
 }
 
 .pips{
@@ -866,28 +866,22 @@ section{
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
-  border: 1px solid rgba(247,140,140,0.50);
-  background: rgba(247,140,140,0.08);
-  color: var(--accent);
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
   transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
 }
 
 .contact-btn:hover{
   transform: translateY(-2px);
-  border-color: rgba(247,140,140,0.8);
-  background: rgba(247,140,140,0.14);
+  border-color: rgba(255,255,255,0.32);
+  background: rgba(255,255,255,0.07);
 }
 
-.contact-btn--secondary{
-  border-color: rgba(15,191,62,0.45);
-  background: rgba(15,191,62,0.08);
-  color: #0FBF3E;
-}
-
-.contact-btn--secondary:hover{
-  border-color: rgba(15,191,62,0.75);
-  background: rgba(15,191,62,0.14);
-}
+/* Brand color lives on the icon only */
+.email-trigger svg{ color: var(--accent); }
+.contact-btn--itch svg{ color: #fa5c5c; }
+.contact-btn--secondary svg{ color: #0FBF3E; }
 
 button.contact-btn{
   cursor: pointer;
@@ -899,8 +893,8 @@ button.contact-btn{
 .email-wrap:hover .email-trigger,
 .email-wrap:focus-within .email-trigger{
   transform: translateY(-2px);
-  border-color: rgba(247,140,140,0.8);
-  background: rgba(247,140,140,0.14);
+  border-color: rgba(255,255,255,0.32);
+  background: rgba(255,255,255,0.07);
 }
 
 /* Email popover */
@@ -978,17 +972,6 @@ button.contact-btn{
 .email-popover__item:hover{
   background: rgba(255,255,255,0.07);
   color: #fff;
-}
-
-.contact-btn--itch{
-  border-color: rgba(250,92,92,0.50);
-  background: rgba(250,92,92,0.08);
-  color: #fa5c5c;
-}
-
-.contact-btn--itch:hover{
-  border-color: rgba(250,92,92,0.8);
-  background: rgba(250,92,92,0.14);
 }
 
 /* ============================
@@ -1411,33 +1394,11 @@ body:has(#about) main{
   filter: brightness(1.15);
 }
 
-/* Itch.io / demo — red */
-#project-details .btn-itch{
-  color: #fa5c5c;
-  border-color: rgba(250,92,92,0.55);
-  background: rgba(250,92,92,0.10);
-}
-
-/* Trailer / video — purple */
-#project-details .btn-trailer{
-  color: #B97EE8;
-  border-color: rgba(185,126,232,0.50);
-  background: rgba(185,126,232,0.10);
-}
-
-/* GitHub — green */
-#project-details .btn-github{
-  color: #0FBF3E;
-  border-color: rgba(15,191,62,0.45);
-  background: rgba(15,191,62,0.08);
-}
-
-/* Docs — warm parchment */
-#project-details .btn-docs{
-  color: #d4bc72;
-  border-color: rgba(212,188,114,0.42);
-  background: rgba(212,188,114,0.07);
-}
+/* Brand color lives on the icon only */
+#project-details .btn-itch .btn-icon{ color: #fa5c5c; }
+#project-details .btn-trailer .btn-icon{ color: #B97EE8; }
+#project-details .btn-github .btn-icon{ color: #0FBF3E; }
+#project-details .btn-docs .btn-icon{ color: #d4bc72; }
 
 /* Right rail */
 #project-details .project-rail{
