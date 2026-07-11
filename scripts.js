@@ -24,18 +24,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     resultsCountEl = null;
   }
 
-  // featured first, then non-WIP before WIP, then newest, then manual order
-  const allProjects = [...PROJECTS].sort((a, b) => {
-    const af = a.featured ? 1 : 0;
-    const bf = b.featured ? 1 : 0;
-    if (af !== bf) return bf - af;
-    const aw = a.wip ? 1 : 0;
-    const bw = b.wip ? 1 : 0;
-    if (aw !== bw) return aw - bw;
-    const yearDiff = (Number(b.year) || 0) - (Number(a.year) || 0);
-    if (yearDiff !== 0) return yearDiff;
-    return (a.order ?? 0) - (b.order ?? 0);
-  });
+  const allProjects = sortedProjects(PROJECTS);
 
   // stable WORLD numbering — follows the sorted order, unaffected by filtering
   allProjects.forEach((p, i) => { p._world = i; });
@@ -503,6 +492,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Page exit transition for internal navigation
 window.addEventListener("pageshow", e => {
   document.body.classList.remove("page-exit");
+  // bfcache restore can resurrect a mid-navigation loading wipe
+  document.querySelectorAll(".load-wipe").forEach(el => el.remove());
   if (e.persisted) {
     // bfcache restore: CSS animations have already played — force-restart them
     const animated = document.querySelectorAll(
@@ -542,8 +533,23 @@ document.addEventListener("click", e => {
     link.getAttribute("aria-disabled") === "true"
   ) return;
   e.preventDefault();
-  document.body.classList.add("page-exit");
-  setTimeout(() => { window.location.href = href; }, 130);
+
+  // NOW LOADING wipe with a destination label; falls back to the old fade
+  if (window.HUD?.loading) {
+    let label = "";
+    const card = link.closest(".level-card");
+    if (card) {
+      const world = card.querySelector(".level-num")?.textContent.split("·")[0].trim() || "";
+      const title = card.querySelector(".level-title")?.textContent.trim() || "";
+      label = [world, title].filter(Boolean).join(" · ");
+    } else if (/index\.html|^\.?\/?$/.test(href.split("#")[0])) {
+      label = "Level Select";
+    }
+    window.HUD.loading(label, () => { window.location.href = href; });
+  } else {
+    document.body.classList.add("page-exit");
+    setTimeout(() => { window.location.href = href; }, 130);
+  }
 });
 
 // Active nav section highlighting
@@ -574,13 +580,22 @@ document.addEventListener("click", e => {
   }, { passive: true });
 })();
 
-// Header scroll effect
+// Header scroll effect — on home the title screen owns the top, so the
+// header stays hidden until the visitor scrolls past most of the hero
 (() => {
   const header = document.querySelector("header");
   if (!header) return;
-  window.addEventListener("scroll", () => {
+  const isHome = !!document.getElementById("about");
+
+  function update() {
     header.classList.toggle("scrolled", window.scrollY > 10);
-  }, { passive: true });
+    if (isHome) {
+      header.classList.toggle("header-hidden", window.scrollY < window.innerHeight * 0.45);
+    }
+  }
+
+  window.addEventListener("scroll", update, { passive: true });
+  update();
 })();
 
 // Back to top
@@ -762,11 +777,82 @@ document.addEventListener("click", e => {
   copyBtn?.addEventListener("click", e => {
     e.stopPropagation();
     navigator.clipboard.writeText(EMAIL).then(() => {
+      window.HUD?.achieve?.("contact", "CONTACT ACQUIRED", 200);
       clearTimeout(copyResetTimer);
       copyBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
       copyResetTimer = setTimeout(() => { copyBtn.innerHTML = originalCopyHtml; }, 1200);
     });
   });
+})();
+
+// Space to start — title screen affordance (only while at the top)
+(() => {
+  const projects = document.getElementById("projects");
+  if (!projects) return;
+  window.addEventListener("keydown", e => {
+    if (e.key !== " " || window.scrollY > 60) return;
+    if (e.target.closest?.("input, textarea, select, button, a")) return;
+    e.preventDefault();
+    smoothScrollTo(projects);
+  });
+})();
+
+// Pixel avatar on the character sheet
+(() => {
+  const canvas = document.getElementById("avatarCanvas");
+  if (!canvas) return;
+  const MAP = [
+    "............",
+    "...dddddd...",
+    "..daaaaaad..",
+    "..daaaaaad..",
+    "..d.iiii.d..",
+    "..diikkiid..",
+    "...iiiiii...",
+    "...ik..ki...",
+    "...iiiiii...",
+    "....iiii....",
+    "...d....d...",
+    "............",
+  ];
+  const COLORS = { a: "#FFB454", d: "#8A5A2A", i: "#EDE6DA", k: "#0B0908" };
+  const ctx = canvas.getContext("2d");
+  MAP.forEach((row, y) => {
+    [...row].forEach((ch, x) => {
+      if (COLORS[ch]) {
+        ctx.fillStyle = COLORS[ch];
+        ctx.fillRect(x, y, 1, 1);
+      }
+    });
+  });
+})();
+
+// Stat sheet — cells fill when the card scrolls into view
+(() => {
+  const card = document.getElementById("statCard");
+  if (!card) return;
+  new IntersectionObserver((entries, obs) => {
+    if (entries[0].isIntersecting) {
+      card.classList.add("go");
+      obs.disconnect();
+    }
+  }, { threshold: 0.25 }).observe(card);
+})();
+
+// Continue screen countdown — loops 9→0 while visible
+(() => {
+  const el = document.getElementById("continueCount");
+  if (!el || REDUCED_MOTION) return;
+  let n = 9;
+  let visible = false;
+  new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+  }, { threshold: 0.3 }).observe(el);
+  setInterval(() => {
+    if (!visible) return;
+    n = n > 0 ? n - 1 : 9;
+    el.textContent = n;
+  }, 900);
 })();
 
 // Footer email — click copies address, href keeps mailto for right-click

@@ -70,7 +70,31 @@
     toast(name, pts);
   }
 
-  window.HUD = { toast, addScore, achieve };
+  // NOW LOADING wipe for internal navigation (caller navigates in the callback)
+  function loading(label, done) {
+    if (REDUCED) { done(); return; }
+    const wipe = document.createElement("div");
+    wipe.className = "load-wipe";
+    wipe.setAttribute("aria-hidden", "true");
+    const inner = document.createElement("div");
+    inner.className = "load-inner";
+    const lbl = document.createElement("div");
+    lbl.className = "load-label";
+    lbl.textContent = "Now Loading";
+    const target = document.createElement("div");
+    target.className = "load-target";
+    target.textContent = label || "";
+    const barWrap = document.createElement("div");
+    barWrap.className = "load-bar";
+    barWrap.appendChild(document.createElement("i"));
+    inner.append(lbl, target, barWrap);
+    wipe.appendChild(inner);
+    document.body.appendChild(wipe);
+    requestAnimationFrame(() => requestAnimationFrame(() => wipe.classList.add("in")));
+    setTimeout(done, 380);
+  }
+
+  window.HUD = { toast, addScore, achieve, loading };
 
   // ---- scroll progress + scroll achievements ----
   const xpFill = bar.querySelector(".hud-xp i");

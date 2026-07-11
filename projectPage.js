@@ -70,6 +70,18 @@
   document.title = `Ilkka Hirvelä | ${project.title || "Project"}`;
   if (elTitle) elTitle.textContent = project.title || "Project";
 
+  // Briefing eyebrow: WORLD 0X · LEVEL BRIEFING + status stamp
+  const elBriefing = document.getElementById("pBriefing");
+  if (elBriefing && typeof sortedProjects === "function") {
+    const worldIdx = sortedProjects().findIndex(p => p.id === project.id);
+    const world = worldIdx >= 0 ? `World ${String(worldIdx + 1).padStart(2, "0")}` : "";
+    const stamp = project.wip
+      ? `<span class="stamp stamp-dev">In Dev</span>`
+      : `<span class="stamp stamp-clear">Clear!</span>`;
+    elBriefing.innerHTML =
+      `<span>${escapeHtml([world, "Level Briefing"].filter(Boolean).join(" · "))}</span>${stamp}`;
+  }
+
   // Lead text: prefer content.summary, fallback to description
   const lead = cleanText(project.content?.summary) || cleanText(project.description) || "";
   if (elLead) elLead.textContent = lead;

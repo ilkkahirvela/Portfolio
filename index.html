@@ -38,9 +38,16 @@
     <main>
     <section id="about">
         <canvas id="heroCanvas"></canvas>
-        <h1>Welcome to My Portfolio</h1>
+        <p class="title-eyebrow">Game Development Student</p>
+        <h1>Ilkka Hirvelä</h1>
         <p>I'm a game development student specializing in Unity and C#, focused on building scalable gameplay systems and shipping playable experiences. Take a look at what I've built.</p>
         <p class="about-open">Open to internship and junior game developer roles</p>
+        <ul class="title-menu">
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#tech-exp">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <p class="press-start" aria-hidden="true">▼ Press space or scroll to start</p>
     </section>
 
     <section id="projects">
@@ -63,42 +70,50 @@
 
     <section id="tech-exp">
         <h2>Technical Experience</h2>
-        <p class="pips-legend">
-            <span><span class="pips"><b></b><b></b><b></b></span> Comfortable</span>
-            <span><span class="pips"><b></b><b></b><b class="off"></b></span> Familiar</span>
-            <span><span class="pips"><b></b><b class="off"></b><b class="off"></b></span> Basics</span>
-        </p>
-        <div class="skill-groups">
-            <div class="skill-group">
-                <span class="skill-group-label">Languages</span>
-                <div class="tech-tags">
-                    <span class="tech-tag">C# <span class="pips"><b></b><b></b><b></b></span></span>
-                    <span class="tech-tag">C++ <span class="pips"><b></b><b></b><b class="off"></b></span></span>
-                    <span class="tech-tag">Python <span class="pips"><b></b><b></b><b class="off"></b></span></span>
-                    <span class="tech-tag">JavaScript <span class="pips"><b></b><b></b><b class="off"></b></span></span>
-                    <span class="tech-tag">Lua <span class="pips"><b></b><b></b><b class="off"></b></span></span>
-                    <span class="tech-tag">GDScript <span class="pips"><b></b><b></b><b class="off"></b></span></span>
-                    <span class="tech-tag">SQL <span class="pips"><b></b><b class="off"></b><b class="off"></b></span></span>
-                    <span class="tech-tag">HTML <span class="pips"><b></b><b class="off"></b><b class="off"></b></span></span>
-                    <span class="tech-tag">CSS <span class="pips"><b></b><b class="off"></b><b class="off"></b></span></span>
+        <p class="stat-legend">LVL 3 · Comfortable&ensp;&ensp;LVL 2 · Familiar&ensp;&ensp;LVL 1 · Basics</p>
+        <div class="charsheet">
+            <div class="char-card">
+                <canvas id="avatarCanvas" width="12" height="12" aria-hidden="true"></canvas>
+                <div class="char-rows">
+                    <div><b>Player</b><span>Ilkka Hirvelä</span></div>
+                    <div><b>Class</b><span>Gameplay Programmer</span></div>
+                    <div><b>Spec</b><span>Unity / C#</span></div>
+                    <div><b>Quest</b><span>Internship · Junior Role</span></div>
+                    <div><b>Status</b><span class="online">Open to Work</span></div>
                 </div>
             </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Engines</span>
-                <div class="tech-tags">
-                    <span class="tech-tag">Unity <span class="pips"><b></b><b></b><b></b></span></span>
-                    <span class="tech-tag">Godot <span class="pips"><b></b><b></b><b class="off"></b></span></span>
-                    <span class="tech-tag">Roblox Studio <span class="pips"><b></b><b></b><b class="off"></b></span></span>
+            <div class="stat-card" id="statCard">
+                <div class="stat-group">
+                    <span class="stat-group-label">Languages</span>
+                    <div class="stat-rows">
+                        <div class="stat-row"><span>C#</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b class="on"></b></span><span class="stat-lvl">LVL 3</span></div>
+                        <div class="stat-row"><span>C++</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                        <div class="stat-row"><span>Python</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                        <div class="stat-row"><span>JavaScript</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                        <div class="stat-row"><span>Lua</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                        <div class="stat-row"><span>GDScript</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                        <div class="stat-row"><span>SQL</span><span class="stat-cells"><b class="on"></b><b></b><b></b></span><span class="stat-lvl">LVL 1</span></div>
+                        <div class="stat-row"><span>HTML</span><span class="stat-cells"><b class="on"></b><b></b><b></b></span><span class="stat-lvl">LVL 1</span></div>
+                        <div class="stat-row"><span>CSS</span><span class="stat-cells"><b class="on"></b><b></b><b></b></span><span class="stat-lvl">LVL 1</span></div>
+                    </div>
                 </div>
-            </div>
-            <div class="skill-group">
-                <span class="skill-group-label">Tools</span>
-                <div class="tech-tags">
-                    <span class="tech-tag">Aseprite <span class="pips"><b></b><b></b><b></b></span></span>
-                    <span class="tech-tag">Git <span class="pips"><b></b><b></b><b class="off"></b></span></span>
-                    <span class="tech-tag">NodeJS <span class="pips"><b></b><b></b><b class="off"></b></span></span>
-                    <span class="tech-tag">Blender <span class="pips"><b></b><b class="off"></b><b class="off"></b></span></span>
-                    <span class="tech-tag">Photoshop <span class="pips"><b></b><b class="off"></b><b class="off"></b></span></span>
+                <div class="stat-group">
+                    <span class="stat-group-label">Engines</span>
+                    <div class="stat-rows">
+                        <div class="stat-row"><span>Unity</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b class="on"></b></span><span class="stat-lvl">LVL 3</span></div>
+                        <div class="stat-row"><span>Godot</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                        <div class="stat-row"><span>Roblox Studio</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                    </div>
+                </div>
+                <div class="stat-group">
+                    <span class="stat-group-label">Tools</span>
+                    <div class="stat-rows">
+                        <div class="stat-row"><span>Aseprite</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b class="on"></b></span><span class="stat-lvl">LVL 3</span></div>
+                        <div class="stat-row"><span>Git</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                        <div class="stat-row"><span>NodeJS</span><span class="stat-cells"><b class="on"></b><b class="on"></b><b></b></span><span class="stat-lvl">LVL 2</span></div>
+                        <div class="stat-row"><span>Blender</span><span class="stat-cells"><b class="on"></b><b></b><b></b></span><span class="stat-lvl">LVL 1</span></div>
+                        <div class="stat-row"><span>Photoshop</span><span class="stat-cells"><b class="on"></b><b></b><b></b></span><span class="stat-lvl">LVL 1</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,7 +121,11 @@
 
     <section id="contact">
         <h2>Contact</h2>
+        <div class="continue-screen">
+        <p class="continue-title" aria-hidden="true">Continue?</p>
+        <p class="continue-count" id="continueCount" aria-hidden="true">9</p>
         <p>Feel free to reach out — I'm open to opportunities, collaborations, and conversations about game development.</p>
+        <p class="insert-coin" aria-hidden="true">▼ Insert coin — pick a slot</p>
         <div class="contact-links">
             <div class="email-wrap">
                 <button class="contact-btn email-trigger" aria-haspopup="true" aria-expanded="false">
@@ -132,6 +151,7 @@
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
                 GitHub
             </a>
+        </div>
         </div>
     </section>
     </main>
