@@ -48,17 +48,6 @@ body{
   transition: opacity 0.12s ease;
 }
 
-body::before{
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(circle, rgba(255,180,84,0.10) 1px, transparent 1px);
-  background-size: 28px 28px;
-  background-position: 0px var(--parallax-y, 0px);
-}
-
 body.page-exit{
   opacity: 0;
 }
@@ -242,18 +231,29 @@ section{
 
 #about{
   position: relative;
-  /* Full-viewport title screen (minus fixed header + HUD bar) */
+  /* Full-viewport title screen (minus fixed header + HUD bar) —
+     full-bleed so the starfield spans the whole screen */
+  max-width: none;
   min-height: calc(100vh - 128px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  padding-left: 0;
+  padding-right: 0;
   padding-bottom: 4rem;
+}
+
+.title-inner{
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .title-eyebrow{
   position: relative;
-  margin: 0 0 12px;
+  margin: 0 0 26px;
   font-family: var(--mono);
   font-size: 0.72rem;
   letter-spacing: 0.26em;
@@ -264,23 +264,23 @@ section{
 .title-menu{
   position: relative;
   list-style: none;
-  margin: 2.4rem 0 0;
+  margin: 40px 0 0;
   padding: 0;
   font-family: var(--mono);
 }
 
 .title-menu li{
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .title-menu a{
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 5px 10px 5px 0;
+  padding: 6px 10px 6px 0;
   color: var(--text);
   text-decoration: none;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   transition: color 0.15s ease;
@@ -329,8 +329,6 @@ section{
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
 }
 
 #about h1,
@@ -339,69 +337,27 @@ section{
 }
 
 #about h1{
-  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  font-size: clamp(2.4rem, 6.5vw, 4.2rem);
   font-weight: 700;
-  color: var(--accent2);
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  margin: 0 0 1.1rem 0;
-  text-shadow: 0 0 34px rgba(255,180,84,0.18);
+  color: var(--accent);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-shadow: 0 0 26px rgba(255,180,84,0.4);
 }
 
 #about p{
-  max-width: 70ch;
-  margin: 0 0 0.75rem 0;
-  color: var(--text);
-  opacity: 0.95;
-}
-
-/* ============================
-   About glow
-============================ */
-@keyframes aboutGlow{
-  to{ opacity: 0.45; }
-}
-
-#about::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 70% 80% at 0%   50%, rgba(255,180,84,0.09)  0%, transparent 70%),
-    radial-gradient(ellipse 50% 60% at 100% 30%, rgba(255,180,84,0.09) 0%, transparent 70%);
-  pointer-events: none;
-  animation: aboutGlow 6s ease-in-out infinite alternate;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%),
-                      linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
-  -webkit-mask-composite: destination-in;
-  mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%),
-              linear-gradient(to bottom, black 0%, black 55%, transparent 100%);
-  mask-composite: intersect;
-}
-
-@keyframes pulse{
-  0%, 100%{ box-shadow: 0 0 0 2px rgba(158,206,106,0.25); }
-  50%      { box-shadow: 0 0 0 5px rgba(158,206,106,0.0); }
-}
-
-.about-open{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 0.25rem;
-  font-size: 0.9rem;
+  max-width: 54ch;
+  margin: 24px 0 0;
   color: var(--muted);
-  opacity: 1;
+  font-size: 1.04rem;
 }
 
-.about-open::before{
-  content: "";
-  flex-shrink: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: pulse 2.2s ease infinite;
+/* PRESS START prompt — specific selector so the #about p color doesn't mute it */
+#about p.press-start{
+  margin-top: 3rem;
+  color: var(--accent);
+  font-size: 0.7rem;
 }
 
 /* ============================

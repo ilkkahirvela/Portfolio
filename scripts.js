@@ -242,7 +242,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   }
 })();
 
-// Hero canvas — wireframe terrain
+// Hero canvas — drifting starfield
 (() => {
   const canvas = document.getElementById('heroCanvas');
   if (!canvas) return;
@@ -250,126 +250,50 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   const ctx = canvas.getContext('2d');
   const section = document.getElementById('about');
 
-  const isMobile = window.innerWidth < 640;
-  const COLS = isMobile ? 16 : 26;
-  const ROWS = isMobile ? 8 : 13;
-  const AMP  = 28;  // wave height in px
-  const COS  = Math.cos(Math.PI / 6);
-  const SIN  = Math.sin(Math.PI / 6);
-
-  let w, h, maxWy, xScale, t = 0;
+  let W, H;
   let visible = true;
-  let bumps = new Float32Array(COLS * ROWS);
-  let mouse = { x: null, y: null };
 
   function resize() {
-    w     = canvas.width  = section.offsetWidth;
-    h     = canvas.height = section.offsetHeight;
-    maxWy  = h * 0.65;
-    xScale = (maxWy * COS / w + 1) * 1.12;
+    W = canvas.width = section.offsetWidth;
+    H = canvas.height = section.offsetHeight;
   }
 
-  function getZ(c, r) {
-    const nx = c / (COLS - 1);
-    const ny = r / (ROWS - 1);
-    return (
-      Math.sin(nx * Math.PI * 2.8 + t) * 0.5 +
-      Math.sin(ny * Math.PI * 2.2 + t * 0.7) * 0.35 +
-      Math.sin((nx + ny) * Math.PI * 2 + t * 1.1) * 0.15
-    ) * AMP + bumps[r * COLS + c];
-  }
+  const stars = Array.from({ length: 90 }, () => ({
+    x: Math.random(),
+    y: Math.random(),
+    s: 0.5 + Math.random() * 1.3,
+    v: 0.02 + Math.random() * 0.09,
+    ph: Math.random() * Math.PI * 2,
+  }));
 
-  function project(c, r) {
-    const z  = getZ(c, r);
-    const wy = (r / (ROWS - 1)) * maxWy;
-    const wx = (c / (COLS - 1) - 0.5) * w * xScale;
-    return [
-      wx + wy * COS - (maxWy * COS) / 2 + w * 0.5,
-      -z * 0.45 + wy * SIN + h * 0.55,
-    ];
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, w, h);
-
-    // Decay bumps
-    for (let i = 0; i < bumps.length; i++) bumps[i] *= 0.92;
-
-    // Add mouse bump
-    if (mouse.x !== null) {
-      const mc = (mouse.x / w) * (COLS - 1);
-      const mr = (mouse.y / h) * (ROWS - 1);
-      for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-          const d = Math.sqrt((c - mc) ** 2 + (r - mr) ** 2);
-          if (d < 4) bumps[r * COLS + c] += (1 - d / 4) * 2;
-        }
-      }
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    for (const st of stars) {
+      const a = 0.25 + 0.55 * Math.abs(Math.sin(t * 0.0006 + st.ph));
+      ctx.fillStyle = `rgba(255,200,140,${a.toFixed(2)})`;
+      ctx.fillRect(st.x * W, st.y * H, st.s, st.s);
     }
-
-    // Precompute projected points
-    const pts = Array.from({ length: ROWS }, (_, r) =>
-      Array.from({ length: COLS }, (_, c) => project(c, r))
-    );
-
-    // Base pass — all edges, low opacity (1 draw call)
-    ctx.beginPath();
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        if (c < COLS - 1) {
-          ctx.moveTo(...pts[r][c]);
-          ctx.lineTo(...pts[r][c + 1]);
-        }
-        if (r < ROWS - 1) {
-          ctx.moveTo(...pts[r][c]);
-          ctx.lineTo(...pts[r + 1][c]);
-        }
-      }
-    }
-    ctx.strokeStyle = 'rgba(255,180,84,0.10)';
-    ctx.lineWidth = 0.7;
-    ctx.stroke();
-
-    // Highlight pass — elevated edges only (1 draw call)
-    ctx.beginPath();
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        const z = getZ(c, r);
-        if (z < AMP * 0.35) continue;
-        if (c < COLS - 1 && getZ(c + 1, r) > AMP * 0.35) {
-          ctx.moveTo(...pts[r][c]);
-          ctx.lineTo(...pts[r][c + 1]);
-        }
-        if (r < ROWS - 1 && getZ(c, r + 1) > AMP * 0.35) {
-          ctx.moveTo(...pts[r][c]);
-          ctx.lineTo(...pts[r + 1][c]);
-        }
-      }
-    }
-    ctx.strokeStyle = 'rgba(255,180,84,0.22)';
-    ctx.stroke();
-
-    t += 0.009;
-    // Reduced motion: draw a single static frame, no loop
-    if (visible && !REDUCED_MOTION) requestAnimationFrame(animate);
   }
 
-  section.addEventListener('mousemove', e => {
-    const rect = section.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
-  });
-  section.addEventListener('mouseleave', () => { mouse.x = mouse.y = null; });
-  window.addEventListener('resize', () => { resize(); bumps.fill(0); });
+  function loop(t) {
+    if (visible) {
+      for (const st of stars) {
+        st.y += st.v / 1000;
+        if (st.y > 1) { st.y = 0; st.x = Math.random(); }
+      }
+      draw(t);
+    }
+    requestAnimationFrame(loop);
+  }
 
+  window.addEventListener('resize', resize);
   new IntersectionObserver(entries => {
-    const wasVisible = visible;
     visible = entries[0].isIntersecting;
-    if (visible && !wasVisible) animate();
   }, { threshold: 0 }).observe(section);
 
   resize();
-  animate();
+  if (REDUCED_MOTION) draw(0);
+  else requestAnimationFrame(loop);
 })();
 
 // Text scramble
@@ -416,7 +340,11 @@ function scrambleText(el) {
   el._scrambleId = id;
 }
 
-scrambleText(document.querySelector('#about h1'));
+function scrambleHero() {
+  scrambleText(document.querySelector('#about h1'));
+}
+
+scrambleHero();
 scrambleText(document.querySelector('#pTitle'));
 
 // Card 3D tilt on hover
@@ -526,7 +454,7 @@ window.addEventListener("pageshow", e => {
     });
 
     // Re-run title scramble animations
-    scrambleText(document.querySelector("#about h1"));
+    scrambleHero();
     scrambleText(document.querySelector("#pTitle"));
   }
 });
@@ -579,17 +507,6 @@ document.addEventListener("click", e => {
   }, { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
 
   sections.forEach(s => obs.observe(s));
-})();
-
-// Dot grid parallax
-(() => {
-  const SPEED = 0.05; // background moves at 5% of scroll speed
-  window.addEventListener('scroll', () => {
-    document.documentElement.style.setProperty(
-      '--parallax-y',
-      (window.scrollY * SPEED).toFixed(1) + 'px'
-    );
-  }, { passive: true });
 })();
 
 // Header scroll effect — on home the title screen owns the top, so the
