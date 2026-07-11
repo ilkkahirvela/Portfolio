@@ -6,7 +6,7 @@
   --panel: #141414;
   --panel2: #1b1b1b;
 
-  --text: #cfe9f6;
+  --text: #e6ebef;
   --muted: rgba(207,233,246,0.7);
 
   --accent: #F78C8C;
@@ -612,7 +612,7 @@ section{
   flex-direction: column;
   gap: 10px;
 
-  background: rgba(20,20,20,0.30);
+  background: rgba(14,14,14,0.55);
   border-top: 1px solid rgba(255,255,255,0.10);
   box-shadow: 0 -18px 40px rgba(0,0,0,0.35);
 
