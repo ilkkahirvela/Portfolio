@@ -59,6 +59,7 @@ body.page-exit{
 
 ::-webkit-scrollbar{
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track{
@@ -74,8 +75,12 @@ body.page-exit{
   background: rgba(255,180,84,0.6);
 }
 
-html{
-  scrollbar-color: rgba(255,180,84,0.45) #0B0908;
+/* Firefox only — in Chromium the standard scrollbar-color/width props would
+   override the square ::-webkit-scrollbar styles with the default rounded thumb */
+@supports not selector(::-webkit-scrollbar){
+  html{
+    scrollbar-color: rgba(255,180,84,0.45) #0B0908;
+  }
 }
 
 a{ color: inherit; }
