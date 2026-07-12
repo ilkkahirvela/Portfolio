@@ -928,7 +928,7 @@ section{
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: #0A0806;
-  padding: 54px 24px 44px;
+  padding: 74px 24px 64px;
   text-align: center;
 }
 
@@ -942,30 +942,48 @@ section{
   color: var(--text);
 }
 
-.continue-count{
-  margin: 8px 0 20px;
+/* #contact prefix — outranks the `#contact p` text color, which was muting
+   the amber (same trap as #about p vs .press-start) */
+#contact .continue-count{
+  margin: 20px 0 26px;
   font-family: var(--mono);
-  font-size: 3.6rem;
+  font-size: 4.4rem;
   font-weight: 700;
   line-height: 1;
   color: var(--accent);
-  text-shadow: 0 0 30px rgba(255,180,84,0.4);
+  text-shadow: 0 0 34px rgba(255,180,84,0.45);
+}
+
+@keyframes countTick{
+  0%  { transform: scale(1.28); }
+  100%{ transform: scale(1); }
+}
+
+.continue-count.tick{
+  animation: countTick 0.22s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
 .continue-screen p{
   margin-left: auto;
   margin-right: auto;
+  text-wrap: balance;
   max-width: 60ch;
 }
 
-.insert-coin{
-  margin: 20px 0 0;
+/* Idling-cabinet breathe instead of a hard blink — stays readable, still alive */
+@keyframes coinBreathe{
+  0%, 100%{ opacity: 1; }
+  50%     { opacity: 0.4; }
+}
+
+#contact .insert-coin{
+  margin: 20px auto 0;
   font-family: var(--mono);
   font-size: 0.68rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent);
-  animation: pressBlink 1.6s steps(1) infinite;
+  animation: coinBreathe 2.5s ease-in-out infinite;
 }
 
 .continue-screen .contact-links{

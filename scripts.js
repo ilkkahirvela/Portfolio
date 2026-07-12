@@ -782,6 +782,10 @@ document.addEventListener("click", e => {
     if (!visible) return;
     n = n > 0 ? n - 1 : 9;
     el.textContent = n;
+    // retrigger the tick pop (countTick in CSS)
+    el.classList.remove("tick");
+    void el.offsetWidth;
+    el.classList.add("tick");
   }, 900);
 })();
 
