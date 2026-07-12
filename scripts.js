@@ -169,6 +169,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
       chip.textContent = tag;
 
       chip.addEventListener("click", () => {
+        if (tag === activeTag) return; // no-op re-click; don't replay the switch
         activeTag = tag;
         if (tag !== "All") window.HUD?.achieve?.("curator", "CURATOR — filtered the archive", 50);
         renderFilterChips();
@@ -185,9 +186,14 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   // it (or any animation-name swap) would restart the entrance animation.
   function rerender() {
     if (REDUCED_MOTION) { render(); return; }
-    clearTimeout(offTimer);
     grid.classList.add("strip-off");
+    // If an off→on cycle is already scheduled, let it fire — render() reads the
+    // live activeTag/searchTerm, so it renders the latest selection. Restarting
+    // the timer on every click would keep the strip dark for as long as you keep
+    // filtering, which is what made rapid switching feel clunky.
+    if (offTimer) return;
     offTimer = setTimeout(() => {
+      offTimer = 0;
       grid.classList.remove("strip-off");
       crtEntrance = true;
       render();

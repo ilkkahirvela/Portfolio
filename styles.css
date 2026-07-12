@@ -388,7 +388,11 @@ section{
   100%{ opacity: 1; transform: scaleY(1);    filter: brightness(1); }
 }
 
-.level-strip.strip-off .level-card{
+/* The extra .card-animate raises specificity above the .crt-in entrance rule
+   below, so a filter change that lands mid-entrance powers the current cards
+   cleanly off (and the shorthand resets animation-delay, so they leave together
+   with no stagger pop) instead of hard-cutting to the new set. */
+.level-strip.strip-off .level-card.card-animate{
   animation: crtOff 0.17s ease-in both;
   pointer-events: none;
 }
