@@ -882,13 +882,28 @@ document.addEventListener("click", e => {
   const link = document.querySelector("a.footer-email");
   if (!link) return;
 
-  let resetTimer;
+  const toast = link.querySelector(".footer-email__toast");
+
+  // Visually hidden live region — announces the copy to screen readers,
+  // since the toast itself is aria-hidden decoration
+  const announcer = document.createElement("span");
+  announcer.setAttribute("role", "status");
+  announcer.style.cssText =
+    "position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;";
+  link.after(announcer);
+
   link.addEventListener("click", e => {
     e.preventDefault();
     navigator.clipboard.writeText("hirvela.ilkka@gmail.com").then(() => {
-      clearTimeout(resetTimer);
-      link.textContent = "Email copied!";
-      resetTimer = setTimeout(() => { link.textContent = "Email"; }, 1200);
+      announcer.textContent = "";
+      announcer.textContent = "Email address copied to clipboard";
+      if (!toast) return;
+      toast.classList.remove("rise");
+      void toast.offsetWidth; // reflow so the animation restarts on rapid clicks
+      toast.classList.add("rise");
+    }).catch(() => {
+      // Clipboard unavailable (insecure context, permissions) — fall back to mailto
+      window.location.href = link.href;
     });
   });
 })();
