@@ -926,6 +926,7 @@ section{
   border: 1px solid rgba(255,180,84,0.3);
   border-radius: 1px;
   overflow: hidden;
+  transition: border-color 0.35s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
 .stat-cells b::after{
@@ -943,9 +944,16 @@ section{
   transform: scaleX(1);
 }
 
-.stat-cells b.on:nth-child(1)::after{ transition-delay: 0.05s; }
-.stat-cells b.on:nth-child(2)::after{ transition-delay: 0.2s; }
-.stat-cells b.on:nth-child(3)::after{ transition-delay: 0.35s; }
+/* Filled cells light their frame to the accent so the bar reads as one
+   solid block — a faint frame over the dark panel otherwise misaligns with
+   the fill at fractional display scaling and looks like a notch on top. */
+.stat-card.go .stat-cells b.on{
+  border-color: var(--accent);
+}
+
+.stat-cells b.on:nth-child(1), .stat-cells b.on:nth-child(1)::after{ transition-delay: 0.05s; }
+.stat-cells b.on:nth-child(2), .stat-cells b.on:nth-child(2)::after{ transition-delay: 0.2s; }
+.stat-cells b.on:nth-child(3), .stat-cells b.on:nth-child(3)::after{ transition-delay: 0.35s; }
 
 .stat-lvl{
   text-align: right;
