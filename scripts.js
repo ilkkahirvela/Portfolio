@@ -612,19 +612,21 @@ document.addEventListener("click", e => {
   const btn = document.getElementById("backToTop");
   if (!btn) return;
 
-  const footer = document.querySelector("footer");
+  // On the home page the projects strip is full-bleed, so hold the button back
+  // until that section has scrolled off the top — otherwise it sits over the
+  // cards. Project pages have no strip, so fall back to a simple scroll offset.
+  const projects = document.getElementById("projects");
 
   function updateBtn() {
-    btn.classList.toggle("is-visible", window.scrollY > 400);
-
-    if (footer) {
-      const footerVisible = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top);
-      // 60px base offset keeps the button above the fixed HUD bar
-      btn.style.bottom = footerVisible > 0 ? `${Math.max(footerVisible + 16, 60)}px` : "";
-    }
+    const show = projects
+      ? projects.getBoundingClientRect().bottom <= 0
+      : window.scrollY > 400;
+    btn.classList.toggle("is-visible", show);
   }
 
   window.addEventListener("scroll", updateBtn, { passive: true });
+  window.addEventListener("resize", updateBtn, { passive: true });
+  updateBtn();
 
   btn.addEventListener("click", () => {
     animateScrollTo(0);
