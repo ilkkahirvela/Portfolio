@@ -86,10 +86,10 @@
   const lead = cleanText(project.content?.summary) || cleanText(project.description) || "";
   if (elLead) elLead.textContent = lead;
 
-  // Tags
+  // Tags — single amber mono line, pip-separated (matches the level cards)
   if (elTags) {
     const tags = Array.isArray(project.tags) ? project.tags : [];
-    elTags.innerHTML = tags.map(t => `<span class="tag">${escapeHtml(String(t))}</span>`).join("");
+    elTags.textContent = tags.map(t => String(t)).join(" · ");
   }
 
   // Meta row: team · duration · year
