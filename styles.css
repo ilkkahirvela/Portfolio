@@ -1001,44 +1001,55 @@ section{
   margin-top: 1.25rem;
 }
 
+/* Arcade buttons — credit slots on the continue screen */
 .contact-btn{
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
+  gap: 10px;
+  padding: 12px 22px;
   border-radius: var(--radius-sm);
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.03);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: transparent;
   color: var(--text);
-  transition: transform 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .contact-btn:hover{
-  transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.32);
-  background: rgba(255,255,255,0.07);
+  background: var(--accent);
+  color: #0B0908;
+  border-color: var(--accent);
 }
 
-/* Brand color lives on the icon only */
-.email-trigger svg{ color: var(--accent); }
+/* Brand color lives on the icon at rest (main-branch palette); email stays
+   amber. All flip to neutral dark when the button fills amber on hover. */
+.contact-btn svg{ color: var(--accent); transition: color 0.15s ease; }
 .contact-btn--itch svg{ color: #fa5c5c; }
 .contact-btn--secondary svg{ color: #0FBF3E; }
+.contact-btn:hover svg{ color: #0B0908; }
 
 button.contact-btn{
   cursor: pointer;
   font: inherit;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
 }
 
 /* Keep trigger styled as hovered while popover is open */
 .email-wrap:hover .email-trigger,
 .email-wrap:focus-within .email-trigger{
-  transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.32);
-  background: rgba(255,255,255,0.07);
+  background: var(--accent);
+  color: #0B0908;
+  border-color: var(--accent);
+}
+.email-wrap:hover .email-trigger svg,
+.email-wrap:focus-within .email-trigger svg{
+  color: #0B0908;
 }
 
 /* Email popover */
@@ -1067,8 +1078,8 @@ button.contact-btn{
   white-space: nowrap;
 
   background: rgba(16,14,11,0.96);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   box-shadow: 0 8px 32px rgba(0,0,0,0.55);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -1517,44 +1528,52 @@ body:has(#about) main{
   gap: 10px;
 }
 
+/* Same arcade-button recipe as the continue screen's credit slots */
 #project-details .btn{
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 10px;
 
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 12px 22px;
+  border-radius: var(--radius-sm);
 
   text-decoration: none;
-  font-weight: 700;
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 
-  border: 1px solid rgba(255,180,84,0.22);
-  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
 
-  transition:
-    transform 0.12s ease,
-    border-color 0.12s ease,
-    background 0.12s ease,
-    filter 0.12s ease;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 #project-details .btn-icon{
   width: 14px;
   height: 14px;
   flex-shrink: 0;
+  color: var(--accent); /* docs (and any new link type) sit on amber */
+  transition: color 0.15s ease;
 }
 
-#project-details .btn:hover{
-  transform: translateY(-2px);
-  filter: brightness(1.15);
-}
-
-/* Brand color lives on the icon only */
+/* Brand color at rest (main-branch palette); neutral dark on hover fill */
 #project-details .btn-itch .btn-icon{ color: #fa5c5c; }
 #project-details .btn-trailer .btn-icon{ color: #B97EE8; }
 #project-details .btn-github .btn-icon{ color: #0FBF3E; }
-#project-details .btn-docs .btn-icon{ color: #d4bc72; }
+
+#project-details .btn:hover{
+  background: var(--accent);
+  color: #0B0908;
+  border-color: var(--accent);
+}
+
+#project-details .btn:hover .btn-icon{
+  color: #0B0908;
+}
 
 /* Right rail */
 #project-details .project-rail{
