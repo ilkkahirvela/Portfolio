@@ -37,13 +37,71 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   let activeTag = "All";
   let searchTerm = "";
 
+  // declared before the initial render() below — render() reads crtEntrance
+  let offTimer = 0;
+  let crtEntrance = false;
+
+  // custom strip scrollbar + hint — fade out together when there's nothing to
+  // browse (declared before the initial render(), which calls updateStripChrome)
+  const stripBar = document.getElementById("stripScrollbar");
+  const stripThumb = document.getElementById("stripThumb");
+  const stripHint = document.querySelector(".strip-hint");
+
+  function updateStripChrome() {
+    const maxScroll = grid.scrollWidth - grid.clientWidth;
+    const scrollable = maxScroll > 4;
+    stripBar?.classList.toggle("hidden", !scrollable);
+    stripHint?.classList.toggle("hidden", !scrollable);
+    if (!scrollable || !stripThumb) return;
+    const thumbPct = Math.max((grid.clientWidth / grid.scrollWidth) * 100, 8);
+    stripThumb.style.width = thumbPct + "%";
+    stripThumb.style.marginLeft = ((grid.scrollLeft / maxScroll) * (100 - thumbPct)) + "%";
+  }
+
+  grid.addEventListener("scroll", updateStripChrome, { passive: true });
+  window.addEventListener("resize", updateStripChrome);
+
+  // the bar scrolls the strip: drag the thumb, or press anywhere on the track
+  // (the thumb centers on the cursor) and keep dragging from there
+  let barGrab = null; // cursor offset within the thumb while dragging
+  function barScrollTo(e) {
+    const maxScroll = grid.scrollWidth - grid.clientWidth;
+    const track = stripBar.getBoundingClientRect();
+    const thumbW = stripThumb.getBoundingClientRect().width;
+    const range = track.width - thumbW;
+    if (maxScroll <= 0 || range <= 0) return;
+    const frac = (e.clientX - track.left - barGrab) / range;
+    grid.scrollLeft = Math.max(0, Math.min(1, frac)) * maxScroll;
+  }
+  stripBar?.addEventListener("pointerdown", (e) => {
+    if (grid.scrollWidth - grid.clientWidth <= 0) return;
+    e.preventDefault();
+    stripBar.setPointerCapture(e.pointerId);
+    const thumb = stripThumb.getBoundingClientRect();
+    barGrab = (e.clientX >= thumb.left && e.clientX <= thumb.right)
+      ? e.clientX - thumb.left
+      : thumb.width / 2;
+    grid.style.scrollSnapType = "none"; // don't fight the pointer mid-drag
+    barScrollTo(e);
+  });
+  stripBar?.addEventListener("pointermove", (e) => {
+    if (barGrab !== null) barScrollTo(e);
+  });
+  const endBarDrag = () => {
+    if (barGrab === null) return;
+    barGrab = null;
+    grid.style.scrollSnapType = "";
+  };
+  stripBar?.addEventListener("pointerup", endBarDrag);
+  stripBar?.addEventListener("pointercancel", endBarDrag);
+
   renderFilterChips();
   render();
 
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       searchTerm = (e.target.value || "").trim().toLowerCase();
-      render();
+      rerender();
     });
   }
 
@@ -114,11 +172,27 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
         activeTag = tag;
         if (tag !== "All") window.HUD?.achieve?.("curator", "CURATOR — filtered the archive", 50);
         renderFilterChips();
-        render();
+        rerender();
       });
 
       tagFiltersEl.appendChild(chip);
     });
+  }
+
+  // CRT channel switch on filter/search changes: power the current cards off
+  // to a scanline, then render the new set with a power-on entrance. The
+  // crt-in class lives on the cards themselves and is never removed — removing
+  // it (or any animation-name swap) would restart the entrance animation.
+  function rerender() {
+    if (REDUCED_MOTION) { render(); return; }
+    clearTimeout(offTimer);
+    grid.classList.add("strip-off");
+    offTimer = setTimeout(() => {
+      grid.classList.remove("strip-off");
+      crtEntrance = true;
+      render();
+      crtEntrance = false;
+    }, 170);
   }
 
   function render() {
@@ -139,13 +213,19 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     if (filtered.length === 0) {
       grid.innerHTML = `<div class="empty-state">No projects match your search.</div>`;
     } else {
-      filtered.forEach((p, i) => grid.appendChild(makeCard(p, i)));
+      filtered.forEach((p, i) => {
+        const card = makeCard(p, i);
+        if (crtEntrance) card.classList.add("crt-in");
+        grid.appendChild(card);
+      });
       observeCards();
     }
 
     if (resultsCountEl) {
       resultsCountEl.textContent = `${filtered.length} project${filtered.length === 1 ? "" : "s"}`;
     }
+
+    updateStripChrome();
   }
 
   function observeCards() {

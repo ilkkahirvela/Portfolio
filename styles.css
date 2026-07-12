@@ -382,6 +382,31 @@ section{
   animation-delay: calc(var(--card-index, 0) * 70ms);
 }
 
+/* Filter change — CRT channel switch: cards power off to a scanline,
+   the new set powers back on (see rerender() in scripts.js) */
+@keyframes crtOff{
+  0%  { opacity: 1; transform: scaleY(1);    filter: brightness(1); }
+  40% { opacity: 1; transform: scaleY(1.02); filter: brightness(2.2); }
+  100%{ opacity: 0; transform: scaleY(0.02); filter: brightness(3); }
+}
+
+@keyframes crtOn{
+  0%  { opacity: 0; transform: scaleY(0.04); filter: brightness(2.6); }
+  55% { opacity: 1; transform: scaleY(1.01); filter: brightness(1.5); }
+  100%{ opacity: 1; transform: scaleY(1);    filter: brightness(1); }
+}
+
+.level-strip.strip-off .level-card{
+  animation: crtOff 0.17s ease-in both;
+  pointer-events: none;
+}
+
+.card-animate.crt-in.is-visible{
+  animation-name: crtOn;
+  animation-duration: 0.3s;
+  animation-delay: calc(var(--card-index, 0) * 45ms);
+}
+
 /* ============================
    Empty state
 ============================ */
@@ -491,16 +516,49 @@ section{
   padding: 16px max(20px, calc(50vw - 550px)) 20px;
   user-select: none;
   cursor: grab;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,180,84,0.3) transparent;
 }
 
 .level-strip:active{ cursor: grabbing; }
 
-.level-strip::-webkit-scrollbar{ height: 8px; }
-.level-strip::-webkit-scrollbar-track{ background: transparent; }
-.level-strip::-webkit-scrollbar-thumb{ background: rgba(255,180,84,0.22); }
-.level-strip::-webkit-scrollbar-thumb:hover{ background: rgba(255,180,84,0.45); }
+/* Native scrollbar hidden — replaced by the custom .strip-scrollbar indicator
+   below, which can fade in/out with the scrollable state (native thumbs can't) */
+.level-strip{ scrollbar-width: none; }
+.level-strip::-webkit-scrollbar{ display: none; }
+
+.strip-scrollbar{
+  /* same side insets as the strip padding, so the track spans the cards */
+  margin: 0 max(20px, calc(50vw - 550px)) 12px;
+  height: 8px;
+  background: rgba(255,180,84,0.08);
+  cursor: pointer;
+  touch-action: none; /* pointer-drag scrubbing, not page panning */
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.strip-scrollbar i{
+  display: block;
+  height: 100%;
+  background: rgba(255,180,84,0.3);
+  transition: background 0.15s ease;
+}
+
+.strip-scrollbar:hover i{
+  background: rgba(255,180,84,0.55);
+}
+
+.strip-scrollbar.hidden,
+.strip-hint.hidden{
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* hidden = sunk below its resting spot, so it rises in and sinks away */
+.strip-scrollbar.hidden,
+.strip-hint.hidden{
+  transform: translateY(7px);
+}
 
 .strip-hint{
   margin: 2px 0 0;
@@ -508,6 +566,7 @@ section{
   font-family: var(--mono);
   font-size: 0.64rem;
   letter-spacing: 0.16em;
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1);
   text-transform: uppercase;
   color: var(--muted);
   opacity: 0.7;
