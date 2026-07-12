@@ -126,7 +126,14 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // ---- section label ----
+  // ---- section tracking: label + one-shot banners ----
+  // The active section is picked deterministically from scroll position: the
+  // last section whose top has crossed a reference line near the top of the
+  // viewport. This replaces IntersectionObserver, whose "last intersecting entry
+  // wins" behaviour was screen-height dependent — on a tall monitor, landing on
+  // #projects (a short section) left the taller #tech-exp past its threshold too,
+  // so STAT SHEET overwrote LEVEL SELECT. A single scroll-driven choice is
+  // consistent on every screen size.
   const LABELS = {
     "about": "TITLE SCREEN",
     "projects": "LEVEL SELECT",
@@ -136,44 +143,64 @@
   };
   const sectionEl = bar.querySelector(".hud-section");
   const sections = Array.from(document.querySelectorAll("section[id]")).filter(s => LABELS[s.id]);
+
   if (sections.length) {
-    sectionEl.textContent = LABELS[sections[0].id];
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) sectionEl.textContent = LABELS[e.target.id];
-      });
-    }, { rootMargin: "-45% 0px -45% 0px" });
-    sections.forEach(s => io.observe(s));
-  }
+    // Banner sweep (home only) — reused by the tracker below.
+    let showBanner = () => {};
+    if (isHome && !REDUCED) {
+      const bannerEl = document.createElement("div");
+      bannerEl.className = "hud-banner";
+      bannerEl.setAttribute("aria-hidden", "true");
+      document.body.appendChild(bannerEl);
 
-  // ---- section banners (home only) — sweep once per section per visit ----
-  if (isHome && !REDUCED) {
-    const bannerEl = document.createElement("div");
-    bannerEl.className = "hud-banner";
-    bannerEl.setAttribute("aria-hidden", "true");
-    document.body.appendChild(bannerEl);
-
-    let bannerTimer;
-    function showBanner(text) {
-      clearTimeout(bannerTimer);
-      bannerEl.textContent = text;
-      bannerEl.classList.remove("show");
-      void bannerEl.offsetWidth; // restart the sweep
-      bannerEl.classList.add("show");
-      bannerTimer = setTimeout(() => bannerEl.classList.remove("show"), 1200);
+      let bannerTimer;
+      showBanner = (text) => {
+        clearTimeout(bannerTimer);
+        bannerEl.textContent = text;
+        bannerEl.classList.remove("show");
+        void bannerEl.offsetWidth; // restart the sweep
+        bannerEl.classList.add("show");
+        bannerTimer = setTimeout(() => bannerEl.classList.remove("show"), 1200);
+      };
     }
 
-    const bannerIo = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (!e.isIntersecting || e.target.dataset.bannerDone) return;
-        e.target.dataset.bannerDone = "1";
-        showBanner(LABELS[e.target.id]);
-      });
-    }, { threshold: 0.35 });
+    let activeId = null;
+    const bannered = new Set();
 
-    sections.forEach(s => {
-      if (s.id !== "about") bannerIo.observe(s);
-    });
+    function updateSection() {
+      // Reference line in the upper portion of the viewport. Capped well below
+      // the shortest real section height so that after an #anchor jump (which
+      // pins a section's top near the viewport top) the line still lands inside
+      // that section — keeping the choice consistent on tall screens. Sitting
+      // lower than the header also lets trailing sections reach it with less
+      // scroll, so each one still activates on tall monitors.
+      const line = Math.min(window.innerHeight * 0.4, 440);
+      let active = sections[0];
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top <= line) active = s;
+      }
+      // The last section can be too short to ever reach the line on tall
+      // screens (you run out of scroll first) — pin it once at the page bottom.
+      const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+      if (atBottom) active = sections[sections.length - 1];
+      if (!active || active.id === activeId) return;
+      activeId = active.id;
+      sectionEl.textContent = LABELS[active.id];
+      // Banner the section once per visit; the title screen never banners.
+      if (active.id !== "about" && !bannered.has(active.id)) {
+        bannered.add(active.id);
+        showBanner(LABELS[active.id]);
+      }
+    }
+
+    window.addEventListener("scroll", updateSection, { passive: true });
+    window.addEventListener("resize", updateSection, { passive: true });
+    window.addEventListener("hashchange", updateSection);
+    window.addEventListener("pageshow", updateSection);
+    // Run now and again after the browser applies any #hash scroll on load.
+    updateSection();
+    requestAnimationFrame(updateSection);
+    window.addEventListener("load", () => requestAnimationFrame(updateSection));
   }
 
   // ---- konami code ----
