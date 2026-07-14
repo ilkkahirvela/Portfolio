@@ -161,7 +161,11 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   window.addEventListener("mouseup", () => { dragStartX = null; });
   grid.addEventListener("click", (e) => {
     if (dragMoved) {
+      // Stop propagation too: preventDefault only cancels the anchor's native
+      // navigation, but the global page-transition handler navigates via
+      // location.href and would otherwise still open the card after a drag.
       e.preventDefault();
+      e.stopPropagation();
       dragMoved = false;
     }
   }, true);
