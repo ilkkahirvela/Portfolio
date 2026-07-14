@@ -638,6 +638,26 @@ document.addEventListener("click", e => {
   sections.forEach(s => obs.observe(s));
 })();
 
+// Shared scroll/resize dispatcher — coalesces every subscriber into a single
+// rAF-gated callback per frame, so fast scrolling can't fire multiple layout
+// reads (getBoundingClientRect, offset reads) back-to-back on the main thread.
+const onScrollFrame = (() => {
+  const subs = new Set();
+  let ticking = false;
+  function flush() {
+    ticking = false;
+    subs.forEach(fn => fn());
+  }
+  function schedule() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(flush);
+  }
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule, { passive: true });
+  return (fn) => { subs.add(fn); fn(); }; // run once on register for initial state
+})();
+
 // Header scroll effect — on home the title screen owns the top, so the
 // header stays hidden until the visitor scrolls past most of the hero
 (() => {
@@ -645,15 +665,12 @@ document.addEventListener("click", e => {
   if (!header) return;
   const isHome = !!document.getElementById("about");
 
-  function update() {
+  onScrollFrame(() => {
     header.classList.toggle("scrolled", window.scrollY > 10);
     if (isHome) {
       header.classList.toggle("header-hidden", window.scrollY < window.innerHeight * 0.45);
     }
-  }
-
-  window.addEventListener("scroll", update, { passive: true });
-  update();
+  });
 })();
 
 // Back to top
@@ -666,16 +683,12 @@ document.addEventListener("click", e => {
   // cards. Project pages have no strip, so fall back to a simple scroll offset.
   const projects = document.getElementById("projects");
 
-  function updateBtn() {
+  onScrollFrame(() => {
     const show = projects
       ? projects.getBoundingClientRect().bottom <= 0
       : window.scrollY > 400;
     btn.classList.toggle("is-visible", show);
-  }
-
-  window.addEventListener("scroll", updateBtn, { passive: true });
-  window.addEventListener("resize", updateBtn, { passive: true });
-  updateBtn();
+  });
 
   btn.addEventListener("click", () => {
     animateScrollTo(0);
