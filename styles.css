@@ -174,9 +174,11 @@ header nav ul li a{
 
 header nav ul li a::before{
   content: "▸";
+  display: inline-block;
+  font-size: var(--arrow-ui);
   color: var(--accent);
   opacity: 0;
-  transform: translateX(-8px);
+  transform: translate(-8px, var(--arrow-nudge-cursor));
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
@@ -190,7 +192,7 @@ header nav ul li a:hover::before,
 header nav ul li a:focus-visible::before,
 header nav ul li a.active::before{
   opacity: 1;
-  transform: translateX(0);
+  transform: translate(0, var(--arrow-nudge-cursor));
 }
 
 /* ============================
@@ -285,9 +287,11 @@ section{
 
 .title-menu a::before{
   content: "▸";
+  display: inline-block;
+  font-size: var(--arrow-ui);
   color: var(--accent);
   opacity: 0;
-  transform: translateX(-8px);
+  transform: translate(-8px, var(--arrow-nudge-cursor));
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
@@ -299,7 +303,7 @@ section{
 .title-menu a:hover::before,
 .title-menu a:focus-visible::before{
   opacity: 1;
-  transform: translateX(0);
+  transform: translate(0, var(--arrow-nudge-cursor));
 }
 
 @keyframes pressBlink{
@@ -1722,6 +1726,61 @@ body:has(#about) main{
   color: #0B0908;
 }
 
+/* Arcade arrow glyphs. Two things kept deliberately consistent site-wide:
+   (1) SIZE — a small fixed scale (below) instead of per-label em sizes, so every
+       arrow lands on one of a few intentional sizes rather than dozens.
+   (2) CENTERING — triangle glyphs are drawn low in their em box, so they read below
+       the center of the uppercase label beside them; a translateY re-centers. The
+       needed amount is NOT one value: a baseline-aligned inline glyph (::before
+       cursors), a flex-centered glyph (buttons), and a glyph inline in normal-
+       line-height text each land differently, so the nudge is grouped by context
+       (four vars below, tuned against how each actually reads). Retune per group.
+   Roles: --arrow-ui = inline affordance cursors (▸ ◄ ►); --arrow-prompt = quieter
+   blink prompts (▼) + the thin scroll hint (← →); --arrow-standalone = a lone glyph
+   filling a control (back-to-top ▲). */
+:root{
+  --arrow-ui: 0.9rem;
+  --arrow-prompt: 0.8rem;
+  --arrow-standalone: 1.3rem;
+  --arrow-nudge: -0.16em;          /* default — flex link buttons read centered here */
+  --arrow-nudge-cursor: -0.20em;   /* ::before nav cursors — baseline-aligned, sat low */
+  --arrow-nudge-tight: -0.11em;    /* back-link, prev/next — sat a touch high at default */
+  --arrow-nudge-loose: -0.09em;    /* inline-in-text (▸ enter, ▼ prompts) + standalone ▲ */
+}
+
+.nav-arrow{
+  display: inline-block;
+  line-height: 1;
+  font-size: var(--arrow-ui);
+  transform: translateY(var(--arrow-nudge));
+}
+
+.nav-arrow--prompt{
+  font-size: var(--arrow-prompt);
+  transform: translateY(var(--arrow-nudge-loose));
+}
+
+/* ▸ inline in a card label — reads high at the default nudge */
+.level-enter .nav-arrow{
+  transform: translateY(var(--arrow-nudge-loose));
+}
+
+/* ◄ next to "back to projects" — a touch high at the default nudge */
+.back-link .nav-arrow{
+  transform: translateY(var(--arrow-nudge-tight));
+}
+
+.back-to-top .nav-arrow{
+  font-size: var(--arrow-standalone);
+  transform: translateY(var(--arrow-nudge-loose));
+}
+
+/* Thin line-arrows (the scroll hint) already sit centered on the caps — the
+   --arrow-nudge is a correction for triangle glyphs only, so skip it here. */
+.strip-hint .nav-arrow{
+  transform: none;
+}
+
 /* Right rail */
 #project-details .project-rail{
   position: sticky;
@@ -1864,6 +1923,8 @@ a.level-nav__slot:focus-visible{
    so the slot reads as an invitation only when the visitor engages it. */
 #project-details .level-nav__arrow{
   display: inline-block;
+  font-size: var(--arrow-ui); /* one of the shared arrow sizes — see .nav-arrow */
+  transform: translateY(var(--arrow-nudge-tight)); /* optical centering — see .nav-arrow */
   transition: transform 0.15s ease;
 }
 
@@ -1875,12 +1936,12 @@ a.level-nav__slot:focus-visible .level-nav__dir{
 
 a.level-nav__slot--prev:hover .level-nav__arrow,
 a.level-nav__slot--prev:focus-visible .level-nav__arrow{
-  transform: translateX(-4px);
+  transform: translate(-4px, var(--arrow-nudge-tight));
 }
 
 a.level-nav__slot--next:hover .level-nav__arrow,
 a.level-nav__slot--next:focus-visible .level-nav__arrow{
-  transform: translateX(4px);
+  transform: translate(4px, var(--arrow-nudge-tight));
 }
 
 #project-details .level-nav__title{

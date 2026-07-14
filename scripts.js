@@ -314,7 +314,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
           <span class="level-indicators">${indicatorsHtml}</span>
           <span class="level-tags">${tagsHtml}</span>
         </div>
-        ${href !== "#" ? `<span class="level-enter">▸ Enter Level</span>` : ""}
+        ${href !== "#" ? `<span class="level-enter"><span class="nav-arrow" aria-hidden="true">▸</span> Enter Level</span>` : ""}
       </div>
     `;
 

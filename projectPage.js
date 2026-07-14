@@ -110,20 +110,20 @@ if (elLinks) {
   if (linksObj.itch)
     linksHtml.push(btnHtml(
       linksObj.itch,
-      linksObj.itchPlayable ? "Play on Itch.io →" : "View on Itch.io →",
+      linksObj.itchPlayable ? "Play on Itch.io" : "View on Itch.io",
       "btn-itch", true));
 
   if (linksObj.demo)
-    linksHtml.push(btnHtml(linksObj.demo, "Live Demo →", "btn-itch", true));
+    linksHtml.push(btnHtml(linksObj.demo, "Live Demo", "btn-itch", true));
 
   if (linksObj.trailer)
-    linksHtml.push(btnHtml(linksObj.trailer, "Watch Trailer →", "btn-trailer", true));
+    linksHtml.push(btnHtml(linksObj.trailer, "Watch Trailer", "btn-trailer", true));
 
   if (linksObj.github)
-    linksHtml.push(btnHtml(linksObj.github, "View on GitHub →", "btn-github", true));
+    linksHtml.push(btnHtml(linksObj.github, "View on GitHub", "btn-github", true));
 
   if (linksObj.docs)
-    linksHtml.push(btnHtml(linksObj.docs, "Documentation →", "btn-docs", true));
+    linksHtml.push(btnHtml(linksObj.docs, "Documentation", "btn-docs", true));
 
   elLinks.innerHTML = linksHtml.join(" ");
   elLinks.style.display = linksHtml.length ? "" : "none";
@@ -218,7 +218,8 @@ if (elLinks) {
   function btnHtml(href, text, typeClass, external) {
     const ext = external ? ` target="_blank" rel="noopener"` : "";
     const icon = BTN_ICONS[typeClass] ?? "";
-    return `<a class="btn ${typeClass}" href="${escapeAttr(href)}"${ext}>${icon}${escapeHtml(text)}</a>`;
+    const arrow = `<span class="nav-arrow" aria-hidden="true">▸</span>`;
+    return `<a class="btn ${typeClass}" href="${escapeAttr(href)}"${ext}>${icon}${escapeHtml(text)}${arrow}</a>`;
   }
 
   function cleanText(v) {
