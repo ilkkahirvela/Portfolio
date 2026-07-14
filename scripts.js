@@ -116,17 +116,25 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   grid.addEventListener("mouseover", scout);
   grid.addEventListener("focusin", scout);
 
-  // Arrow keys browse the level strip; Enter opens (native anchor behavior)
+  // Arrow keys browse the level strip once focus is inside it; Home/End jump to
+  // the ends; Enter opens (native anchor behavior). Focus must already be on a
+  // card — Tab into the strip (a single tab stop, see roving tabindex below).
+  const STRIP_KEYS = ["ArrowRight", "ArrowLeft", "Home", "End"];
   grid.addEventListener("keydown", (e) => {
-    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    if (!STRIP_KEYS.includes(e.key)) return;
     const cards = Array.from(grid.querySelectorAll(".level-card"));
     if (!cards.length) return;
     const cur = cards.indexOf(document.activeElement);
-    const next = cur === -1
-      ? 0
-      : Math.min(Math.max(cur + (e.key === "ArrowRight" ? 1 : -1), 0), cards.length - 1);
+    if (cur === -1) return;
+    let next = cur;
+    if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = cards.length - 1;
+    else next = Math.min(Math.max(cur + (e.key === "ArrowRight" ? 1 : -1), 0), cards.length - 1);
     if (next === cur) return;
     e.preventDefault();
+    // Move the roving tabindex so the strip keeps exactly one tab stop.
+    cards[cur].tabIndex = -1;
+    cards[next].tabIndex = 0;
     cards[next].focus({ preventScroll: true });
     cards[next].scrollIntoView({
       behavior: REDUCED_MOTION ? "auto" : "smooth",
@@ -256,6 +264,8 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     const card = document.createElement("a");
     card.className = "project-card level-card card-animate";
     card.style.setProperty("--card-index", index);
+    // Roving tabindex: the strip is a single tab stop; arrows move within it.
+    card.tabIndex = index === 0 ? 0 : -1;
     if (p.featured) card.classList.add("featured");
 
     const href = getProjectHref(p);
