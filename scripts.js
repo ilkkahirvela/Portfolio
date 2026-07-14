@@ -815,36 +815,6 @@ document.addEventListener("click", e => {
   });
 })();
 
-// Pixel avatar on the character sheet
-(() => {
-  const canvas = document.getElementById("avatarCanvas");
-  if (!canvas) return;
-  const MAP = [
-    "............",
-    "...dddddd...",
-    "..daaaaaad..",
-    "..daaaaaad..",
-    "..d.iiii.d..",
-    "..diikkiid..",
-    "...iiiiii...",
-    "...ik..ki...",
-    "...iiiiii...",
-    "....iiii....",
-    "...d....d...",
-    "............",
-  ];
-  const COLORS = { a: "#FFB454", d: "#8A5A2A", i: "#EDE6DA", k: "#0B0908" };
-  const ctx = canvas.getContext("2d");
-  MAP.forEach((row, y) => {
-    [...row].forEach((ch, x) => {
-      if (COLORS[ch]) {
-        ctx.fillStyle = COLORS[ch];
-        ctx.fillRect(x, y, 1, 1);
-      }
-    });
-  });
-})();
-
 // Stat sheet — cells fill when the card scrolls into view
 (() => {
   const card = document.getElementById("statCard");

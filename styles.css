@@ -816,9 +816,10 @@ section{
   padding: 22px;
 }
 
-#avatarCanvas{
-  width: 104px;
-  height: 104px;
+/* 25×27 source sprite at 4× — integer scale keeps the pixels uniform */
+#avatarImg{
+  width: 100px;
+  height: 108px;
   image-rendering: pixelated;
   border: 1px solid rgba(255,180,84,0.14);
   border-radius: var(--radius-sm);
