@@ -2,7 +2,7 @@
 
 Personal portfolio site showcasing my game development projects and technical skills.
 
-[![Live Site](https://img.shields.io/badge/Live%20Site-Visit%20Portfolio%20→-F78C8C?style=for-the-badge)](https://ilkkahirvela.github.io/Portfolio/)
+[![Live Site](https://img.shields.io/badge/PLAY-VISIT%20PORTFOLIO%20%E2%96%B8-FFB454?style=for-the-badge&labelColor=0B0908)](https://ilkkahirvela.github.io/Portfolio/)
 
 ---
 
@@ -22,8 +22,8 @@ Personal portfolio site showcasing my game development projects and technical sk
 ## Tech Stack
 
 **Engines:** Unity, Godot, Roblox Studio  
-**Languages:** C#, C++, Python, JavaScript, Lua, GDScript, SQL  
-**Tools:** Aseprite, Blender, Photoshop, Git
+**Languages:** C#, C++, Python, JavaScript, Lua, GDScript, SQL, HTML, CSS  
+**Tools:** AI, Aseprite, Git, NodeJS, Blender, Photoshop
 
 ---
 
