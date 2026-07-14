@@ -1744,7 +1744,7 @@ body:has(#about) main{
   --arrow-standalone: 1.3rem;
   --arrow-nudge: -0.16em;          /* default — flex link buttons read centered here */
   --arrow-nudge-cursor: -0.20em;   /* ::before nav cursors — baseline-aligned, sat low */
-  --arrow-nudge-tight: -0.11em;    /* back-link, prev/next — sat a touch high at default */
+  --arrow-nudge-tight: -0.10em;    /* back-link, prev/next — sat a touch high at default */
   --arrow-nudge-loose: -0.09em;    /* inline-in-text (▸ enter, ▼ prompts) + standalone ▲ */
 }
 
