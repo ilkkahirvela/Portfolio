@@ -356,6 +356,10 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   function resize() {
     W = canvas.width = section.offsetWidth;
     H = canvas.height = section.offsetHeight;
+    // Setting canvas.width clears it. The animation loop repaints every frame,
+    // but the reduced-motion path draws only once — so redraw here or the
+    // starfield stays blank after a resize.
+    if (REDUCED_MOTION) draw(0);
   }
 
   const stars = Array.from({ length: 90 }, () => ({
@@ -391,9 +395,8 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     visible = entries[0].isIntersecting;
   }, { threshold: 0 }).observe(section);
 
-  resize();
-  if (REDUCED_MOTION) draw(0);
-  else requestAnimationFrame(loop);
+  resize(); // draws once under reduced motion; the loop takes over otherwise
+  if (!REDUCED_MOTION) requestAnimationFrame(loop);
 })();
 
 // Text scramble
