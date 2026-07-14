@@ -108,7 +108,10 @@ if (elLinks) {
   const linksHtml = [];
 
   if (linksObj.itch)
-    linksHtml.push(btnHtml(linksObj.itch, "Play on Itch.io →", "btn-itch", true));
+    linksHtml.push(btnHtml(
+      linksObj.itch,
+      linksObj.itchPlayable ? "Play on Itch.io →" : "View on Itch.io →",
+      "btn-itch", true));
 
   if (linksObj.demo)
     linksHtml.push(btnHtml(linksObj.demo, "Live Demo →", "btn-itch", true));

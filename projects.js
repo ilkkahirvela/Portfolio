@@ -243,9 +243,8 @@ const PROJECTS = [
         "images/viridianland/pause-menu.webp"
       ],
       links: {
-        itch: "https://ilkkahi.itch.io/viridianland"
-        // github: "https://github.com/...",
-        // demo: "https://..."
+        itch: "https://ilkkahi.itch.io/viridianland",
+        itchPlayable: true
       }
     }
   },
