@@ -38,8 +38,10 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   let searchTerm = "";
 
   // declared before the initial render() below — render() reads crtEntrance
+  // and calls observeArt(), which uses artObserver
   let offTimer = 0;
   let crtEntrance = false;
+  let artObserver;
 
   // custom strip scrollbar + hint — fade out together when there's nothing to
   // browse (declared before the initial render(), which calls updateStripChrome)
@@ -256,6 +258,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
         grid.appendChild(card);
       });
       observeCards();
+      observeArt();
     }
 
     if (resultsCountEl) {
@@ -276,6 +279,27 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     }, { threshold: 0.08 });
 
     grid.querySelectorAll(".card-animate").forEach(card => obs.observe(card));
+  }
+
+  // Lazy-load card thumbnails: apply data-bg as each card's art nears the
+  // viewport. rootMargin preloads a bit ahead so images are ready before they
+  // scroll into view. On-screen cards intersect immediately, so no visible delay.
+  // (artObserver is declared up top so the initial render() can call this.)
+  function observeArt() {
+    artObserver?.disconnect();
+    artObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        if (el.dataset.bg) {
+          el.style.backgroundImage = `url('${el.dataset.bg}')`;
+          el.removeAttribute("data-bg");
+        }
+        artObserver.unobserve(el);
+      });
+    }, { rootMargin: "200px 400px", threshold: 0 });
+
+    grid.querySelectorAll(".level-art-img[data-bg]").forEach(el => artObserver.observe(el));
   }
 
   function getProjectHref(p) {
@@ -299,7 +323,9 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
       card.setAttribute("aria-disabled", "true");
     }
 
-    const img = p.image ? `background-image:url('${p.image}')` : "";
+    // Defer the thumbnail: hold the URL in data-bg and let the strip observer
+    // apply it as the card nears view, so off-screen cards don't all fetch on load.
+    const artBg = p.image ? ` data-bg="${escapeHtml(p.image)}"` : "";
     const world = String((p._world ?? index) + 1).padStart(2, "0");
     const yearHtml = p.year != null ? ` · ${escapeHtml(String(p.year))}` : "";
 
@@ -321,7 +347,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     const indicatorsHtml = metaParts.join('<span class="meta-sep">·</span>');
 
     card.innerHTML = `
-      <div class="level-art"><div class="level-art-img${p.image ? "" : " no-image"}" style="${img}"></div></div>
+      <div class="level-art"><div class="level-art-img${p.image ? "" : " no-image"}"${artBg}></div></div>
       <div class="level-meta">
         <div class="level-topline">
           <span class="level-num">World ${world}${yearHtml}</span>
