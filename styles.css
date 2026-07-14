@@ -2102,26 +2102,24 @@ a.level-nav__slot--next:focus-visible .level-nav__arrow{
   pointer-events: none;
 }
 
-/* Arrow */
+/* Arrow — triangle glyphs, matching the site-wide arrow system (see .nav-arrow) */
 .lightbox__nav::before{
-  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
 
-  width: 10px;
-  height: 10px;
-
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
+  line-height: 1;
+  font-size: var(--arrow-standalone);
+  /* ◄ ► sit centered in their em box — unlike ▲/▼, no optical nudge needed */
+  transform: translate(-50%, -50%);
 }
 
 .lightbox__nav--prev::before{
-  transform: translate(-38%, -50%) rotate(135deg);
+  content: "◄";
 }
 
 .lightbox__nav--next::before{
-  transform: translate(-62%, -50%) rotate(-45deg);
+  content: "►";
 }
 
 .lightbox__nav:active{
