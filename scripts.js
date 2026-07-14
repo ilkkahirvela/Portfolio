@@ -105,16 +105,35 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     });
   }
 
-  // LEVEL SCOUT — inspect three different levels (hover or keyboard focus)
+  // LEVEL SCOUT — deliberately inspect three different levels. A card only
+  // counts once the pointer has lingered on it (or it gains keyboard focus), so
+  // a quick mouse sweep across the strip no longer racks it up instantly right
+  // after LEFT THE TITLE SCREEN.
   const scouted = new Set();
-  function scout(e) {
-    const card = e.target.closest?.(".level-card");
-    if (!card) return;
+  function scoutCard(card) {
     scouted.add(card.href);
     if (scouted.size >= 3) window.HUD?.achieve?.("scout", "LEVEL SCOUT — browsed the worlds", 150);
   }
-  grid.addEventListener("mouseover", scout);
-  grid.addEventListener("focusin", scout);
+  let dwellCard = null;
+  let dwellTimer;
+  grid.addEventListener("mouseover", (e) => {
+    const card = e.target.closest?.(".level-card");
+    if (!card || card === dwellCard) return; // moving within the same card — keep the timer running
+    dwellCard = card;
+    clearTimeout(dwellTimer);
+    dwellTimer = setTimeout(() => scoutCard(card), 600);
+  });
+  grid.addEventListener("mouseout", (e) => {
+    // Only cancel when the pointer actually leaves the current card.
+    if (dwellCard && !dwellCard.contains(e.relatedTarget)) {
+      dwellCard = null;
+      clearTimeout(dwellTimer);
+    }
+  });
+  grid.addEventListener("focusin", (e) => {
+    const card = e.target.closest?.(".level-card");
+    if (card) scoutCard(card);
+  });
 
   // Arrow keys browse the level strip once focus is inside it; Home/End jump to
   // the ends; Enter opens (native anchor behavior). Focus must already be on a
