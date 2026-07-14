@@ -501,7 +501,7 @@ scrambleText(document.querySelector('#pTitle'));
 
     card.style.transition = 'transform 0.08s ease';
     card.style.transform = `perspective(${PERSPECTIVE}px) rotateX(${-dy * MAX_TILT}deg) rotateY(${dx * MAX_TILT}deg) translateY(-4px)`;
-    card.style.boxShadow = `${dx * 6}px ${dy * 6}px 18px rgba(255,180,84,0.10), 0 20px 48px rgba(0,0,0,0.5)`;
+    card.style.boxShadow = `${dx * 5}px ${dy * 5}px 14px rgba(255,180,84,0.10), 0 12px 30px rgba(0,0,0,0.48)`;
   });
 
   grid.addEventListener('mouseout', e => {

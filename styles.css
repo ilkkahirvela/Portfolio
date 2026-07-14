@@ -596,7 +596,7 @@ section{
 .level-card:hover{
   transform: translateY(-5px);
   border-color: rgba(255,180,84,0.55);
-  box-shadow: 0 14px 44px rgba(0,0,0,0.55), 0 0 30px rgba(255,180,84,0.10);
+  box-shadow: 0 9px 26px rgba(0,0,0,0.5), 0 0 20px rgba(255,180,84,0.09);
 }
 
 .level-card:focus-visible{
