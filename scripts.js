@@ -929,19 +929,25 @@ const onScrollFrame = (() => {
   const el = document.getElementById("continueCount");
   if (!el || REDUCED_MOTION) return;
   let n = 9;
-  let visible = false;
-  new IntersectionObserver(entries => {
-    visible = entries[0].isIntersecting;
-  }, { threshold: 0.3 }).observe(el);
-  setInterval(() => {
-    if (!visible) return;
+  let timer = 0;
+  function tick() {
     n = n > 0 ? n - 1 : 9;
     el.textContent = n;
     // retrigger the tick pop (countTick in CSS)
     el.classList.remove("tick");
     void el.offsetWidth;
     el.classList.add("tick");
-  }, 900);
+  }
+  // Only run the timer while the countdown is on screen — no idle ticking (or
+  // background-tab wakeups) when it's scrolled away.
+  new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      if (!timer) timer = setInterval(tick, 900);
+    } else if (timer) {
+      clearInterval(timer);
+      timer = 0;
+    }
+  }, { threshold: 0.3 }).observe(el);
 })();
 
 // Footer email — click copies address, href keeps mailto for right-click
