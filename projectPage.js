@@ -152,11 +152,34 @@ if (elLinks) {
         const alt = `${project.title || "Project"} Screenshot ${i + 1}`;
         return `
           <a class="gallery-item" href="${escapeAttr(src)}" target="_blank" rel="noopener">
-            <img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}" loading="lazy" />
+            <img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}" width="640" height="360" loading="lazy" decoding="async" />
           </a>
         `;
       }).join("");
     }
+  }
+
+  // Prev / next level nav — walks the shared sortedProjects() order so the
+  // world numbering always matches the strip and the briefing eyebrow.
+  const elLevelNav = document.getElementById("pLevelNav");
+  if (elLevelNav) {
+    const sorted = typeof sortedProjects === "function" ? sortedProjects() : PROJECTS.slice();
+    const idx = sorted.findIndex(p => p.id === project.id);
+    const slot = (p, dir) => {
+      if (!p) return `<span class="level-nav__slot" aria-hidden="true"></span>`;
+      const world = `World ${String(sorted.indexOf(p) + 1).padStart(2, "0")}`;
+      const loadLabel = [world, p.title || "Project"].join(" · ");
+      const arrow = `<span class="level-nav__arrow">${dir === "prev" ? "◄" : "►"}</span>`;
+      const dirLabel = dir === "prev" ? `${arrow} Prev Level` : `Next Level ${arrow}`;
+      return `
+        <a class="level-nav__slot level-nav__slot--${dir}" href="project.html?id=${escapeAttr(p.id)}" data-loading-label="${escapeAttr(loadLabel)}">
+          <span class="level-nav__dir">${dirLabel}</span>
+          <span class="level-nav__title">${escapeHtml(p.title || "Project")}</span>
+        </a>`;
+    };
+    const prev = idx > 0 ? sorted[idx - 1] : null;
+    const next = idx >= 0 && idx < sorted.length - 1 ? sorted[idx + 1] : null;
+    elLevelNav.innerHTML = (prev || next) ? slot(prev, "prev") + slot(next, "next") : "";
   }
 
   // -----------------------

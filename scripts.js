@@ -586,13 +586,13 @@ document.addEventListener("click", e => {
 
   // NOW LOADING wipe with a destination label; falls back to the old fade
   if (window.HUD?.loading) {
-    let label = "";
+    let label = link.dataset.loadingLabel || "";
     const card = link.closest(".level-card");
-    if (card) {
+    if (!label && card) {
       const world = card.querySelector(".level-num")?.textContent.split("·")[0].trim() || "";
       const title = card.querySelector(".level-title")?.textContent.trim() || "";
       label = [world, title].filter(Boolean).join(" · ");
-    } else if (/index\.html|^\.?\/?$/.test(href.split("#")[0])) {
+    } else if (!label && /index\.html|^\.?\/?$/.test(href.split("#")[0])) {
       label = "Level Select";
     }
     window.HUD.loading(label, () => { window.location.href = href; });
