@@ -650,7 +650,6 @@ document.addEventListener("click", e => {
 
   if (!lightbox || !imgEl || !btnClose || !btnPrev || !btnNext) return;
 
-  const frame = lightbox.querySelector(".lightbox__frame");
   const galleryLinks = Array.from(document.querySelectorAll("#project-details .gallery-item"))
     .filter(a => a.getAttribute("href") && /\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i.test(a.getAttribute("href")));
 
@@ -659,9 +658,9 @@ document.addEventListener("click", e => {
   let hideTimer;
 
   function showControls() {
-    frame.classList.add("controls-visible");
+    lightbox.classList.add("controls-visible");
     clearTimeout(hideTimer);
-    hideTimer = setTimeout(() => frame.classList.remove("controls-visible"), 2000);
+    hideTimer = setTimeout(() => lightbox.classList.remove("controls-visible"), 2000);
   }
 
   function updateCounter() {
@@ -713,7 +712,7 @@ document.addEventListener("click", e => {
     lightbox.setAttribute("aria-hidden", "true");
     document.body.classList.remove("lb-lock");
     clearTimeout(hideTimer);
-    frame.classList.remove("controls-visible");
+    lightbox.classList.remove("controls-visible");
     index = -1;
     // Clear src after fade-out completes
     setTimeout(() => {
@@ -732,11 +731,11 @@ document.addEventListener("click", e => {
     a.addEventListener("click", e => { e.preventDefault(); openAt(i); });
   });
 
-  // Show controls on movement inside frame, hide instantly on leave
-  frame.addEventListener("mousemove", showControls, { passive: true });
-  frame.addEventListener("mouseleave", () => {
+  // Show controls on movement anywhere in the overlay, hide instantly on leave
+  lightbox.addEventListener("mousemove", showControls, { passive: true });
+  lightbox.addEventListener("mouseleave", () => {
     clearTimeout(hideTimer);
-    frame.classList.remove("controls-visible");
+    lightbox.classList.remove("controls-visible");
   });
 
   // Backdrop close

@@ -1869,8 +1869,8 @@ body:has(#about) main{
 /* Close */
 .lightbox__close{
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: max(12px, env(safe-area-inset-top));
+  right: max(12px, env(safe-area-inset-right));
   z-index: 2;
 
   width: 36px;
@@ -1927,8 +1927,10 @@ body:has(#about) main{
   color: #0B0908;
 }
 
-.lightbox__nav--prev{ left: 12px; }
-.lightbox__nav--next{ right: 12px; }
+/* Pinned to the viewport overlay (not the image frame) so their position
+   stays constant regardless of image dimensions */
+.lightbox__nav--prev{ left: max(12px, env(safe-area-inset-left)); }
+.lightbox__nav--next{ right: max(12px, env(safe-area-inset-right)); }
 
 .lightbox__nav.is-hidden{
   opacity: 0 !important;
@@ -1992,12 +1994,12 @@ body:has(#about) main{
 }
 
 /* Reveal controls via JS class or keyboard focus */
-.lightbox__frame:has(:focus-visible) .lightbox__close,
-.lightbox__frame:has(:focus-visible) .lightbox__nav,
-.lightbox__frame:has(:focus-visible) .lightbox__counter,
-.lightbox__frame.controls-visible .lightbox__close,
-.lightbox__frame.controls-visible .lightbox__nav,
-.lightbox__frame.controls-visible .lightbox__counter{
+.lightbox:has(:focus-visible) .lightbox__close,
+.lightbox:has(:focus-visible) .lightbox__nav,
+.lightbox:has(:focus-visible) .lightbox__counter,
+.lightbox.controls-visible .lightbox__close,
+.lightbox.controls-visible .lightbox__nav,
+.lightbox.controls-visible .lightbox__counter{
   opacity: 1;
 }
 
