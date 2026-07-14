@@ -354,8 +354,15 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   let visible = true;
 
   function resize() {
-    W = canvas.width = section.offsetWidth;
-    H = canvas.height = section.offsetHeight;
+    // Keep W/H in CSS pixels for the draw math, but back the canvas with a
+    // device-pixel-ratio buffer (capped at 2×) so the starfield stays crisp on
+    // HiDPI screens instead of being upscaled from CSS-pixel resolution.
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = section.offsetWidth;
+    H = section.offsetHeight;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // Setting canvas.width clears it. The animation loop repaints every frame,
     // but the reduced-motion path draws only once — so redraw here or the
     // starfield stays blank after a resize.
