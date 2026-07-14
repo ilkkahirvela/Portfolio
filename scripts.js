@@ -680,10 +680,13 @@ document.addEventListener("click", e => {
   const sources = galleryLinks.map(a => a.getAttribute("href"));
   let index = -1;
   let hideTimer;
+  let overControl = false;
 
   function showControls() {
     lightbox.classList.add("controls-visible");
     clearTimeout(hideTimer);
+    // Don't auto-hide while the pointer is resting on a control
+    if (overControl) return;
     hideTimer = setTimeout(() => lightbox.classList.remove("controls-visible"), 2000);
   }
 
@@ -769,6 +772,19 @@ document.addEventListener("click", e => {
   btnClose.addEventListener("click", e => { e.stopPropagation(); close(); });
   btnNext.addEventListener("click", e => { e.stopPropagation(); next(); });
   btnPrev.addEventListener("click", e => { e.stopPropagation(); prev(); });
+
+  // Keep controls pinned while the pointer rests on a control
+  [btnClose, btnNext, btnPrev].forEach(el => {
+    el.addEventListener("mouseenter", () => {
+      overControl = true;
+      clearTimeout(hideTimer);
+      lightbox.classList.add("controls-visible");
+    });
+    el.addEventListener("mouseleave", () => {
+      overControl = false;
+      showControls();
+    });
+  });
 
   // Keyboard
   document.addEventListener("keydown", e => {
