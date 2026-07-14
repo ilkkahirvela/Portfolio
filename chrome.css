@@ -85,7 +85,7 @@ body.has-chrome{
 .hud-toasts{
   position: fixed;
   right: 16px;
-  bottom: 56px;
+  bottom: 116px; /* clear the back-to-top button (44px tall at bottom:60px) */
   z-index: 1300;
 
   display: flex;
