@@ -6,7 +6,7 @@ const PROJECTS = [
     year: 2026,
     team: 6,
     duration: "10+ weeks",
-    image: "images/kindling/kindling-preview.webp",
+    image: "media/kindling/kindling-preview.webp",
     description:
       "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
@@ -73,8 +73,8 @@ const PROJECTS = [
     order: 3,
     team: 1,
     duration: "~8 weeks",
-    image: "images/chessmachine3000/gameplay.webp",
-    preview: "images/chessmachine3000/bot-vs-bot.webp",
+    image: "media/chessmachine3000/gameplay.webp",
+    preview: "media/chessmachine3000/bot-vs-bot.webp",
     description:
       "Terminal-based chess engine with a minimax AI opponent. Supports human vs bot and bot vs bot modes with full chess rule coverage.",
     tags: ["C++", "Algorithms"],
@@ -123,9 +123,9 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        { full: "images/chessmachine3000/bot-vs-bot.webp", still: "images/chessmachine3000/bot-vs-bot-still.webp" },
-        "images/chessmachine3000/settings.webp",
-        "images/chessmachine3000/gameplay.webp"
+        { full: "media/chessmachine3000/bot-vs-bot.webp", still: "media/chessmachine3000/bot-vs-bot-still.webp" },
+        "media/chessmachine3000/settings.webp",
+        "media/chessmachine3000/gameplay.webp"
       ],
       links: {
         github: "https://github.com/ilkkahirvela/ChessMachine3000",
@@ -141,8 +141,8 @@ const PROJECTS = [
     order: 2,
     team: 9,
     duration: "~8 weeks",
-    image: "images/y2kentity/y2kentity-preview.webp",
-    preview: "images/y2kentity/clip-purple.webp",
+    image: "media/y2kentity/y2kentity-preview.webp",
+    preview: "media/y2kentity/clip-purple.webp",
     description:
       "Turn-based tactics RPG made in Unity as a student team project. I built the grid foundation, the camera system, and the combat UI.",
     tags: ["Unity", "C#", "3D"],
@@ -189,11 +189,11 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        { thumb: "images/y2kentity/clip-purple.webp", full: "images/y2kentity/clip-purple.mp4", still: "images/y2kentity/clip-purple-still.webp" },
-        { thumb: "images/y2kentity/clip-forest.webp", full: "images/y2kentity/clip-forest.mp4", still: "images/y2kentity/clip-forest-still.webp" },
-        { thumb: "images/y2kentity/targeting-ui-thumb.webp", full: "images/y2kentity/targeting-ui.webp" },
-        { thumb: "images/y2kentity/ability-menu-thumb.webp", full: "images/y2kentity/ability-menu.webp" },
-        { thumb: "images/y2kentity/gameplay-thumb.webp", full: "images/y2kentity/gameplay.webp" }
+        { thumb: "media/y2kentity/clip-purple.webp", full: "media/y2kentity/clip-purple.mp4", still: "media/y2kentity/clip-purple-still.webp" },
+        { thumb: "media/y2kentity/clip-forest.webp", full: "media/y2kentity/clip-forest.mp4", still: "media/y2kentity/clip-forest-still.webp" },
+        { thumb: "media/y2kentity/targeting-ui-thumb.webp", full: "media/y2kentity/targeting-ui.webp" },
+        { thumb: "media/y2kentity/ability-menu-thumb.webp", full: "media/y2kentity/ability-menu.webp" },
+        { thumb: "media/y2kentity/gameplay-thumb.webp", full: "media/y2kentity/gameplay.webp" }
       ],
       links: {
         itch: "https://ssntr.itch.io/y2k-entity",
@@ -209,8 +209,8 @@ const PROJECTS = [
     order: 1,
     team: 1,
     duration: "~1 week",
-    image: "images/mazesolver/mazesolver-preview.webp",
-    preview: "images/mazesolver/maze-solver-demo.webp",
+    image: "media/mazesolver/mazesolver-preview.webp",
+    preview: "media/mazesolver/maze-solver-demo.webp",
     description:
       "Generates and solves mazes in real time, with animated step-by-step visualization and adjustable settings.",
     tags: ["C++", "SFML", "ImGui", "Algorithms"],
@@ -253,9 +253,9 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        { full: "images/mazesolver/maze-solver-demo.webp", still: "images/mazesolver/maze-solver-demo-still.webp" },
-        "images/mazesolver/settings.webp",
-        "images/mazesolver/mazesolver-preview.webp"
+        { full: "media/mazesolver/maze-solver-demo.webp", still: "media/mazesolver/maze-solver-demo-still.webp" },
+        "media/mazesolver/settings.webp",
+        "media/mazesolver/mazesolver-preview.webp"
       ],
       links: {
         github: "https://github.com/ilkkahirvela/MazeSolver-SFML",
@@ -270,8 +270,8 @@ const PROJECTS = [
     year: 2024,
     team: 1,
     duration: "~6 weeks",
-    image: "images/viridianland/preview.webp",
-    preview: "images/viridianland/clip-gameplay.webp",
+    image: "media/viridianland/preview.webp",
+    preview: "media/viridianland/clip-gameplay.webp",
     description:
       "Top-down shooter built in Unity over six weeks. My first game in the engine, covering gameplay systems and pixel art from scratch.",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
@@ -307,10 +307,10 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        { thumb: "images/viridianland/clip-gameplay.webp", full: "images/viridianland/clip-gameplay.mp4", still: "images/viridianland/clip-gameplay-still.webp" },
-        { thumb: "images/viridianland/main-menu-thumb.webp", full: "images/viridianland/main-menu.webp" },
-        { thumb: "images/viridianland/gameplay-thumb.webp", full: "images/viridianland/gameplay.webp" },
-        { thumb: "images/viridianland/pause-menu-thumb.webp", full: "images/viridianland/pause-menu.webp" }
+        { thumb: "media/viridianland/clip-gameplay.webp", full: "media/viridianland/clip-gameplay.mp4", still: "media/viridianland/clip-gameplay-still.webp" },
+        { thumb: "media/viridianland/main-menu-thumb.webp", full: "media/viridianland/main-menu.webp" },
+        { thumb: "media/viridianland/gameplay-thumb.webp", full: "media/viridianland/gameplay.webp" },
+        { thumb: "media/viridianland/pause-menu-thumb.webp", full: "media/viridianland/pause-menu.webp" }
       ],
       links: {
         itch: "https://ilkkahi.itch.io/viridianland",
