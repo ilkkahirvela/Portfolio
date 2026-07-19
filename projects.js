@@ -70,7 +70,7 @@ const PROJECTS = [
     id: "chessmachine3000",
     title: "ChessMachine3000",
     year: 2025,
-    order: 2,
+    order: 3,
     team: 1,
     duration: "~8 weeks",
     image: "images/chessmachine3000/gameplay.webp",
@@ -130,6 +130,72 @@ const PROJECTS = [
       links: {
         github: "https://github.com/ilkkahirvela/ChessMachine3000",
         docs: "https://ilkkahirvela.github.io/ChessMachine3000"
+      }
+    }
+  },
+
+  {
+    id: "y2kentity",
+    title: "y2k: Entity",
+    year: 2025,
+    order: 2,
+    team: 9,
+    duration: "~8 weeks",
+    image: "images/y2kentity/y2kentity-preview.webp",
+    description:
+      "Turn-based tactics RPG made in Unity as a student team project. I built the grid foundation, the tactical camera, and the combat UI.",
+    tags: ["Unity", "C#", "3D"],
+    featured: false,
+
+    detailsUrl: "project.html?id=y2kentity",
+
+    content: {
+      summary:
+        "A turn-based tactics RPG and my first proper Unity 3D game. I built the grid system the gameplay runs on, the tactical camera, and most of the combat-facing UI.",
+      sections: [
+        {
+          h2: "About",
+          p:
+            "y2k: Entity is a turn-based tactics RPG made in Unity over eight weeks, inspired by classics like Final Fantasy Tactics and Fire Emblem. Battles play out on a grid: you pick classes for your squad, move the characters across the board one turn at a time, and try to outsmart the enemy with positioning and abilities. Between battles, the story moves forward through dialogue scenes."
+        },
+        {
+          h2: "Team",
+          ul: [
+            "Team size: 9",
+            "Programmers: 4",
+            "Artists: 4",
+            "Music: 1",
+            "A collaboration between Metropolia University of Applied Sciences and Stadin AO."
+          ]
+        },
+        {
+          h2: "My Role & Contributions",
+          ul: [
+            "Built the grid system from the ground up: the foundation that character movement and combat actions run on.",
+            "Built the camera system and its movements and animations: WASD panning, mouse-wheel zoom and rotation.",
+            "Implemented the tile click-interaction system: selecting tiles, confirming moves and actions, and the visual indication of the selected tile.",
+            "Designed and implemented the ability selection UI, and programmed the character portrait UIs used in combat.",
+            "Added text animation effects, health bars and damage numbers.",
+            "Planned the overall code structure and how the game's systems fit together, in a lightweight code lead role."
+          ]
+        },
+        {
+          h2: "Reflection",
+          p: [
+            "This was my first proper 3D game in Unity, in a genre I had barely played myself, on a team with plenty of differing opinions on design direction. Finding a middle ground everyone could work with was its own exercise, and we still put out a complete, playable prototype.",
+            "The biggest lesson was the camera. Building it taught me a lot about how camera systems work, and about the amount of up-front planning an intuitive, good-looking camera actually needs."
+          ]
+        }
+      ],
+      gallery: [
+        { thumb: "images/y2kentity/gameplay-thumb.webp", full: "images/y2kentity/gameplay.webp" },
+        { thumb: "images/y2kentity/ability-ui-thumb.webp", full: "images/y2kentity/ability-ui.webp" },
+        { thumb: "images/y2kentity/class-select-thumb.webp", full: "images/y2kentity/class-select.webp" },
+        { thumb: "images/y2kentity/title-screen-thumb.webp", full: "images/y2kentity/title-screen.webp" }
+      ],
+      links: {
+        itch: "https://ssntr.itch.io/y2k-entity",
+        trailer: "https://www.youtube.com/watch?v=InvGdTT-758"
       }
     }
   },
