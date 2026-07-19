@@ -143,7 +143,7 @@ const PROJECTS = [
     duration: "~8 weeks",
     image: "images/y2kentity/y2kentity-preview.webp",
     description:
-      "Turn-based tactics RPG made in Unity as a student team project. I built the grid foundation, the tactical camera, and the combat UI.",
+      "Turn-based tactics RPG made in Unity as a student team project. I built the grid foundation, the camera system, and the combat UI.",
     tags: ["Unity", "C#", "3D"],
     featured: false,
 
@@ -151,7 +151,7 @@ const PROJECTS = [
 
     content: {
       summary:
-        "A turn-based tactics RPG and my first proper Unity 3D game. I built the grid system the gameplay runs on, the tactical camera, and most of the combat-facing UI.",
+        "A turn-based tactics RPG and my first proper Unity 3D game. I built the grid system the gameplay runs on, the camera system, and most of the combat-facing UI.",
       sections: [
         {
           h2: "About",
