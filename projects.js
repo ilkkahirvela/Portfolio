@@ -123,7 +123,7 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        "images/chessmachine3000/bot-vs-bot.gif",
+        { full: "images/chessmachine3000/bot-vs-bot.gif", still: "images/chessmachine3000/bot-vs-bot-still.webp" },
         "images/chessmachine3000/settings.webp",
         "images/chessmachine3000/gameplay.webp"
       ],
@@ -189,8 +189,8 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        { thumb: "images/y2kentity/clip-purple.webp", full: "images/y2kentity/clip-purple.mp4" },
-        { thumb: "images/y2kentity/clip-forest.webp", full: "images/y2kentity/clip-forest.mp4" },
+        { thumb: "images/y2kentity/clip-purple.webp", full: "images/y2kentity/clip-purple.mp4", still: "images/y2kentity/clip-purple-still.webp" },
+        { thumb: "images/y2kentity/clip-forest.webp", full: "images/y2kentity/clip-forest.mp4", still: "images/y2kentity/clip-forest-still.webp" },
         { thumb: "images/y2kentity/targeting-ui-thumb.webp", full: "images/y2kentity/targeting-ui.webp" },
         { thumb: "images/y2kentity/ability-menu-thumb.webp", full: "images/y2kentity/ability-menu.webp" },
         { thumb: "images/y2kentity/gameplay-thumb.webp", full: "images/y2kentity/gameplay.webp" }
@@ -253,7 +253,7 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        "images/mazesolver/maze-solver-demo.gif",
+        { full: "images/mazesolver/maze-solver-demo.gif", still: "images/mazesolver/maze-solver-demo-still.webp" },
         "images/mazesolver/settings.webp",
         "images/mazesolver/mazesolver-preview.webp"
       ],

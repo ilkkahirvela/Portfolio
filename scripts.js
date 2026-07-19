@@ -364,7 +364,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     `;
 
     // Motion preview — swap art to the gameplay loop on hover (lazy-loads once)
-    if (p.preview) {
+    if (p.preview && !REDUCED_MOTION) {
       const art = card.querySelector(".level-art-img");
       card.addEventListener("mouseenter", () => {
         art.style.backgroundImage = `url('${p.preview}')`;
@@ -771,7 +771,12 @@ const onScrollFrame = (() => {
       videoEl.hidden = false;
       videoEl.src = src;
       videoEl.setAttribute("aria-label", alt);
-      videoEl.play().catch(() => {});
+      if (REDUCED_MOTION) {
+        // Don't autoplay for reduced-motion visitors; hand them the controls.
+        videoEl.controls = true;
+      } else {
+        videoEl.play().catch(() => {});
+      }
     } else {
       if (videoEl) {
         videoEl.pause();
