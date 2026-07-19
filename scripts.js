@@ -958,15 +958,17 @@ const onScrollFrame = (() => {
   }, { threshold: 0.25 }).observe(card);
 })();
 
-// Continue screen countdown — loops 9→0 while visible
+// Continue screen countdown — loops 9→0 while visible.
+// Reduced motion still counts down; it only skips the tick-pop effect.
 (() => {
   const el = document.getElementById("continueCount");
-  if (!el || REDUCED_MOTION) return;
+  if (!el) return;
   let n = 9;
   let timer = 0;
   function tick() {
     n = n > 0 ? n - 1 : 9;
     el.textContent = n;
+    if (REDUCED_MOTION) return;
     // retrigger the tick pop (countTick in CSS)
     el.classList.remove("tick");
     void el.offsetWidth;
