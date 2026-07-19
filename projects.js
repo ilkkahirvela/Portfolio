@@ -74,7 +74,7 @@ const PROJECTS = [
     team: 1,
     duration: "~8 weeks",
     image: "images/chessmachine3000/gameplay.webp",
-    preview: "images/chessmachine3000/bot-vs-bot.gif",
+    preview: "images/chessmachine3000/bot-vs-bot.webp",
     description:
       "Terminal-based chess engine with a minimax AI opponent. Supports human vs bot and bot vs bot modes with full chess rule coverage.",
     tags: ["C++", "Algorithms"],
@@ -123,7 +123,7 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        { full: "images/chessmachine3000/bot-vs-bot.gif", still: "images/chessmachine3000/bot-vs-bot-still.webp" },
+        { full: "images/chessmachine3000/bot-vs-bot.webp", still: "images/chessmachine3000/bot-vs-bot-still.webp" },
         "images/chessmachine3000/settings.webp",
         "images/chessmachine3000/gameplay.webp"
       ],
@@ -210,7 +210,7 @@ const PROJECTS = [
     team: 1,
     duration: "~1 week",
     image: "images/mazesolver/mazesolver-preview.webp",
-    preview: "images/mazesolver/maze-solver-demo.gif",
+    preview: "images/mazesolver/maze-solver-demo.webp",
     description:
       "Generates and solves mazes in real time, with animated step-by-step visualization and adjustable settings.",
     tags: ["C++", "SFML", "ImGui", "Algorithms"],
@@ -253,7 +253,7 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        { full: "images/mazesolver/maze-solver-demo.gif", still: "images/mazesolver/maze-solver-demo-still.webp" },
+        { full: "images/mazesolver/maze-solver-demo.webp", still: "images/mazesolver/maze-solver-demo-still.webp" },
         "images/mazesolver/settings.webp",
         "images/mazesolver/mazesolver-preview.webp"
       ],
