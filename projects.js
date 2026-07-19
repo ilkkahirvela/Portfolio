@@ -189,8 +189,8 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        "images/y2kentity/clip-purple.webp",
-        "images/y2kentity/clip-forest.webp",
+        { thumb: "images/y2kentity/clip-purple.webp", full: "images/y2kentity/clip-purple.mp4" },
+        { thumb: "images/y2kentity/clip-forest.webp", full: "images/y2kentity/clip-forest.mp4" },
         { thumb: "images/y2kentity/targeting-ui-thumb.webp", full: "images/y2kentity/targeting-ui.webp" },
         { thumb: "images/y2kentity/ability-menu-thumb.webp", full: "images/y2kentity/ability-menu.webp" },
         { thumb: "images/y2kentity/gameplay-thumb.webp", full: "images/y2kentity/gameplay.webp" }

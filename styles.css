@@ -2031,6 +2031,11 @@ a.level-nav__slot--next:focus-visible .level-nav__arrow{
   transition: opacity 0.12s ease;
 }
 
+/* display:block above would defeat the hidden attribute */
+.lightbox__img[hidden]{
+  display: none;
+}
+
 /* Close */
 .lightbox__close{
   position: absolute;

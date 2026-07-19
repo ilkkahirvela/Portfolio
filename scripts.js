@@ -733,9 +733,11 @@ const onScrollFrame = (() => {
   if (!lightbox || !imgEl || !btnClose || !btnPrev || !btnNext) return;
 
   const galleryLinks = Array.from(document.querySelectorAll("#project-details .gallery-item"))
-    .filter(a => a.getAttribute("href") && /\.(png|jpg|jpeg|webp|gif)(\?.*)?$/i.test(a.getAttribute("href")));
+    .filter(a => a.getAttribute("href") && /\.(png|jpg|jpeg|webp|gif|mp4|webm)(\?.*)?$/i.test(a.getAttribute("href")));
 
   const sources = galleryLinks.map(a => a.getAttribute("href"));
+  const videoEl = document.getElementById("lightboxVideo");
+  const isVideo = src => /\.(mp4|webm)(\?.*)?$/i.test(src);
   let index = -1;
   let hideTimer;
   let overControl = false;
@@ -760,8 +762,27 @@ const onScrollFrame = (() => {
   }
 
   function setImage(i) {
-    imgEl.src = sources[i];
-    imgEl.alt = galleryLinks[i]?.querySelector("img")?.alt || "Gallery image";
+    const src = sources[i];
+    const alt = galleryLinks[i]?.querySelector("img")?.alt || "Gallery image";
+    if (videoEl && isVideo(src)) {
+      imgEl.hidden = true;
+      imgEl.removeAttribute("src");
+      imgEl.alt = "";
+      videoEl.hidden = false;
+      videoEl.src = src;
+      videoEl.setAttribute("aria-label", alt);
+      videoEl.play().catch(() => {});
+    } else {
+      if (videoEl) {
+        videoEl.pause();
+        videoEl.removeAttribute("src");
+        videoEl.load();
+        videoEl.hidden = true;
+      }
+      imgEl.hidden = false;
+      imgEl.src = src;
+      imgEl.alt = alt;
+    }
   }
 
   function openAt(i) {
@@ -771,12 +792,13 @@ const onScrollFrame = (() => {
     if (lightbox.classList.contains("is-open") && newIndex !== index) {
       // Instant swap, fade new image in
       index = newIndex;
-      imgEl.style.transition = "none";
-      imgEl.style.opacity = "0";
+      const el = (videoEl && isVideo(sources[index])) ? videoEl : imgEl;
+      el.style.transition = "none";
+      el.style.opacity = "0";
       setImage(index);
-      imgEl.offsetHeight; // force reflow to restart transition
-      imgEl.style.transition = "";
-      imgEl.style.opacity = "1";
+      el.offsetHeight; // force reflow to restart transition
+      el.style.transition = "";
+      el.style.opacity = "1";
       updateCounter();
       setNavVisibility();
     } else {
@@ -799,11 +821,18 @@ const onScrollFrame = (() => {
     clearTimeout(hideTimer);
     lightbox.classList.remove("controls-visible");
     index = -1;
+    if (videoEl) videoEl.pause();
     // Clear src after fade-out completes
     setTimeout(() => {
       if (!lightbox.classList.contains("is-open")) {
         imgEl.src = "";
         imgEl.alt = "";
+        if (videoEl) {
+          videoEl.removeAttribute("src");
+          videoEl.load();
+          videoEl.hidden = true;
+          imgEl.hidden = false;
+        }
       }
     }, 250);
   }
