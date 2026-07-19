@@ -148,11 +148,15 @@ if (elLinks) {
       if (elRail) elRail.style.display = "none";
     } else {
       if (elRail) elRail.style.display = "";
-      elGallery.innerHTML = gallery.map((src, i) => {
+      // Entries are either a plain src string, or { thumb, full } where the
+      // rail <img> loads the thumb and the lightbox (anchor href) gets the full.
+      elGallery.innerHTML = gallery.map((item, i) => {
+        const full = typeof item === "string" ? item : item.full;
+        const thumb = (typeof item === "string" ? item : item.thumb) || full;
         const alt = `${project.title || "Project"} Screenshot ${i + 1}`;
         return `
-          <a class="gallery-item" href="${escapeAttr(src)}" target="_blank" rel="noopener">
-            <img src="${escapeAttr(src)}" alt="${escapeAttr(alt)}" width="640" height="360" loading="lazy" decoding="async" />
+          <a class="gallery-item" href="${escapeAttr(full)}" target="_blank" rel="noopener">
+            <img src="${escapeAttr(thumb)}" alt="${escapeAttr(alt)}" width="640" height="360" loading="lazy" decoding="async" />
           </a>
         `;
       }).join("");

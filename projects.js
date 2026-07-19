@@ -238,9 +238,9 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        "images/viridianland/main-menu.webp",
-        "images/viridianland/gameplay.webp",
-        "images/viridianland/pause-menu.webp"
+        { thumb: "images/viridianland/main-menu-thumb.webp", full: "images/viridianland/main-menu.webp" },
+        { thumb: "images/viridianland/gameplay-thumb.webp", full: "images/viridianland/gameplay.webp" },
+        { thumb: "images/viridianland/pause-menu-thumb.webp", full: "images/viridianland/pause-menu.webp" }
       ],
       links: {
         itch: "https://ilkkahi.itch.io/viridianland",
