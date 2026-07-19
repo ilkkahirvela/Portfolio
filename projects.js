@@ -142,6 +142,7 @@ const PROJECTS = [
     team: 9,
     duration: "~8 weeks",
     image: "images/y2kentity/y2kentity-preview.webp",
+    preview: "images/y2kentity/clip-purple.webp",
     description:
       "Turn-based tactics RPG made in Unity as a student team project. I built the grid foundation, the camera system, and the combat UI.",
     tags: ["Unity", "C#", "3D"],
@@ -188,10 +189,11 @@ const PROJECTS = [
         }
       ],
       gallery: [
-        { thumb: "images/y2kentity/gameplay-thumb.webp", full: "images/y2kentity/gameplay.webp" },
-        { thumb: "images/y2kentity/ability-ui-thumb.webp", full: "images/y2kentity/ability-ui.webp" },
-        { thumb: "images/y2kentity/class-select-thumb.webp", full: "images/y2kentity/class-select.webp" },
-        { thumb: "images/y2kentity/title-screen-thumb.webp", full: "images/y2kentity/title-screen.webp" }
+        "images/y2kentity/clip-purple.webp",
+        "images/y2kentity/clip-forest.webp",
+        { thumb: "images/y2kentity/targeting-ui-thumb.webp", full: "images/y2kentity/targeting-ui.webp" },
+        { thumb: "images/y2kentity/ability-menu-thumb.webp", full: "images/y2kentity/ability-menu.webp" },
+        { thumb: "images/y2kentity/gameplay-thumb.webp", full: "images/y2kentity/gameplay.webp" }
       ],
       links: {
         itch: "https://ssntr.itch.io/y2k-entity",
