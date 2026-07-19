@@ -271,6 +271,7 @@ const PROJECTS = [
     team: 1,
     duration: "~6 weeks",
     image: "images/viridianland/preview.webp",
+    preview: "images/viridianland/clip-gameplay.webp",
     description:
       "Top-down shooter built in Unity over six weeks. My first game in the engine, covering gameplay systems and pixel art from scratch.",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
@@ -306,6 +307,7 @@ const PROJECTS = [
         }
       ],
       gallery: [
+        { thumb: "images/viridianland/clip-gameplay.webp", full: "images/viridianland/clip-gameplay.mp4", still: "images/viridianland/clip-gameplay-still.webp" },
         { thumb: "images/viridianland/main-menu-thumb.webp", full: "images/viridianland/main-menu.webp" },
         { thumb: "images/viridianland/gameplay-thumb.webp", full: "images/viridianland/gameplay.webp" },
         { thumb: "images/viridianland/pause-menu-thumb.webp", full: "images/viridianland/pause-menu.webp" }
