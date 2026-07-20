@@ -1835,6 +1835,58 @@ body:has(#about) main{
   object-fit: cover;
 }
 
+/* Award badge — optional rail callout (e.g. a competition finalist medal).
+   The badge art is a transparent-cornered diamond, so a soft warm glow behind
+   it keeps a dark badge from sinking into the panel. */
+#project-details .rail-award{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,180,84,0.10), transparent 62%),
+    var(--panel);
+}
+
+#project-details .award-badge{
+  display: block;
+  width: 150px;
+  max-width: 62%;
+  height: auto;
+}
+
+/* Pixel-art signature — a small animated sprite the developer made. Crisp
+   integer scaling, faint warm glow to echo the in-game light. */
+#project-details .rail-pixelart{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 20px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  text-align: center;
+}
+
+#project-details .pixel-art{
+  width: 128px;
+  height: 128px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 9px rgba(255,180,84,0.22));
+}
+
+#project-details .pixel-art__caption{
+  margin: 0;
+  max-width: 22ch;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
 /* Responsive */
 @media (max-width: 980px){
   #project-details .project-layout{
@@ -1848,6 +1900,14 @@ body:has(#about) main{
 
   #project-details .gallery-grid{
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Keep the badge and pixel-art from stretching full-width on the stacked
+     mobile layout — center them at a natural size. */
+  #project-details .rail-award,
+  #project-details .rail-pixelart{
+    align-self: center;
+    width: min(320px, 100%);
   }
 }
 

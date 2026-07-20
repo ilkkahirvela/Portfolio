@@ -136,29 +136,40 @@ if (elLinks) {
 }
 
 
-  // Body sections (skip empty/TODO) — hidden when project is WIP
+  // Body sections (skip empty/TODO) — WIP projects without content get a notice
   if (elBody) {
-    if (project.wip) {
-      elBody.innerHTML = `<div class="project-section wip-notice"><p>This project page is under construction. More details coming soon.</p></div>`;
-    } else {
-      elBody.innerHTML = renderSections(project.content?.sections);
-      if (!elBody.innerHTML.trim()) elBody.innerHTML = "";
-    }
+    const sectionsHtml = renderSections(project.content?.sections).trim();
+    elBody.innerHTML = sectionsHtml
+      || (project.wip
+        ? `<div class="project-section wip-notice"><p>This project page is under construction. More details coming soon.</p></div>`
+        : "");
   }
 
-  // Gallery (right rail) — hidden when project is WIP
-  const gallery = (!project.wip && Array.isArray(project.content?.gallery)) ? project.content.gallery : [];
+  // Right rail — an optional award badge (top), the gallery, and an optional
+  // pixel-art signature (bottom). The rail collapses only when none are present.
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const award = project.content?.award;
+  const pixelArt = project.content?.pixelArt;
+  const gallery = Array.isArray(project.content?.gallery) ? project.content.gallery : [];
+
+  // Award badge — prepend to the rail (e.g. a competition finalist medal).
+  if (elRail && award?.image) {
+    const sec = document.createElement("div");
+    sec.className = "rail-section rail-award";
+    sec.innerHTML =
+      `<img class="award-badge" src="${escapeAttr(award.image)}" alt="${escapeAttr(award.alt || "Award")}" loading="lazy" decoding="async" />`;
+    elRail.insertBefore(sec, elRail.firstChild);
+  }
+
   if (elGallery) {
     if (!gallery.length) {
-      elGallery.innerHTML = "";
-      if (elRail) elRail.style.display = "none";
+      // Drop the empty gallery wrapper so it doesn't add a stray rail gap.
+      elGallery.closest(".rail-section")?.remove();
     } else {
-      if (elRail) elRail.style.display = "";
       // Entries are either a plain src string, or { thumb, full, still } where
       // the rail <img> loads the thumb and the lightbox (anchor href) gets the
       // full. `still` is a static frame used in place of an animated thumb when
       // the visitor prefers reduced motion.
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       elGallery.innerHTML = gallery.map((item, i) => {
         const full = typeof item === "string" ? item : item.full;
         const thumb = (reduceMotion && item.still)
@@ -172,6 +183,22 @@ if (elLinks) {
         `;
       }).join("");
     }
+  }
+
+  // Pixel-art signature — append to the rail. Reduced motion gets the still.
+  if (elRail && pixelArt?.src) {
+    const src = (reduceMotion && pixelArt.still) || pixelArt.src;
+    const sec = document.createElement("div");
+    sec.className = "rail-section rail-pixelart";
+    sec.innerHTML =
+      `<img class="pixel-art" src="${escapeAttr(src)}" alt="${escapeAttr(pixelArt.alt || "Pixel art")}" loading="lazy" decoding="async" />` +
+      (pixelArt.caption ? `<p class="pixel-art__caption">${escapeHtml(pixelArt.caption)}</p>` : "");
+    elRail.appendChild(sec);
+  }
+
+  // Rail visibility — show if any rail content exists, otherwise collapse it.
+  if (elRail) {
+    elRail.style.display = (gallery.length || award?.image || pixelArt?.src) ? "" : "none";
   }
 
   // Prev / next level nav — walks the shared sortedProjects() order so the
