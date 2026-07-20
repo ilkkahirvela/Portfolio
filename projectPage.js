@@ -75,9 +75,11 @@
   if (elBriefing && typeof sortedProjects === "function") {
     const worldIdx = sortedProjects().findIndex(p => p.id === project.id);
     const world = worldIdx >= 0 ? `World ${String(worldIdx + 1).padStart(2, "0")}` : "";
-    const stamp = project.wip
-      ? `<span class="stamp stamp-dev">In Dev</span>`
-      : `<span class="stamp stamp-clear">Clear!</span>`;
+    const stamp = project.showStatusStamp === false
+      ? ""
+      : (project.wip
+        ? `<span class="stamp stamp-dev">In Dev</span>`
+        : `<span class="stamp stamp-clear">Clear!</span>`);
     elBriefing.innerHTML =
       `<span>${escapeHtml([world, "Level Briefing"].filter(Boolean).join(" · "))}</span>${stamp}`;
   }

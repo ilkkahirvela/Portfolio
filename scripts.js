@@ -336,11 +336,14 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
       ? `<img class="level-award" src="${escapeHtml(awardImg)}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`
       : "";
 
+    const statusStamp = p.showStatusStamp === false
+      ? ""
+      : (p.wip
+        ? `<span class="stamp stamp-dev">In Dev</span>`
+        : `<span class="stamp stamp-clear">Clear!</span>`);
     const stamps = [
       p.featured ? `<span class="stamp stamp-feat">Featured</span>` : "",
-      p.wip
-        ? `<span class="stamp stamp-dev">In Dev</span>`
-        : `<span class="stamp stamp-clear">Clear!</span>`,
+      statusStamp,
     ].filter(Boolean).join("");
 
     const tagsHtml = Array.isArray(p.tags)

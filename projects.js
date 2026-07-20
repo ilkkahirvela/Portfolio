@@ -2,7 +2,7 @@ const PROJECTS = [
   {
     id: "kindling",
     title: "Kindling",
-    wip: true,
+    showStatusStamp: false,
     year: 2026,
     team: 6,
     duration: "10+ weeks",
