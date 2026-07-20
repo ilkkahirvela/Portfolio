@@ -1549,6 +1549,14 @@ body:has(#about) main{
   opacity: 0.92;
 }
 
+/* Lead paragraphs (content.summary can be multiple) inherit the lead type. */
+#project-details .project-lead p{
+  margin: 0;
+}
+#project-details .project-lead p + p{
+  margin-top: 0.8em;
+}
+
 /* Sections */
 #project-details .project-section{
   padding: 18px 0;

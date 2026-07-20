@@ -82,9 +82,15 @@
       `<span>${escapeHtml([world, "Level Briefing"].filter(Boolean).join(" · "))}</span>${stamp}`;
   }
 
-  // Lead text: prefer content.summary, fallback to description
-  const lead = cleanText(project.content?.summary) || cleanText(project.description) || "";
-  if (elLead) elLead.textContent = lead;
+  // Lead text: prefer content.summary (string OR array of paragraphs), fallback
+  // to description. Each entry renders as its own paragraph.
+  if (elLead) {
+    const rawSummary = project.content?.summary;
+    const leadParas = (Array.isArray(rawSummary) ? rawSummary : [rawSummary ?? project.description])
+      .map(cleanText)
+      .filter(Boolean);
+    elLead.innerHTML = leadParas.map(p => `<p>${escapeHtml(p)}</p>`).join("");
+  }
 
   // Tags — single amber mono line, pip-separated (matches the level cards)
   if (elTags) {
