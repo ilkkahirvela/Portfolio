@@ -7,21 +7,33 @@ const PROJECTS = [
     team: 6,
     duration: "10+ weeks",
     image: "media/kindling/kindling-preview.webp",
+    preview: "media/kindling/clip-ray-puzzle.webp",
     description:
-      "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
+      "Top-down adventure puzzle game about restoring light to a darkened world, made in Unity with a team of six. A finalist in the Bit1 student game competition. A single lantern is your light, your weapon, your health, and your way through every puzzle. I built the Lantern and its light interactions, the player and Lantern movement, and the camera and cutscene systems.",
     tags: ["Unity", "C#", "2D", "Pixel Art"],
     featured: true,
 
     detailsUrl: "project.html?id=kindling",
 
     content: {
-      summary:
-        "Systems-driven top-down adventure game built around light-based mechanics and modular gameplay architecture. Developed in Unity as a team project, with a strong focus on scalable systems, technical design, and long-term iteration.",
+      summary: [
+        "Top-down adventure puzzle game about restoring light to a darkened world, made in Unity with a team of six. A finalist in the Bit1 student game competition.",
+        "A single lantern is your light, your weapon, your health, and your way through every puzzle. I built the Lantern and its light interactions, the player and Lantern movement, and the camera and cutscene systems."
+      ],
       sections: [
         {
-          h2: "Overview",
-          p:
-            "Kindling is a top-down adventure game built around a multi-mode lantern mechanic that interacts with enemies, the environment, and the player. The lantern enables exploration, combat, and puzzle-solving through consistent light-based interactions."
+          h2: "About",
+          p: [
+            "Carrying a Lantern, the player brings a darkened world back to life by lighting up Kindles: beacons that restore the surroundings, upgrade the Lantern's abilities, and double as respawn and healing points.",
+            "The Lantern starts as an orb of light around the player and condenses into a cone, then a ray, as it upgrades, extending its reach and strengthening its light. It is also the player's health: shards orbiting the Lantern and the color it casts show what's left, and running dry sends the player back to the last activated Kindle."
+          ]
+        },
+        {
+          h2: "Background",
+          p: [
+            "Kindling started as a course project: six people over eight weeks. Three of the programmers, myself included, then continued it part-time for the Bit1 Student Video Game Competition, where it reached the finals.",
+            "Development is currently on hiatus, with the demo standing as a portfolio piece for the team."
+          ]
         },
         {
           h2: "Team",
@@ -35,30 +47,45 @@ const PROJECTS = [
         {
           h2: "My Role & Contributions",
           ul: [
-            "Implementation of key gameplay systems.",
-            "Built the lantern system with multiple light modes and behaviors.",
-            "Implemented light-driven interactions affecting enemies, the environment, and the player.",
-            "Created a data-driven setup using ScriptableObjects to make balancing and content changes fast.",
-            "Developed camera and cutscene systems to support gameplay states and transitions.",
-            "Added gameplay tooling and debugging helpers to improve testing and iteration speed."
+            "Built the Lantern system with its upgradeable light modes: orb, cone, and ray.",
+            "Built all player and Lantern movement and controls, including keeping the free-floating Lantern from clipping into walls as it orbits the player.",
+            "Implemented the gameplay logic for how the light interacts with enemies, the environment, and the player.",
+            "Built the health system shared by both the player and the enemies.",
+            "Heavily optimized the performance of the existing enemy behavior and pathfinding systems ahead of the Bit1 competition.",
+            "Improved enemy animation handling and hit detection.",
+            "Utilized data-driven setups with ScriptableObjects to make balancing and content changes fast.",
+            "Developed a multi-camera cinematic system and cutscenes, orchestrating cameras across the game's areas, transitions between them, and scripted sequences.",
+            "Set up the game's post-processing.",
+            "Added gameplay tooling and debugging helpers to improve testing and iteration speed.",
+            "Also made some of the art: the spinning health shards that orbit the Lantern, a bigger, animated asset for the Kindles, and the custom cursor."
           ]
         },
         {
-          h2: "Technical Focus",
-          ul: [
-            "Modular and maintainable code structure.",
-            "Scalable system design suitable for long-term development.",
-            "Clear separation of data and logic for rapid tuning and content iteration."
+          h2: "Reflection",
+          p: [
+            "Kindling is where component-based design really clicked for me. With four programmers in the same codebase, systems had to be modular to survive: small components with clear responsibilities, and data kept separate from logic so balancing changes didn't always mean touching code. More than anything, it shaped how I write code that a teammate, or a future me, can pick up and extend.",
+            "Kindling also taught me a lot outside my main role: how 2D layers, perspective, lighting, and shadows come together."
           ]
-        },
-        {
-          h2: "Closing",
-          p:
-            "Kindling showcases my approach to building reusable gameplay systems in Unity and collaborating within a multi-disciplinary team. It reflects my focus on technical problem-solving, maintainable architecture, and delivering features that support long-term development."
         }
-      ]
-      ,
-      gallery: [],
+      ],
+      gallery: [
+        { thumb: "media/kindling/clip-bloom.webp", full: "media/kindling/clip-bloom.mp4", still: "media/kindling/clip-bloom-still.webp" },
+        { thumb: "media/kindling/clip-ray-puzzle.webp", full: "media/kindling/clip-ray-puzzle.mp4", still: "media/kindling/clip-ray-puzzle-still.webp" },
+        { thumb: "media/kindling/ruins-kindle-thumb.webp", full: "media/kindling/ruins-kindle.webp" },
+        { thumb: "media/kindling/ray-puzzle-thumb.webp", full: "media/kindling/ray-puzzle.webp" },
+        { thumb: "media/kindling/restored-thumb.webp", full: "media/kindling/restored.webp" },
+        { thumb: "media/kindling/encounter-thumb.webp", full: "media/kindling/encounter.webp" }
+      ],
+      award: {
+        image: "media/kindling/bit1-finalist-white.webp",
+        alt: "Bit1 Student Video Game Competition Finalist 2026"
+      },
+      pixelArt: {
+        src: "media/kindling/lantern.webp",
+        still: "media/kindling/lantern-still.webp",
+        alt: "Animated pixel-art Lantern sprite",
+        caption: "The Lantern, animated by me in Aseprite (base sprite by our artist)."
+      },
       links: {
         itch: "https://ilkkahi.itch.io/kindling",
         trailer: "https://www.youtube.com/watch?v=UE9aJpK1Qm0"
