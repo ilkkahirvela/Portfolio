@@ -329,6 +329,13 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     const world = String((p._world ?? index) + 1).padStart(2, "0");
     const yearHtml = p.year != null ? ` · ${escapeHtml(String(p.year))}` : "";
 
+    // Optional award badge, pinned to the preview's corner (decorative here —
+    // the project page carries the labelled version).
+    const awardImg = p.content?.award?.image;
+    const awardHtml = awardImg
+      ? `<img class="level-award" src="${escapeHtml(awardImg)}" alt="" aria-hidden="true" loading="lazy" decoding="async" />`
+      : "";
+
     const stamps = [
       p.featured ? `<span class="stamp stamp-feat">Featured</span>` : "",
       p.wip
@@ -347,7 +354,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     const indicatorsHtml = metaParts.join('<span class="meta-sep">·</span>');
 
     card.innerHTML = `
-      <div class="level-art"><div class="level-art-img${p.image ? "" : " no-image"}"${artBg}></div></div>
+      <div class="level-art"><div class="level-art-img${p.image ? "" : " no-image"}"${artBg}></div>${awardHtml}</div>
       <div class="level-meta">
         <div class="level-topline">
           <span class="level-num">World ${world}${yearHtml}</span>
