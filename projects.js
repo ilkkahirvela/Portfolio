@@ -50,9 +50,10 @@ const PROJECTS = [
             {
               h3: "Lantern & Player",
               ul: [
-                "Built the Lantern system and its upgradeable light modes: orb, cone, and ray (not the ray's light reflection, which a teammate built).",
+                "Built the Lantern system and its unlockable light modes: orb, cone, and ray.",
                 "Built all player and Lantern movement and controls, including keeping the free-floating Lantern from clipping into walls as it orbits the player.",
-                "Implemented the gameplay logic for how the light interacts with enemies, the environment, and the player.",
+                "Built all the animation controllers for the Lantern and player (the player's animations were drawn by our artist).",
+                "Implemented the gameplay logic for how the light interacts with enemies, the environment, and the player (not the ray's light reflection, which a teammate built).",
                 "Built the health system shared by both the player and the enemies."
               ]
             },
@@ -80,7 +81,7 @@ const PROJECTS = [
             {
               h3: "Art",
               ul: [
-                "Made some of the game's art: the spinning health shards that orbit the Lantern, a bigger, animated asset for the Kindles, and the custom cursor."
+                "Made some of the game's art: every Lantern animation, from its orbiting health shards to its movement, a bigger animated asset for the Kindles, and the custom cursor."
               ]
             }
           ]
