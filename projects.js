@@ -46,18 +46,43 @@ const PROJECTS = [
         },
         {
           h2: "My Role & Contributions",
-          ul: [
-            "Built the Lantern system with its upgradeable light modes: orb, cone, and ray.",
-            "Built all player and Lantern movement and controls, including keeping the free-floating Lantern from clipping into walls as it orbits the player.",
-            "Implemented the gameplay logic for how the light interacts with enemies, the environment, and the player.",
-            "Built the health system shared by both the player and the enemies.",
-            "Heavily optimized the performance of the existing enemy behavior and pathfinding systems ahead of the Bit1 competition.",
-            "Improved enemy animation handling and hit detection.",
-            "Utilized data-driven setups with ScriptableObjects to make balancing and content changes fast.",
-            "Developed a multi-camera cinematic system and cutscenes, orchestrating cameras across the game's areas, transitions between them, and scripted sequences.",
-            "Set up the game's post-processing.",
-            "Added gameplay tooling and debugging helpers to improve testing and iteration speed.",
-            "Also made some of the art: the spinning health shards that orbit the Lantern, a bigger, animated asset for the Kindles, and the custom cursor."
+          groups: [
+            {
+              h3: "Lantern & Player",
+              ul: [
+                "Built the Lantern system and its upgradeable light modes: orb, cone, and ray (not the ray's light reflection, which a teammate built).",
+                "Built all player and Lantern movement and controls, including keeping the free-floating Lantern from clipping into walls as it orbits the player.",
+                "Implemented the gameplay logic for how the light interacts with enemies, the environment, and the player.",
+                "Built the health system shared by both the player and the enemies."
+              ]
+            },
+            {
+              h3: "Cameras & Presentation",
+              ul: [
+                "Developed a multi-camera cinematic system and cutscenes, orchestrating cameras across the game's areas, transitions between them, and scripted sequences.",
+                "Set up the game's post-processing."
+              ]
+            },
+            {
+              h3: "Enemies",
+              ul: [
+                "Heavily optimized the performance of the existing enemy behavior and pathfinding systems ahead of the Bit1 competition.",
+                "Improved enemy animation handling and hit detection."
+              ]
+            },
+            {
+              h3: "Tooling & Data",
+              ul: [
+                "Utilized data-driven setups with ScriptableObjects to make balancing and content changes fast.",
+                "Added gameplay tooling and debugging helpers to improve testing and iteration speed."
+              ]
+            },
+            {
+              h3: "Art",
+              ul: [
+                "Made some of the game's art: the spinning health shards that orbit the Lantern, a bigger, animated asset for the Kindles, and the custom cursor."
+              ]
+            }
           ]
         },
         {
