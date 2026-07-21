@@ -81,7 +81,7 @@ const PROJECTS = [
             {
               h3: "Art",
               ul: [
-                "Made some of the game's art: every Lantern animation, from its orbiting health shards to its movement, a bigger animated asset for the Kindles, and the custom cursor."
+                "Made some of the game's art: the Lantern's animations (its orbiting health shards and reacting flame), a bigger animated asset for the Kindles, and the custom cursor."
               ]
             }
           ]
