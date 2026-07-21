@@ -225,20 +225,41 @@ const PROJECTS = [
         },
         {
           h2: "My Role & Contributions",
-          ul: [
-            "Built the grid system from the ground up: the foundation that character movement and combat actions run on.",
-            "Built the camera system and its movements and animations: WASD panning, mouse-wheel zoom and rotation.",
-            "Implemented the tile click-interaction system: selecting tiles, confirming moves and actions, and the visual indication of the selected tile.",
-            "Designed and implemented the ability selection UI, and programmed the character portrait UIs used in combat.",
-            "Added text animation effects, health bars and damage numbers.",
-            "Planned the overall code structure and how the game's systems fit together, in a lightweight code lead role."
+          groups: [
+            {
+              h3: "Grid & Interaction",
+              ul: [
+                "Built the grid system from the ground up: the foundation that character movement and combat actions run on.",
+                "Implemented the tile click-interaction system: selecting tiles, confirming moves and actions, and the visual indication of the selected tile."
+              ]
+            },
+            {
+              h3: "Camera",
+              ul: [
+                "Built the camera system and its movements and animations: WASD panning, mouse-wheel zoom and rotation."
+              ]
+            },
+            {
+              h3: "Combat UI",
+              ul: [
+                "Designed and implemented the ability selection UI, and programmed the character portrait UIs used in combat.",
+                "Added text animation effects, health bars and damage numbers."
+              ]
+            },
+            {
+              h3: "Architecture",
+              ul: [
+                "Helped plan how parts of the codebase fit together and how the systems I worked on connected to the rest, in a lightweight code lead role."
+              ]
+            }
           ]
         },
         {
           h2: "Reflection",
           p: [
             "This was my first proper 3D game in Unity, in a genre I had barely played myself, on a team with plenty of differing opinions on design direction. Finding a middle ground everyone could work with was its own exercise, and we still put out a complete, playable prototype.",
-            "The biggest lesson was the camera. Building it taught me a lot about how camera systems work, and about the amount of up-front planning an intuitive, good-looking camera actually needs."
+            "It was also my first time working alongside a larger art team. With four artists feeding assets into the game, I learned to communicate the technical specifics precisely: giving artists the exact requirements an asset had to meet so it would slot into the project cleanly without complications.",
+            "The biggest lesson was the camera. Building it taught me how much up-front planning an intuitive, good-looking camera actually needs. What shipped works well, but it is far from perfect, and I left the project knowing exactly what I would do differently next time."
           ]
         }
       ],
