@@ -242,20 +242,28 @@ if (elLinks) {
         ? sec.p.map(cleanText).filter(p => p && p.toUpperCase() !== "TODO")
         : [cleanText(sec?.p)].filter(p => p && p.toUpperCase() !== "TODO");
 
-      const ulRaw = Array.isArray(sec?.ul) ? sec.ul : [];
-      const ulClean = ulRaw
+      const cleanList = arr => (Array.isArray(arr) ? arr : [])
         .map(cleanText)
         .filter(x => x && x.toUpperCase() !== "TODO");
 
-      if (!h2 && !paragraphs.length && !ulClean.length) return "";
+      const ulClean = cleanList(sec?.ul);
 
+      // Optional labelled subsections: groups: [{ h3, ul: [...] }, ...]
+      const groups = (Array.isArray(sec?.groups) ? sec.groups : [])
+        .map(g => ({ h3: cleanText(g?.h3), items: cleanList(g?.ul) }))
+        .filter(g => g.items.length);
+
+      if (!h2 && !paragraphs.length && !ulClean.length && !groups.length) return "";
+
+      const listHtml = items => `<ul>${items.map(li => `<li>${escapeHtml(li)}</li>`).join("")}</ul>`;
       const h2Html = h2 ? `<h2>${escapeHtml(h2)}</h2>` : "";
       const pHtml = paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join("");
-      const ulHtml = ulClean.length
-        ? `<ul>${ulClean.map(li => `<li>${escapeHtml(li)}</li>`).join("")}</ul>`
-        : "";
+      const ulHtml = ulClean.length ? listHtml(ulClean) : "";
+      const groupsHtml = groups.map(g =>
+        `<div class="section-group">${g.h3 ? `<h3>${escapeHtml(g.h3)}</h3>` : ""}${listHtml(g.items)}</div>`
+      ).join("");
 
-      return `<div class="project-section">${h2Html}${pHtml}${ulHtml}</div>`;
+      return `<div class="project-section">${h2Html}${pHtml}${ulHtml}${groupsHtml}</div>`;
     }).join("");
   }
 
