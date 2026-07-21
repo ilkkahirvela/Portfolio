@@ -110,7 +110,8 @@ const PROJECTS = [
         src: "media/kindling/lantern.webp",
         still: "media/kindling/lantern-still.webp",
         alt: "Animated pixel-art Lantern sprite",
-        caption: "The Lantern, animated by me in Aseprite (base sprite by our artist)."
+        caption: "The Lantern · animated by me · base sprite by our artist",
+        anchor: "art"
       },
       links: {
         itch: "https://ilkkahi.itch.io/kindling",

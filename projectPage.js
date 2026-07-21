@@ -27,6 +27,7 @@
   const elBody = document.getElementById("pBody");
   const elGallery = document.getElementById("pGallery");
   const elRail = document.getElementById("pRail");
+  const elTitleAward = document.getElementById("pTitleAward");
 
   if (!id) {
     document.title = "Ilkka Hirvelä | Project";
@@ -147,20 +148,19 @@ if (elLinks) {
         : "");
   }
 
-  // Right rail — an optional award badge (top), the gallery, and an optional
-  // pixel-art signature (bottom). The rail collapses only when none are present.
+  // Right rail: just the gallery now. The award badge sits beside the title
+  // and the pixel-art sprite floats into the body copy (below), so the rail
+  // collapses whenever the gallery is empty.
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const award = project.content?.award;
   const pixelArt = project.content?.pixelArt;
   const gallery = Array.isArray(project.content?.gallery) ? project.content.gallery : [];
 
-  // Award badge — prepend to the rail (e.g. a competition finalist medal).
-  if (elRail && award?.image) {
-    const sec = document.createElement("div");
-    sec.className = "rail-section rail-award";
-    sec.innerHTML =
+  // Award badge: an accolade beside the title (e.g. a competition finalist
+  // medal), absolutely positioned just right of the heading (see styles.css).
+  if (elTitleAward && award?.image) {
+    elTitleAward.innerHTML =
       `<img class="award-badge" src="${escapeAttr(award.image)}" alt="${escapeAttr(award.alt || "Award")}" loading="lazy" decoding="async" />`;
-    elRail.insertBefore(sec, elRail.firstChild);
   }
 
   if (elGallery) {
@@ -187,20 +187,42 @@ if (elLinks) {
     }
   }
 
-  // Pixel-art signature — append to the rail. Reduced motion gets the still.
-  if (elRail && pixelArt?.src) {
+  // Pixel-art sprite: a small decorative flavor piece (not an openable gallery
+  // item), floated into the body copy rather than given a rail slot of its own.
+  // An optional `anchor` slug floats it into the matching section/group (e.g.
+  // the sprite next to the contribution that mentions it); otherwise it leads
+  // the body. Reduced motion gets the still frame.
+  if (elBody && pixelArt?.src) {
     const src = (reduceMotion && pixelArt.still) || pixelArt.src;
-    const sec = document.createElement("div");
-    sec.className = "rail-section rail-pixelart";
-    sec.innerHTML =
+    const fig = document.createElement("figure");
+    fig.className = "body-pixelart";
+    // Focusable so the hover-revealed caption is reachable by keyboard too; the
+    // figcaption stays in the DOM so screen readers always get the credit.
+    if (pixelArt.caption) fig.tabIndex = 0;
+    // Break the caption at " · " so each credit sits on its own tooltip line;
+    // avoids breaks landing mid-phrase.
+    const captionHtml = pixelArt.caption
+      ? pixelArt.caption.split(" · ").map(s => escapeHtml(s.trim())).filter(Boolean).join("<br>")
+      : "";
+    fig.innerHTML =
       `<img class="pixel-art" src="${escapeAttr(src)}" alt="${escapeAttr(pixelArt.alt || "Pixel art")}" loading="lazy" decoding="async" />` +
-      (pixelArt.caption ? `<p class="pixel-art__caption">${escapeHtml(pixelArt.caption)}</p>` : "");
-    elRail.appendChild(sec);
+      (captionHtml ? `<figcaption class="pixel-art__caption">${captionHtml}</figcaption>` : "");
+    const anchorSlug = slug(pixelArt.anchor);
+    const target = anchorSlug
+      ? elBody.querySelector(`.section-group[data-group="${anchorSlug}"], .project-section[data-section="${anchorSlug}"]`)
+      : null;
+    if (target) {
+      target.classList.add("has-pixelart"); // flow-root so the float stays inside
+      target.insertBefore(fig, target.firstChild);
+    } else {
+      elBody.insertBefore(fig, elBody.firstChild);
+    }
   }
 
-  // Rail visibility — show if any rail content exists, otherwise collapse it.
+  // Rail visibility: the gallery is the only rail content now, so collapse the
+  // rail whenever it's empty.
   if (elRail) {
-    elRail.style.display = (gallery.length || award?.image || pixelArt?.src) ? "" : "none";
+    elRail.style.display = gallery.length ? "" : "none";
   }
 
   // Prev / next level nav — walks the shared sortedProjects() order so the
@@ -259,11 +281,13 @@ if (elLinks) {
       const h2Html = h2 ? `<h2>${escapeHtml(h2)}</h2>` : "";
       const pHtml = paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join("");
       const ulHtml = ulClean.length ? listHtml(ulClean) : "";
-      const groupsHtml = groups.map(g =>
-        `<div class="section-group">${g.h3 ? `<h3>${escapeHtml(g.h3)}</h3>` : ""}${listHtml(g.items)}</div>`
-      ).join("");
+      const groupsHtml = groups.map(g => {
+        const gAttr = g.h3 ? ` data-group="${escapeAttr(slug(g.h3))}"` : "";
+        return `<div class="section-group"${gAttr}>${g.h3 ? `<h3>${escapeHtml(g.h3)}</h3>` : ""}${listHtml(g.items)}</div>`;
+      }).join("");
 
-      return `<div class="project-section">${h2Html}${pHtml}${ulHtml}${groupsHtml}</div>`;
+      const secAttr = h2 ? ` data-section="${escapeAttr(slug(h2))}"` : "";
+      return `<div class="project-section"${secAttr}>${h2Html}${pHtml}${ulHtml}${groupsHtml}</div>`;
     }).join("");
   }
 
@@ -277,6 +301,11 @@ if (elLinks) {
   function cleanText(v) {
     const s = (v == null) ? "" : String(v);
     return s.trim();
+  }
+
+  // Slugify a heading for anchor matching: lowercase, non-alnum runs → hyphen.
+  function slug(v) {
+    return cleanText(v).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   }
 
   function escapeHtml(str) {
