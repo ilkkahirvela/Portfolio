@@ -394,6 +394,22 @@ const PROJECTS = [
     }
   },
 
+  {
+    id: "coinflippa",
+    title: "Coinflippa",
+    year: 2026,
+    team: 1,
+    duration: "13+ weeks",
+    image: "media/coinflippa/coinflippa-preview.webp",
+    description:
+      "A 1000-player elimination game built on the simplest game there is: the coin flip. A solo Unity project for mobile, nearing completion.",
+    tags: ["Unity", "C#", "3D", "Mobile"],
+    featured: false,
+    wip: true,
+
+    detailsUrl: "project.html?id=coinflippa"
+  },
+
 ];
 
 // ============================
