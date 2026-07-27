@@ -315,14 +315,25 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   }
 
   function observeCards() {
+    // The stagger is for the opening cascade only. Cards further down the strip
+    // reveal one at a time as you scroll to them, where an index-based delay is
+    // just lag on the card you're looking at, so they rise immediately.
+    let openingBatch = true;
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          obs.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) return;
+        if (!openingBatch) entry.target.style.setProperty("--card-index", 0);
+        entry.target.classList.add("is-visible");
+        obs.unobserve(entry.target);
       });
-    }, { threshold: 0.08 });
+      openingBatch = false;
+    }, {
+      // Start the rise before the card reaches the edge (as observeArt does for
+      // the art), so it has finished by the time the card is actually readable
+      // instead of animating in front of you as you scroll.
+      rootMargin: "0px 220px",
+      threshold: 0,
+    });
 
     grid.querySelectorAll(".card-animate").forEach(card => obs.observe(card));
   }
