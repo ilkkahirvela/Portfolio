@@ -2044,8 +2044,9 @@ body:has(#about) main{
   transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
 }
 
-/* Empty placeholder keeps the present link pinned to its correct side */
-span.level-nav__slot{
+/* Empty placeholder keeps the present link pinned to its correct side.
+   Needs the #project-details prefix to outrank the bordered slot rule above. */
+#project-details span.level-nav__slot{
   border: none;
   background: none;
 }
