@@ -513,7 +513,10 @@ section{
   display: flex;
   gap: 22px;
   overflow-x: auto;
-  scroll-snap-type: x proximity;
+  /* No scroll-snap: cards are wide enough that proximity-snapping to center
+     yanked the strip after every gesture. Free scroll plus the drag glide in
+     scripts.js reads better. */
+  overscroll-behavior-x: contain; /* don't chain into the browser back-swipe */
   /* side padding aligns the first card with the 1100px content column */
   padding: 16px max(20px, calc(50vw - 550px)) 20px;
   user-select: none;
@@ -577,7 +580,6 @@ section{
 /* Level card */
 .level-card{
   flex: 0 0 340px;
-  scroll-snap-align: center;
   display: flex;
   flex-direction: column;
 

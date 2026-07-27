@@ -83,7 +83,6 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     barGrab = (e.clientX >= thumb.left && e.clientX <= thumb.right)
       ? e.clientX - thumb.left
       : thumb.width / 2;
-    grid.style.scrollSnapType = "none"; // don't fight the pointer mid-drag
     barScrollTo(e);
   });
   stripBar?.addEventListener("pointermove", (e) => {
@@ -92,7 +91,6 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   const endBarDrag = () => {
     if (barGrab === null) return;
     barGrab = null;
-    grid.style.scrollSnapType = "";
   };
   stripBar?.addEventListener("pointerup", endBarDrag);
   stripBar?.addEventListener("pointercancel", endBarDrag);
@@ -164,13 +162,33 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     });
   });
 
-  // Mouse drag-to-scroll (touch scrolls natively); suppresses the click after a drag
+  // Mouse drag-to-scroll (touch scrolls natively, with the platform's own
+  // inertia); suppresses the click after a drag. Releasing a decisive throw
+  // hands off to a momentum glide: without it, and with scroll-snap gone,
+  // the strip stopped dead the moment the button came up.
   let dragStartX = null, dragStartLeft = 0, dragMoved = false;
+  let glideId = null, velocity = 0, lastX = 0, lastT = 0;
+
+  function stopGlide() {
+    if (glideId !== null) cancelAnimationFrame(glideId);
+    glideId = null;
+  }
+
+  // any fresh scroll input takes over from a glide in progress
+  grid.addEventListener("wheel", stopGlide, { passive: true });
+  grid.addEventListener("touchstart", stopGlide, { passive: true });
+  stripBar?.addEventListener("pointerdown", stopGlide);
+
   grid.addEventListener("mousedown", (e) => {
+    stopGlide();
     dragStartX = e.pageX;
     dragStartLeft = grid.scrollLeft;
     dragMoved = false;
+    velocity = 0;
+    lastX = e.pageX;
+    lastT = performance.now();
   });
+
   window.addEventListener("mousemove", (e) => {
     if (dragStartX === null) return;
     const dx = e.pageX - dragStartX;
@@ -178,8 +196,36 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
       dragMoved = true;
       grid.scrollLeft = dragStartLeft - dx;
     }
+    // px/ms, smoothed so one jittery frame can't define the throw
+    const now = performance.now();
+    const dt = now - lastT;
+    if (dt > 0) {
+      velocity = velocity * 0.7 + ((e.pageX - lastX) / dt) * 0.3;
+      lastX = e.pageX;
+      lastT = now;
+    }
   });
-  window.addEventListener("mouseup", () => { dragStartX = null; });
+
+  window.addEventListener("mouseup", () => {
+    if (dragStartX === null) return;
+    dragStartX = null;
+    // A slow drag just ends where you left it; only a real throw coasts.
+    if (!dragMoved || REDUCED_MOTION || Math.abs(velocity) < 0.15) return;
+
+    let v = -velocity; // the strip travels opposite the pointer
+    let prev = performance.now();
+    const step = (now) => {
+      const frame = Math.min(now - prev, 32); // capped so a stalled tab can't lurch
+      prev = now;
+      grid.scrollLeft += v * frame;
+      v *= Math.pow(0.9, frame / 16.67); // ~10% shed per 60fps frame
+      const maxScroll = grid.scrollWidth - grid.clientWidth;
+      const atEnd = grid.scrollLeft <= 0 || grid.scrollLeft >= maxScroll;
+      if (atEnd || Math.abs(v) < 0.05) { glideId = null; return; }
+      glideId = requestAnimationFrame(step);
+    };
+    glideId = requestAnimationFrame(step);
+  });
   grid.addEventListener("click", (e) => {
     if (dragMoved) {
       // Stop propagation too: preventDefault only cancels the anchor's native
