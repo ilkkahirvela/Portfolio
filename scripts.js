@@ -17,7 +17,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   let resultsCountEl = document.getElementById("resultsCount");
 
   // Search and result count add little value with only a handful of projects
-  if (PROJECTS.length < 6) {
+  if (PROJECTS.length < 8) {
     searchInput?.remove();
     resultsCountEl?.remove();
     searchInput = null;
