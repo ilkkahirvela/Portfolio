@@ -91,7 +91,7 @@ h1, h2, h3,
 header nav ul li a,
 .tech-tag, .filter-chip, .stamp,
 .year, .results, .skill-group-label, .pips-legend,
-.duration-label, .level-enter,
+.duration-label, .team-label, .level-enter,
 .contact-btn, .email-popover__item,
 .back-to-top, .empty-state,
 #project-details .back-link,
@@ -1591,8 +1591,10 @@ body:has(#about) main{
   color: var(--accent);
 }
 
+/* Matches .team-label / .duration-label beside it. At 0.95rem the year read as
+   a different tier of information than the rest of the meta row. */
 #project-details .year{
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: var(--muted);
 }
 
@@ -1694,11 +1696,21 @@ body:has(#about) main{
   flex-shrink: 0;
 }
 
+/* Meta indicators share one alignment basis. Both boxes are the same fixed
+   height, so both labels centre inside them identically and every text in the
+   row lands on one baseline no matter how tall the icon beside it is. The icons
+   are then centred in that same box, and an icon is the ONLY thing that should
+   ever be nudged vertically here — never the text, or the labels drift apart
+   again (which is exactly what a -1px lift on .team-indicator used to cause). */
+.team-indicator,
+.duration-indicator {
+  height: 13px;
+}
+
 .team-indicator {
   display: inline-flex;
   align-items: center;
   line-height: 0;
-  transform: translateY(-1px);
 }
 
 .team-indicator--solo,
@@ -1706,15 +1718,38 @@ body:has(#about) main{
   color: var(--muted);
 }
 
+/* Optical lift: geometric centring leaves the icon reading low, because the
+   label's line box reserves descender space below the baseline and so pushes its
+   visible glyphs up inside it. Measured against the row's ink (digits and
+   x-height letters span rows 4-12, centre 8), -1px lands the clock dead on and
+   the taller person glyph within half a pixel; -1.5px overshot it high. */
 .person-icon {
   display: block;
   width: 11px;
   height: 13px;
   flex-shrink: 0;
+  transform: translateY(-1px);
 }
 
-.person-icon--stack {
-  margin-left: -4px;
+/* The team cluster is a single glyph whose three figures are positioned inside
+   its viewBox, so it only needs a width override. 25px is the exact footprint of
+   the old three-<svg> stack (three 11px boxes, the last two pulled back 4px). */
+.person-icon--group {
+  width: 25px;
+}
+
+/* Label beside the silhouettes ("Solo" / "6 people"). Same recipe as
+   .duration-label, including the line-height reset the indicator's line-height:0
+   would otherwise collapse.
+   Spacing is a margin here, NOT a `gap` on .team-indicator: a flex gap applies
+   between every child, which is what broke the cluster back when it was three
+   separate <svg>s. Harmless now that it's one glyph, but the margin is still the
+   honest way to space two siblings. */
+.team-label {
+  margin-left: 4px;
+  font-size: 0.8rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 /* Duration indicator — clock icon + label */
@@ -1731,6 +1766,7 @@ body:has(#about) main{
   width: 11px;
   height: 11px;
   flex-shrink: 0;
+  transform: translateY(-1px); /* see .person-icon */
 }
 
 .duration-label {

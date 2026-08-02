@@ -447,11 +447,26 @@ function buildTeamIndicator(teamSize) {
   if (teamSize == null) return "";
   const icon = (extraClass = "") =>
     `<svg class="person-icon${extraClass}" viewBox="0 0 10 12" fill="currentColor" aria-hidden="true"><circle cx="5" cy="3.5" r="2.8"/><path d="M0.5 12 C0.5 8.5 9.5 8.5 9.5 12 Z"/></svg>`;
+  // Icon + label, same shape as the duration indicator above: the silhouettes
+  // alone read as "a team of some size", which the clock beside them never
+  // leaves ambiguous about itself.
   if (teamSize === 1) {
-    return `<span class="team-indicator team-indicator--solo" title="Solo project">${icon()}</span>`;
+    return `<span class="team-indicator team-indicator--solo" title="Solo project">${icon()}<span class="team-label">solo</span></span>`;
   }
-  const icons = [1, 0.45, 0.15].map((op, i) =>
-    `<span style="opacity:${op};line-height:0">${icon(i ? " person-icon--stack" : "")}</span>`
-  ).join("");
-  return `<span class="team-indicator team-indicator--team" title="Team project · ${teamSize} people">${icons}</span>`;
+  // One glyph, not three overlapping <svg>s in opacity-carrying spans. Visually
+  // identical to that old stack (verified by pixel diff: max channel delta 5/255,
+  // i.e. antialiasing only) — same three equal-sized figures, same 1/0.45/0.15
+  // fade, same overlap — but the offsets now live in the viewBox instead of a
+  // margin-left:-4px that any flex change could cancel.
+  // Geometry: the old icons were 11x13px boxes on a `0 0 10 12` viewBox, so
+  // preserveAspectRatio scaled them by 13/12; a -4px margin on an 11px box put
+  // the figures 7px apart, which is 7 / (13/12) = 6.4615 viewBox units.
+  const person = `<circle cx="5" cy="3.5" r="2.8"/><path d="M0.5 12 C0.5 8.5 9.5 8.5 9.5 12 Z"/>`;
+  const group =
+    `<svg class="person-icon person-icon--group" viewBox="0 0 22.9231 12" fill="currentColor" aria-hidden="true">` +
+    `<g>${person}</g>` +
+    `<g opacity="0.45" transform="translate(6.4615 0)">${person}</g>` +
+    `<g opacity="0.15" transform="translate(12.9231 0)">${person}</g>` +
+    `</svg>`;
+  return `<span class="team-indicator team-indicator--team" title="Team project · ${teamSize} people">${group}<span class="team-label">${teamSize} people</span></span>`;
 }
