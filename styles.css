@@ -1907,6 +1907,20 @@ body:has(#about) main{
   object-fit: cover;
 }
 
+/* Portrait gallery (mobile-game shots, content.galleryAspect: "portrait").
+   Two things change together: the 9:16 ratio, so a phone screenshot isn't
+   cropped down to a center band by the 16:9 default; and a two-up rail grid,
+   because one 9:16 item across the full rail runs ~680px tall and a six-shot
+   gallery would then be a 4000px column. Two-up lands each item near the
+   height of a landscape one. */
+#project-details .gallery-grid.is-portrait{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#project-details .gallery-grid.is-portrait img{
+  aspect-ratio: 9 / 16;
+}
+
 /* Pixel-art flavor sprite: a small animated sprite the developer made, floated
    into the body copy as a margin illustration (decorative, not an openable
    gallery item). Crisp integer scaling, no glow. The credit caption is hidden
@@ -2007,11 +2021,23 @@ body:has(#about) main{
   #project-details .gallery-grid{
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  /* Rail is full width here, so portrait items get a third column to keep each
+     one close to the area a landscape item covers at this breakpoint. */
+  #project-details .gallery-grid.is-portrait{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 620px){
   #project-details .gallery-grid{
     grid-template-columns: 1fr;
+  }
+
+  /* Portrait stays two-up: a single 9:16 column at phone width is ~1000px tall
+     per shot. */
+  #project-details .gallery-grid.is-portrait{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

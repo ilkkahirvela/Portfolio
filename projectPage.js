@@ -168,6 +168,15 @@ if (elLinks) {
       // Drop the empty gallery wrapper so it doesn't add a stray rail gap.
       elGallery.closest(".rail-section")?.remove();
     } else {
+      // Portrait galleries: a phone screenshot dropped into the default 16:9
+      // slot crops to a center band, so a project whose shots are all vertical
+      // opts in with content.galleryAspect: "portrait". The class flips the
+      // item ratio to 9:16 and the rail to two-up (see styles.css).
+      const portrait = project.content?.galleryAspect === "portrait";
+      elGallery.classList.toggle("is-portrait", portrait);
+      // CLS hint only: the CSS aspect-ratio is what actually sizes the image.
+      const [hintW, hintH] = portrait ? [360, 640] : [640, 360];
+
       // Entries are either a plain src string, or { thumb, full, still } where
       // the rail <img> loads the thumb and the lightbox (anchor href) gets the
       // full. `still` is a static frame used in place of an animated thumb when
@@ -180,7 +189,7 @@ if (elLinks) {
         const alt = `${project.title || "Project"} Screenshot ${i + 1}`;
         return `
           <a class="gallery-item" href="${escapeAttr(full)}" target="_blank" rel="noopener">
-            <img src="${escapeAttr(thumb)}" alt="${escapeAttr(alt)}" width="640" height="360" loading="lazy" decoding="async" />
+            <img src="${escapeAttr(thumb)}" alt="${escapeAttr(alt)}" width="${hintW}" height="${hintH}" loading="lazy" decoding="async" />
           </a>
         `;
       }).join("");
