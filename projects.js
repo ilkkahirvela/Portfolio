@@ -1,5 +1,102 @@
 const PROJECTS = [
   {
+    id: "coinflippa",
+    title: "Coinflippa",
+    showStatusStamp: false,
+    year: 2026,
+    team: 1,
+    duration: "13+ weeks",
+    image: "media/coinflippa/coinflippa-preview.webp",
+    preview: "media/coinflippa/card-loop.webp",
+    description:
+      "A 1000-player elimination game built on the simplest game there is: the coin flip. A polished mobile game with a real-time multiplayer stack.",
+    tags: ["Unity", "C#", "3D", "Mobile"],
+    featured: true,
+
+    detailsUrl: "project.html?id=coinflippa",
+
+    content: {
+      summary: [
+        // Kept identical to the card `description` above (see Kindling): the card
+        // shows the opening, the page lead shows all of it.
+        "A 1000-player elimination game built on the simplest game there is: the coin flip. A polished mobile game with a real-time multiplayer stack.",
+        "A Unity client talking to a Node.js server over raw WebSockets, wrapped around a single 3D coin that carries the whole visual identity."
+      ],
+      galleryAspect: "portrait",
+      sections: [
+        {
+          h2: "About",
+          p: [
+            "The game itself takes a sentence to explain. A lobby fills toward 1000 players, everyone flips at the same time, and every flip is a straight 50/50: no calling heads or tails, no skill, no strategy. Roughly half the field goes out each round, so a full game runs about ten rounds and takes a minute or two. Anyone can win, and surviving ten flips in a row is as absurd as it sounds.",
+            "The progression around it is purely visual. Playing pays XP whether you win or not, each level banks a wheelspin, and spins unlock rarity-weighted cosmetics for the coin along four independent axes: its base color, its face shape, and the colors it flashes on a win and on a loss. Nothing is purchasable and no unlock affects the flip."
+          ]
+        },
+        {
+          h2: "Background",
+          p: [
+            "The project ran a little over 375 hours between April and July 2026, self-directed start to finish. Keeping the game itself simple was the point. A coin flip is about the simplest mechanic there is, so the rules cost no design effort and the hours could go into the parts that were new and challenging: real-time multiplayer for up to a thousand concurrent players, shader-heavy visuals kept smooth on mid-range Android, and what polishing to a high standard actually takes. The server stayed deliberately low-level, raw WebSockets rather than a framework, so the networking would be understood rather than abstracted away."
+          ]
+        },
+        {
+          h2: "What I Built",
+          groups: [
+            {
+              h3: "Multiplayer & Server",
+              ul: [
+                "Built the Node.js server on raw WebSockets, with a JSON event protocol covering the whole session and full authority over every flip: no coin result originates on a device.",
+                "Designed the round loop around a 10-second flip window. The server rolls every outcome for the round up front, with a guard so a round can never eliminate the entire field, then releases each player's result the moment they commit, auto-flips whoever doesn't, and closes the window early once every survivor is done.",
+                "Implemented a lobby manager that spawns lobbies on demand, clusters players into the fullest joinable one, keeps the eliminated in as spectators, and tears a lobby down when its last human leaves.",
+                "Handled dropped mobile connections with server-side grace windows and client-side backoff reconnection.",
+                "Populated waiting lobbies with bots, tracked as a per-lobby count rather than individual connections, so players are never left waiting on live traffic. Each round's bot eliminations resolve in one binomial draw instead of a flip per bot."
+              ]
+            },
+            {
+              h3: "The Coin & Visuals",
+              ul: [
+                "The coin is one persistent 3D object on a perspective camera, shared across every screen so it carries state through the session and anchors the reward moment. Its mesh is generated procedurally at runtime, and a single custom shader resolves all four customization axes (base color, face shape, win color, lose color) into one coherent surface, carving the equipped shape per fragment instead of swapping assets.",
+                "Developed the fullscreen background shader: domain-warped fractal noise with swappable palettes and one-shot trigger effects.",
+                "Built the end-of-game XP moment around the coin: a radial ring anchored to its own collider, with sparks sized by the XP earned flying into it."
+              ]
+            },
+            {
+              h3: "Progression & Client",
+              ul: [
+                "Built the XP and leveling economy end to end, then tuned the curve against a simulation harness so the full 40-cosmetic catalog unlocks over roughly 90 games.",
+                "Built the customization menu around the coin itself: it is the live preview, and the four axis selectors restyle it in place as the player browses.",
+                "Made the spin redeem a multi-phase reveal sequence: it resolves one weighted random un-owned cosmetic from across the four catalogs, builds to the reveal, and leaves the coin already wearing it.",
+                "Set up identity without accounts: the server issues a UUID on first launch and holds all progress against it, with no sign-up or login step.",
+                "Built the mode select as a coin-edge card carousel: the coin comes forward and carries the per-mode icons in its rim, with the cards paged down the middle of the screen. Building a selection screen for a single playable mode was getting ahead of myself, but a plain list popup would have wasted the one prop the whole game is built around.",
+                "Implemented an offline server behind the client's networking seam, speaking the same protocol and simulating a complete game so it demos anywhere with no connection. It keeps a separate profile, since an offline save is untrusted by design."
+              ]
+            },
+          ]
+        },
+        {
+          h2: "Mobile Performance",
+          p: [
+            "The visuals lean heavily on custom shaders, so the performance work was done on real Android hardware rather than in the editor. An on-device frame-time overlay and a set of live tuning knobs were built first, so every change could be A/B tested where it actually runs, and the frame budget was then traded line by line against measurement instead of intuition. Readings were taken heat-soaked rather than cold, because thermal throttling changes which cost dominates.",
+            "The fullscreen background shader is the heaviest thing the game draws, so it took the deepest cuts. It was decoupled from the frame loop entirely: it renders into its own low-resolution target at a fraction of the display's pixels, refreshes every second frame, and is composited back to full resolution by a camera-less blit. The motion is slow and painterly by design, so it absorbs both reductions with minimal visible loss, and on device the difference from full resolution is hard to spot side by side. The rest of the frame is cheap by construction: one 3D coin plus UI.",
+            "The largest wins were not where intuition pointed. Replacing the FSR upscaler with plain bilinear gained more than any shader edit. Disabling the physics simulation, which nothing in the game used, removed a recurring frame spike. The coin's engraving lookups were baked offline into a channel map so the shader performs one texture read instead of up to eighteen. Once the background stopped being the bottleneck, post-processing became it, so bloom dropped to quarter resolution and three blur iterations, and render scale now steps down per screen where the coin is small or peripheral, since every render-resolution pass shrinks quadratically with it.",
+            "The frame-rate target was the most counterintuitive result. Capping at 60 allowed the device governor to downclock until routine spikes missed vsync, so the shipping default is 120fps on high-refresh panels, where the clocks stay pinned and pacing stays even. The 90fps option was removed outright because the target panels expose only 60 and 120Hz modes, so anything in between presents on an uneven cadence regardless of headroom. The design target remains a 60fps baseline on mid-range hardware, held by trading background fidelity rather than gameplay; on a Galaxy S22 Ultra the build runs at a stable 120."
+          ]
+        },
+      ],
+      gallery: [
+        { thumb: "media/coinflippa/clip-round.webp", full: "media/coinflippa/clip-round.mp4", still: "media/coinflippa/clip-round-still.webp" },
+        { thumb: "media/coinflippa/clip-customize.webp", full: "media/coinflippa/clip-customize.mp4", still: "media/coinflippa/clip-customize-still.webp" },
+        { thumb: "media/coinflippa/main-menu-thumb.webp", full: "media/coinflippa/main-menu.webp" },
+        { thumb: "media/coinflippa/round-survived-thumb.webp", full: "media/coinflippa/round-survived.webp" },
+        { thumb: "media/coinflippa/game-over-thumb.webp", full: "media/coinflippa/game-over.webp" },
+        { thumb: "media/coinflippa/customize-thumb.webp", full: "media/coinflippa/customize.webp" }
+      ],
+      links: {
+        itch: "https://ilkkahi.itch.io/coinflippa",
+        trailer: "https://www.youtube.com/watch?v=o1o5S7YEmTU"
+      }
+    }
+  },
+
+  {
     id: "kindling",
     title: "Kindling",
     showStatusStamp: false,
@@ -393,23 +490,6 @@ const PROJECTS = [
       }
     }
   },
-
-  {
-    id: "coinflippa",
-    title: "Coinflippa",
-    year: 2026,
-    team: 1,
-    duration: "13+ weeks",
-    image: "media/coinflippa/coinflippa-preview.webp",
-    description:
-      "A 1000-player elimination game built on the simplest game there is: the coin flip. A solo Unity project for mobile, nearing completion.",
-    tags: ["Unity", "C#", "3D", "Mobile"],
-    featured: false,
-    wip: true,
-
-    detailsUrl: "project.html?id=coinflippa"
-  },
-
 ];
 
 // ============================
