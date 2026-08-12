@@ -695,6 +695,12 @@ section{
   transform: rotate(-3deg);
 }
 
+/* Card-only, so the stamp keeps pace with .level-num beside it. The bare .stamp
+   size still governs the project page's briefing eyebrow. */
+.level-stamps .stamp{
+  font-size: 0.62rem;
+}
+
 .stamp-clear{ color: var(--green); }
 .stamp-feat{ color: var(--accent); background: rgba(255,180,84,0.08); }
 .stamp-dev{
@@ -717,15 +723,26 @@ section{
   font-family: var(--mono);
 }
 
+/* Fixed height, same trick as .team-indicator / .duration-indicator: the stamp's
+   padded, bordered box is taller than the label's line box, so an auto-height row
+   padded the space under the label and the title looked further from the topline
+   above it than from its own description below. 17px is the label's own line box,
+   so the row measures as text and the taller stamp overflows it symmetrically.
+   Measured ink-to-ink on the card: 23px above the title / 20px below became
+   20 / 20. Re-measure this if .level-num's size ever changes again. */
 .level-topline{
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  height: 17px;
 }
 
+/* Nudged up from 0.62rem: the year rides in this label, and at 0.22em tracking
+   four digits at ~10px were the hardest thing on the card to read. One step
+   only, since the topline is chrome and the title below it stays the loudest. */
 .level-num{
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--muted);
