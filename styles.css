@@ -406,10 +406,21 @@ section{
   pointer-events: none;
 }
 
+/* The new set powers on as one unit, like a channel switch (and like the
+   continue screen's stage), rather than rippling in card by card */
 .card-animate.crt-in.is-visible{
   animation-name: crtOn;
   animation-duration: 0.3s;
-  animation-delay: calc(var(--card-index, 0) * 45ms);
+  animation-delay: 0s;
+}
+
+/* Hover tilt drives the transform inline, and a finished entrance (fill: both)
+   would keep overriding it, so the tilt retires the entrance with this class.
+   Lower specificity than the strip-off rule on purpose: a hovered card still
+   powers off with the rest. */
+.card-animate.is-visible.tilt-ready{
+  animation: none;
+  opacity: 1;
 }
 
 /* ============================

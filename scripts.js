@@ -309,7 +309,13 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   // crt-in class lives on the cards themselves and is never removed — removing
   // it (or any animation-name swap) would restart the entrance animation.
   function rerender() {
-    if (REDUCED_MOTION) { render(); return; }
+    // A new set starts from its first card, whatever the old one was scrolled to
+    const swap = () => {
+      stopGlide();
+      render();
+      grid.scrollLeft = 0;
+    };
+    if (REDUCED_MOTION) { swap(); return; }
     grid.classList.add("strip-off");
     // If an off→on cycle is already scheduled, let it fire — render() reads the
     // live activeTag/searchTerm, so it renders the latest selection. Restarting
@@ -320,7 +326,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
       offTimer = 0;
       grid.classList.remove("strip-off");
       crtEntrance = true;
-      render();
+      swap();
       crtEntrance = false;
     }, 170);
   }
@@ -628,10 +634,14 @@ scrambleText(document.querySelector('#pTitle'));
     const card = e.target.closest('.project-card');
     if (!card) return;
 
-    if (!card.dataset.tiltReady) {
-      card.style.opacity = '1';
-      card.style.animation = 'none';
-      card.dataset.tiltReady = '1';
+    // Hold off while the card is still powering on (or off), so the tilt never
+    // cuts an entrance short. Then retire the finished entrance with a class
+    // rather than an inline animation:none: the filter's power-off rule still
+    // outranks the class, so a card you've hovered powers off with the rest.
+    if (!card.classList.contains('tilt-ready')) {
+      // animationName skips CSS transitions, which the hover itself starts
+      if (card.getAnimations().some(a => a.animationName && a.playState === 'running')) return;
+      card.classList.add('tilt-ready');
     }
 
     const rect = card.getBoundingClientRect();
