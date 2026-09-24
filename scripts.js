@@ -1071,32 +1071,164 @@ const onScrollFrame = (() => {
   }, { threshold: 0.25 }).observe(card);
 })();
 
-// Continue screen countdown — loops 9→0 while visible.
-// Reduced motion still counts down; it only skips the tick-pop effect.
+// Continue screen: a small arcade state machine. Two credits: CONTINUE? counts
+// 9→0, then a faster LAST CHANCE round, then GAME OVER takes over the screen.
+// Waiting it out on GAME OVER (the hidden bit) gets STILL HERE?, then the
+// machine gives up (FINE, then YOU WIN) and switches to FREE PLAY, plus an
+// achievement. Using a contact option at
+// any point ends it with HERE COMES A NEW CHALLENGER. Pointing at or focusing
+// a contact option holds the clock, like a coin hovering over the slot.
+// All of it is aria-hidden decoration: the heading, copy and buttons never
+// change. Reduced motion keeps every state but drops the pops, the channel
+// switch and the smooth bar drain.
 (() => {
-  const el = document.getElementById("continueCount");
-  if (!el) return;
-  let n = 9;
-  let timer = 0;
-  function tick() {
-    n = n > 0 ? n - 1 : 9;
-    el.textContent = n;
+  const screen = document.getElementById("continueScreen");
+  if (!screen) return;
+  const stage = screen.querySelector(".continue-stage");
+  const titleEl = document.getElementById("continueTitle");
+  const eyebrowEl = document.getElementById("continueEyebrow");
+  const countEl = document.getElementById("continueCount");
+  const barEl = document.getElementById("continueBar");
+  const creditEl = document.getElementById("continueCredit");
+  const coinEl = document.getElementById("insertCoinText");
+  const links = document.querySelector("#contact .contact-links");
+
+  // step = ms per count (counted states run 9→0); wait = ms of idle before next
+  const STATES = {
+    continue: { title: "Continue?",       credit: "02", step: 900, next: "last" },
+    last:     { title: "Last chance",     credit: "01", step: 620, next: "over" },
+    over:     { title: "Game over",       credit: "00", wait: 7000, next: "still" },
+    still:    { title: "Still here?",     credit: "00", wait: 6000, next: "fine" },
+    // Short beats on purpose: the concession lands in two punches (FINE is the
+    // curter one), then FREE PLAY is the payoff
+    fine:     { title: "Fine",            credit: "00", wait: 1600, next: "win" },
+    win:      { title: "You win",         credit: "00", wait: 2000, next: "free" },
+    free:     { title: "Free play",       credit: null, coin: "Free play · pick a slot" },
+    joined:   { title: "New challenger!", eyebrow: "Here comes a", coin: "Coin accepted" },
+  };
+  const COIN_DEFAULT = "Insert coin · pick a slot";
+
+  let state = "continue";
+  let elapsed = 0;     // ms spent in the current state; advances only while running
+  let shownDigit = 9;
+  let raf = 0;
+  let lastT = 0;
+  let switchTimer = 0;
+  let onScreen = false;
+  let hovered = false;
+  let focused = false;
+
+  const timed = () => "step" in STATES[state] || "wait" in STATES[state];
+  const running = () => onScreen && !hovered && !focused && timed();
+
+  function pop(el) {
     if (REDUCED_MOTION) return;
     // retrigger the tick pop (countTick in CSS)
     el.classList.remove("tick");
     void el.offsetWidth;
     el.classList.add("tick");
   }
-  // Only run the timer while the countdown is on screen — no idle ticking (or
-  // background-tab wakeups) when it's scrolled away.
-  new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
-      if (!timer) timer = setInterval(tick, 900);
-    } else if (timer) {
-      clearInterval(timer);
-      timer = 0;
+
+  function setCredit(credit) {
+    creditEl.innerHTML = credit === null ? "Free play" : `Credit <b>${credit}</b>`;
+  }
+
+  // Power the stage down to a scanline, swap its contents, power it back on
+  // (the same crtOff/crtOn pair the level strip's filter switch uses)
+  function channelSwitch(apply) {
+    clearTimeout(switchTimer);
+    if (REDUCED_MOTION) { apply(); return; }
+    stage.classList.remove("is-on");
+    stage.classList.add("is-off");
+    switchTimer = setTimeout(() => {
+      apply();
+      stage.classList.remove("is-off");
+      void stage.offsetWidth;
+      stage.classList.add("is-on");
+    }, 170);
+  }
+
+  function enter(next) {
+    const from = state;
+    state = next;
+    elapsed = 0;
+    shownDigit = 9;
+    const s = STATES[next];
+    // Joining keeps free play free; otherwise the coin just went in
+    const credit = next === "joined" ? (from === "free" ? null : "01") : s.credit;
+    if (next === "free") window.HUD?.achieve?.("patience", "PATIENCE PAYS", 300);
+    channelSwitch(() => {
+      screen.dataset.state = next;
+      window.HUD?.relabel?.("contact", s.title.toUpperCase());
+      eyebrowEl.textContent = s.eyebrow || "";
+      titleEl.textContent = s.title;
+      countEl.textContent = "9";
+      barEl.style.transform = "";
+      setCredit(credit);
+      coinEl.textContent = s.coin || COIN_DEFAULT;
+    });
+  }
+
+  function frame(t) {
+    raf = 0;
+    if (!running()) return;
+    elapsed += Math.min(t - lastT, 100); // a stalled tab can't skip a whole state
+    lastT = t;
+    const s = STATES[state];
+    if (s.step) {
+      const total = s.step * 10;
+      if (elapsed >= total) {
+        enter(s.next);
+      } else {
+        const digit = 9 - Math.floor(elapsed / s.step);
+        if (digit !== shownDigit) {
+          shownDigit = digit;
+          countEl.textContent = digit;
+          pop(countEl);
+        }
+        // The bar drains across the whole countdown (in steps under reduced motion)
+        const left = REDUCED_MOTION ? (digit + 1) / 10 : 1 - elapsed / total;
+        barEl.style.transform = `scaleX(${left.toFixed(4)})`;
+      }
+    } else if (elapsed >= s.wait) {
+      enter(s.next);
     }
-  }, { threshold: 0.3 }).observe(el);
+    if (running()) raf = requestAnimationFrame(frame);
+  }
+
+  // One place decides whether the clock runs, so the observer and the
+  // hold/contact events can't fight over the loop
+  function sync() {
+    if (running() && !raf) {
+      lastT = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+  }
+
+  if (links) {
+    links.addEventListener("pointerenter", () => { hovered = true; });
+    links.addEventListener("pointerleave", () => { hovered = false; sync(); });
+    links.addEventListener("focusin", () => { focused = true; });
+    links.addEventListener("focusout", (e) => {
+      if (links.contains(e.relatedTarget)) return;
+      focused = false;
+      sync();
+    });
+    // Any real contact action: a link out, the mail client, or copying the
+    // address. Capture phase, because the copy button stops its own click
+    // from bubbling (so the touch popover's outside-click close ignores it).
+    links.addEventListener("click", (e) => {
+      if (state === "joined" || !e.target.closest("a[href], #emailCopyBtn")) return;
+      enter("joined");
+    }, true);
+  }
+
+  // Only run the clock while the screen is in view: no idle ticking (or
+  // background-tab wakeups) when it's scrolled away
+  new IntersectionObserver(entries => {
+    onScreen = entries[0].isIntersecting;
+    sync();
+  }, { threshold: 0.3 }).observe(screen);
 })();
 
 // Footer email — click copies address, href keeps mailto for right-click

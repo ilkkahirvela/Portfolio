@@ -1032,12 +1032,68 @@ section{
 
 /* Continue screen */
 .continue-screen{
+  position: relative;
   margin-top: 24px;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: #0A0806;
   padding: 74px 24px 64px;
   text-align: center;
+}
+
+/* Cabinet readout in the top corner: the credits left */
+.continue-hud{
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: flex-end;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.continue-hud b{
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Fixed-height stage: every state recomposes inside it, so the copy and the
+   buttons below never move when the screen switches */
+.continue-stage{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 11.5rem;
+}
+
+.continue-stage.is-off{
+  animation: crtOff 0.17s ease-in both;
+}
+
+.continue-stage.is-on{
+  animation: crtOn 0.3s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+/* #contact prefix on the text rules below: outranks the `#contact p` text
+   color, which was muting the amber (same trap as #about p vs .press-start) */
+#contact .continue-eyebrow{
+  margin: 0 0 10px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+#contact .continue-eyebrow:empty{
+  display: none;
 }
 
 .continue-title{
@@ -1050,10 +1106,8 @@ section{
   color: var(--text);
 }
 
-/* #contact prefix — outranks the `#contact p` text color, which was muting
-   the amber (same trap as #about p vs .press-start) */
 #contact .continue-count{
-  margin: 20px 0 26px;
+  margin: 18px 0 12px;
   font-family: var(--mono);
   font-size: 4.4rem;
   font-weight: 700;
@@ -1069,6 +1123,49 @@ section{
 
 .continue-count.tick{
   animation: countTick 0.22s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+/* Timer bar: drains across the whole countdown (scripts.js sets scaleX) */
+.continue-bar{
+  width: 132px;
+  height: 4px;
+  margin: 0 auto;
+  border-radius: 1px;
+  background: rgba(255,180,84,0.14);
+  overflow: hidden;
+}
+
+.continue-bar i{
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(255,180,84,0.6);
+  transform-origin: left;
+}
+
+/* Takeover states: the question and the timer leave, one line owns the stage */
+.continue-screen:not([data-state="continue"]):not([data-state="last"]) .continue-timer{
+  display: none;
+}
+
+.continue-screen:not([data-state="continue"]):not([data-state="last"]) .continue-title{
+  font-size: clamp(2.4rem, 8vw, 4.6rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+#contact .continue-screen[data-state="over"] .continue-title,
+#contact .continue-screen[data-state="free"] .continue-title,
+#contact .continue-screen[data-state="joined"] .continue-title{
+  color: var(--accent);
+  text-shadow: 0 0 34px rgba(255,180,84,0.45);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .continue-stage.is-off,
+  .continue-stage.is-on{
+    animation: none !important;
+  }
 }
 
 .continue-screen p{

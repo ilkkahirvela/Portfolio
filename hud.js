@@ -107,7 +107,11 @@
     setTimeout(done, 380);
   }
 
-  window.HUD = { toast, addScore, achieve, loading };
+  // Screens can rename their HUD label (the continue screen follows its own
+  // state); filled in by the section tracker below, a no-op until then
+  let relabel = () => {};
+
+  window.HUD = { toast, addScore, achieve, loading, relabel: (id, text) => relabel(id, text) };
 
   // ---- scroll progress + scroll achievements ----
   const xpFill = bar.querySelector(".hud-xp i");
@@ -166,6 +170,12 @@
 
     let activeId = null;
     const bannered = new Set();
+
+    relabel = (id, text) => {
+      if (!LABELS[id]) return;
+      LABELS[id] = text;
+      if (activeId === id) sectionEl.textContent = text;
+    };
 
     function updateSection() {
       // Reference line in the upper portion of the viewport. Capped well below

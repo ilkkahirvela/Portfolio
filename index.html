@@ -124,11 +124,20 @@
 
     <section id="contact">
         <h2>Contact</h2>
-        <div class="continue-screen">
-        <p class="continue-title" aria-hidden="true">Continue?</p>
-        <p class="continue-count" id="continueCount" aria-hidden="true">9</p>
+        <div class="continue-screen" id="continueScreen" data-state="continue">
+        <div class="continue-hud" aria-hidden="true">
+            <span id="continueCredit">Credit <b>02</b></span>
+        </div>
+        <div class="continue-stage" aria-hidden="true">
+            <p class="continue-eyebrow" id="continueEyebrow"></p>
+            <p class="continue-title" id="continueTitle">Continue?</p>
+            <div class="continue-timer">
+                <p class="continue-count" id="continueCount">9</p>
+                <div class="continue-bar"><i id="continueBar"></i></div>
+            </div>
+        </div>
         <p>Feel free to reach out. I'm open to opportunities, collaborations, and conversations about game development.</p>
-        <p class="insert-coin" aria-hidden="true"><span class="nav-arrow nav-arrow--prompt">▼</span> Insert coin — pick a slot</p>
+        <p class="insert-coin" aria-hidden="true"><span class="nav-arrow nav-arrow--prompt">▼</span> <span id="insertCoinText">Insert coin · pick a slot</span></p>
         <div class="contact-links">
             <div class="email-wrap">
                 <button class="contact-btn email-trigger" aria-haspopup="true" aria-expanded="false">
