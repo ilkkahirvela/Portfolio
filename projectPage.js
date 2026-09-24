@@ -67,6 +67,17 @@
     return;
   }
 
+  // Back to Projects returns to this level's card (scripts.js restores it).
+  // Prev/next level hops keep the stored strip position and only swap the id,
+  // so the card you come back to is the one you were last reading.
+  try {
+    const KEY = "ih-strip-return";
+    const saved = JSON.parse(sessionStorage.getItem(KEY)) || {};
+    if (saved.id !== project.id) {
+      sessionStorage.setItem(KEY, JSON.stringify({ ...saved, id: project.id }));
+    }
+  } catch { /* storage unavailable, nothing to restore */ }
+
   // Title
   document.title = `Ilkka Hirvelä | ${project.title || "Project"}`;
   if (elTitle) elTitle.textContent = project.title || "Project";

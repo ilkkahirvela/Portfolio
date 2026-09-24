@@ -98,6 +98,51 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
   renderFilterChips();
   render();
 
+  // Return to the card you left. Opening a level stores which card it was and
+  // where it sat in the strip; projectPage.js swaps in the id of whichever
+  // level you end up on. Coming back to the level select puts that card in the
+  // same spot (or centers it if the spot is unknown). Focus is restored only
+  // when the level was opened from the keyboard, so mouse visitors don't get a
+  // focus ring they never asked for.
+  const RETURN_KEY = "ih-strip-return";
+  grid.addEventListener("click", (e) => {
+    const card = e.target.closest?.(".level-card");
+    if (!card || card.getAttribute("aria-disabled") === "true") return;
+    const offset = card.getBoundingClientRect().left - grid.getBoundingClientRect().left;
+    try {
+      sessionStorage.setItem(RETURN_KEY, JSON.stringify({
+        id: card.dataset.id, offset, keyboard: e.detail === 0,
+      }));
+    } catch { /* storage unavailable, the strip just starts at World 01 */ }
+  });
+  (() => {
+    let saved = null;
+    try { saved = JSON.parse(sessionStorage.getItem(RETURN_KEY)); } catch { return; }
+    if (!saved?.id) return;
+    const nav = performance.getEntriesByType?.("navigation")?.[0];
+    if (location.hash !== "#projects" && nav?.type !== "back_forward") return;
+    const card = Array.from(grid.querySelectorAll(".level-card"))
+      .find(c => c.dataset.id === saved.id);
+    if (!card) return;
+    const gridRect = grid.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+    // Clamped so a card opened while half off the edge comes back whole
+    const offset = typeof saved.offset === "number"
+      ? Math.min(Math.max(saved.offset, 0), Math.max(gridRect.width - cardRect.width, 0))
+      : (gridRect.width - cardRect.width) / 2;
+    grid.scrollLeft += (cardRect.left - gridRect.left) - offset;
+    updateStripChrome();
+    if (saved.keyboard) {
+      grid.querySelectorAll(".level-card").forEach(c => { c.tabIndex = -1; });
+      card.tabIndex = 0;
+      // Wait out the #projects fragment scroll: the browser resets focus as
+      // part of it, which silently undoes a focus set while the page parses.
+      const refocus = () => requestAnimationFrame(() => card.focus({ preventScroll: true }));
+      if (document.readyState === "complete") refocus();
+      else window.addEventListener("load", refocus, { once: true });
+    }
+  })();
+
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       searchTerm = (e.target.value || "").trim().toLowerCase();
@@ -370,6 +415,7 @@ const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").mat
     card.style.setProperty("--card-index", index);
     // Roving tabindex: the strip is a single tab stop; arrows move within it.
     card.tabIndex = index === 0 ? 0 : -1;
+    if (p.id) card.dataset.id = p.id;
     if (p.featured) card.classList.add("featured");
 
     const href = getProjectHref(p);
